@@ -3,7 +3,7 @@
 //console.log(connection);
 
 const prueba = require('./requests')('TERRANORTE');
-const utils = require('./api.utils');
+const utils = require('./utils');
 let cookie = '';
 
 function requestErrorHandler(error){

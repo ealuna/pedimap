@@ -1,9 +1,9 @@
 const request = require('request');
 const dateformat = require('dateformat');
-const utils = require('./api.utils');
-const accounts = require('../../config/request.account.json');
-const devices = require('../../config/request.device.json');
-const fleets = require('../../config/request.fleet.json');
+const utils = require('./utils');
+const accounts = require('../../config/account');
+const devices = require('../../config/device');
+const fleets = require('../../config/fleet');
 
 
 module.exports = (name) => {

@@ -1,7 +1,7 @@
-const prueba = require('../models/flota')('ORIUNDA');
-const prueba1 = require('../models/flota2')
-const prueba4 = require('../models/vehiculo')('ORIUNDA');
-const utils = require('./api.utils');
+const prueba = require('../api/services/request')('ORIUNDA');
+//const prueba1 = require('../models/flota2')
+//const prueba4 = require('../models/vehiculo')('ORIUNDA');
+const utils = require('../api/services/utils');
 let cookie = '';
 /*
 function requestErrorHandler(error){
@@ -28,7 +28,7 @@ function a(){
 	//console.log(prueba.cookie);
 /*prueba.fleetData('all')
 .then(prueba2);*/
-    prueba4.deviceData('352544070751640', 15)
+    prueba.deviceData('352544070751640', 15)
         .then(prueba2);
 
 
