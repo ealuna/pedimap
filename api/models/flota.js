@@ -3,7 +3,7 @@
  */
 const request = require('request');
 const dateformat = require('dateformat');
-const utils = require('../services/api.utils');
+//const utils = require('../services/api.utils');
 const accounts = require('../../config/sinergy.account');
 //const devices = require('../../config/sinergy.device');
 const fleets = require('../../config/sinergy.fleet');
