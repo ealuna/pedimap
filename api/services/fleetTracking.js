@@ -12,7 +12,7 @@ module.exports = {
         return devices[name];
     },
     getFleet: function (name) {
-        let fleets = JSON.parse(fs.readFileSync('../../config/fleet.json', 'utf8'));
+        let fleets = JSON.parse(fs.readFileSync('../../config/request.fleet.json', 'utf8'));
         return fleets[name];
     },
     getAccount: function (name) {

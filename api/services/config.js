@@ -3,9 +3,9 @@
  */
 const request = require('request');
 const utils = require('./api.utils');
-const account = require('../../config/sinergy.account');
-const devices = require('../../config/sinergy.device');
-const fleets = require('../../config/sinergy.fleet');
+const account = require('../../config/request.account.json');
+const devices = require('../../config/request.device.json');
+const fleets = require('../../config/request.fleet.json');
 
 
 module.exports = (name) => {

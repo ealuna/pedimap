@@ -4,9 +4,9 @@
 const request = require('request');
 const dateformat = require('dateformat');
 const utils = require('../services/api.utils');
-const accounts = require('../../config/sinergy.account');
+const accounts = require('../../config/request.account.json');
 //const devices = require('../../config/sinergy.device');
-const fleets = require('../../config/sinergy.fleet');
+const fleets = require('../../config/request.fleet.json');
 
 
 module.exports = (name) => {
