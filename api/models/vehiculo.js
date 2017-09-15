@@ -6,9 +6,9 @@
  */
 const request = require('request');
 const dateformat = require('dateformat');
-const utils = require('../services/api.utils');
-const accounts = require('../../config/request.account.json');
-const devices = require('../../config/request.device.json');
+const utils = require('../services/utils');
+const accounts = require('../../config/account');
+const devices = require('../../config/device');
 //const fleets = require('../../config/sinergy.fleet');
 
 

@@ -1,7 +1,7 @@
 /**
  * Created by Edward Luna Noriega on 13/09/17.
  */
-const utils = require('../services/api.utils');
+const utils = require('../services/utils');
 
 module.exports = (data) => {
     const fleet = [];

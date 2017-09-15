@@ -3,10 +3,10 @@
  */
 const request = require('request');
 const dateformat = require('dateformat');
-const utils = require('../services/api.utils');
-const accounts = require('../../config/request.account.json');
+const utils = require('../services/utils');
+const accounts = require('../../config/account');
 //const devices = require('../../config/sinergy.device');
-const fleets = require('../../config/request.fleet.json');
+const fleets = require('../../config/fleet');
 
 
 module.exports = (name) => {
