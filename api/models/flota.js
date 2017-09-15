@@ -16,10 +16,10 @@ module.exports = (data) => {
             device: data[i].$.id,
             vehicle: utils.formatVehicle(row[1]),
             datetime: `${row[3]} ${row[4]}`,
-            status: utils.decodeUnicode(data[6]),
+            status: utils.decodeUnicode(row[6]),
             coords: {
                 lat: parseFloat(row[8]),
-                lng: parseFloat(data[9])
+                lng: parseFloat(row[9])
             },
             kmh: row[12],
             location: utils.decodeUnicode(row[20]).replace(/"/g, '')

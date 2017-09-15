@@ -17,7 +17,7 @@ var files = fs.readdirSync('../models').map(function (file) {
     return file !== __filename;
 });*/
 
-
+/*
 var connextion = require('./connection').getConnections();
 
 console.log(connextion.oriunda.models);
@@ -47,3 +47,13 @@ Object.keys(models).forEach(function (name) {
     }
 });
 */
+const b = require('../api/services/connection');
+console.log(b.PRUEBA);
+//var fs = require('fs');
+//fs.aut
+//fs.readFile('\\\\192.168.1.63\\Robot Online Terranorte\\cpe\\descargas\\01-F010-00000001.xml', 'utf8', (e,c) =>{console.log(e); console.log(c)});
+/*fs.readdir('\\\\192.168.1.63\\Robot Online Terranorte\\cpe\\descargas\\', 'buffer',
+    (e,c) =>{console.log(e); console.log(c)}
+    );
+//fs.readFile('\\\\192.168.1.63\\Robot Online Terranorte\\cpe\\descargas\\01-F010-00000001.xml', 'utf8', (e,c) =>{console.log(e); console.log(c)});
+    */
