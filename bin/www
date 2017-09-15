@@ -5,8 +5,10 @@
  */
 
 const app = require('../app');
+const socket = require('../api/services/socket');
 const debug = require('debug')('pedimap:server');
 const http = require('http');
+
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +22,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+socket.attach(server);
 
 /**
  * Listen on provided port, on all network interfaces.
