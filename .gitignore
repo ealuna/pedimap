@@ -67,5 +67,6 @@ typings/
 
 # Config files
 config
+old
 
 # End of https://www.gitignore.io/api/node
