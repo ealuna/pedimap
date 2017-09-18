@@ -17,7 +17,7 @@ module.exports = (dataset) => {
             vehicle: utils.formatVehicle(row[1]),
             datetime: `${row[3]} ${row[4]}`,
             status: utils.decodeUnicode(row[6]),
-            coords: {
+            position: {
                 lat: parseFloat(row[8]),
                 lng: parseFloat(row[9])
             },
