@@ -1,10 +1,15 @@
 /**
  * Created by Edward Luna Noriega on 14/09/17.
  */
+const request = require('../services/request');
+const fleet = require('../models/flota');
 
-
-module.exports = {
-    list: (socket) => {
-        socket.emit('flota', JSON.parse(value));
-    }
+module.exports = (name) => {
+    return {
+        list: (group) => {
+            return request(name).fleet(group).then(data => {
+                return fleet(data);
+            });
+        }
+    };
 };

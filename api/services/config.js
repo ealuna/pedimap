@@ -1,9 +1,9 @@
 /**
  * Created by Edward Luna Noriega on 21/08/17.
  */
-//const request = require('request');
+
 const dateformat = require('dateformat');
-//const utils = require('./utils');
+
 const account = require('../../config/account');
 const devices = require('../../config/device');
 const fleets = require('../../config/fleet');
