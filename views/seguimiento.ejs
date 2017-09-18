@@ -28,25 +28,7 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('mapa'), {
-                center: {"lat": -11.924000, "lng": -77.071365},
-                zoom: 11,
-                styles: [{
-                    featureType: "poi",
-                    stylers: [{visibility: "off"}]
-                }, {
-                    featureType: "transit.station",
-                    stylers: [{visibility: "off"}]
-                }]
-            });
-        }
-    </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=initMap">
-    </script>
+
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -533,23 +515,29 @@
 </div>
 -->
 <!-- ./wrapper -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4">
+</script>
+<script src="/assets/lib/jquery/dist/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/assets/js/map.js"></script>
 
 <!-- jQuery 3 -->
-<script src="/assets/lib/jquery/dist/jquery.min.js"></script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- ChartJS -->
-<script src="/assets/lib/Chart.js/Chart.js"></script>
+<!--<script src="/assets/lib/Chart.js/Chart.js"></script>-->
 <!-- FastClick -->
 <script src="/assets/lib/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="/assets/lib/AdminLTE/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
+
 <script src="/assets/lib/jquery-ui/jquery-ui.min.js"></script>
+
 <script src="/assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/assets/js/map.js"></script>
+
 <script>
     $(function () {
         $("#draggable").draggable({

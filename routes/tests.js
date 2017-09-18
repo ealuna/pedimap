@@ -3,11 +3,15 @@
  */
 const express = require('express');
 const router = express.Router();
+const helmet = require('helmet');
+
 const settings = {
     'view options': {
         delimiter: '?'
     }
 };
+
+router.use(helmet({noCache: true}));
 
 /* GET users listing. */
 router.get('/login', function (req, res, next) {

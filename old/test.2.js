@@ -47,9 +47,23 @@ function a(){
 prueba.fleet('all')
 	.then((x)=>{
         //utils.dataArray(x)
-	console.log(utils.dataArray(x))
+        console.log('PROMISE')
+	console.log(x)
 	});
 
+
 }
+
+function b() {
+    prueba.fleet2('all', (body)=> {
+    	utils.parseXML2(body, (x, z)=>{
+
+            console.log('CALLBACK')
+            console.log(z);
+		});
+    });
+}
+
 a();
-setInterval(a, 3000);
+b();
+//setInterval(a, 3000);

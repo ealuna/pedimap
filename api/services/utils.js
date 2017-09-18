@@ -33,5 +33,8 @@ module.exports = {
     },
     parseXML: (xml) => {
         return parser.parseStringAsync(xml);
+    },
+    parseXML2: (xml, fn) => {
+        parser.parseString(xml, fn);
     }
 };

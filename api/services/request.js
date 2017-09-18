@@ -13,6 +13,7 @@ module.exports = (name) => {
         authenticate: function () {
             const config = configs(name).account();
             config.jar = this.cookie;
+            config.forever = true;
             return request(config);
         },
         data: function (res) {
@@ -24,6 +25,7 @@ module.exports = (name) => {
         fleet: function (group) {
             const config = configs(name).fleet(group);
             config.jar = this.cookie;
+            config.forever = true;
             return request(config).then(this.data).catch((err) => {
                 return this.authenticate().then(() => {
                     return this.fleet(group);

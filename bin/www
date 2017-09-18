@@ -5,7 +5,6 @@
  */
 
 const app = require('../app');
-const socket = require('../api/services/socket');
 const debug = require('debug')('pedimap:server');
 const http = require('http');
 const socket = require('../api/services/socket');
