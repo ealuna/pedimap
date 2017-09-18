@@ -2,23 +2,33 @@
  * Created by Edward Luna Noriega on 22/08/17.
  */
 const socket = require('socket.io')();
+const controllers = require('../controllers');
 
-//const namespaces = [socket.of('/oriunda'), socket.of('/terranorte')];
+
+function setIntervalandExecute(fn, time) {
+    fn();
+    return setInterval(fn, time);
+}
 
 socket.of('/oriunda').on('connection', (socket) => {
-    /*const a = setInterval(
-
-    );*/
-    socket.emit('prueba', 'HOLA');
-    socket.on('disconnect', () => {
-        console.log('Someone disconnected from namespace bucket 1005.');
+    const repeat = setIntervalandExecute(function () {
+        controllers.flota('ORIUNDA').list('all').then(data => {
+            socket.emit('flota', data);
+        });
+    }, 9000);
+    socket.on('disconnect', function () {
+        clearInterval(repeat);
     });
 });
 
 socket.of('/terranorte').on('connection', (socket) => {
-    socket.emit('prueba', 'HOLA');
-    socket.on('disconnect', () => {
-        console.log('Someone disconnected from namespace bucket 1005.');
+    const repeat = setIntervalandExecute(function () {
+        controllers.flota('TERRANORTE').list('all').then(data => {
+            socket.emit('flota', data);
+        });
+    }, 9000);
+    socket.on('disconnect', function () {
+        clearInterval(repeat);
     });
 });
 

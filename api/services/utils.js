@@ -1,20 +1,11 @@
-const parser = require('xml2js').Parser();
+const Promise = require('bluebird');
+const parser = Promise.promisifyAll(require('xml2js').Parser());
 const dateformat = require('dateformat');
 
 module.exports = {
     decodeUnicode: (value) => {
         return value.replace(/\\u([\d\w]{4})/gi, (match, grp) => {
             return String.fromCharCode(parseInt(grp, 16));
-        });
-    },
-    parseXML: (xml) => {
-        return new Promise((resolve, reject) => {
-            parser.parseString(xml, (error, result) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(result);
-            });
         });
     },
     dataArray: (data) => {
@@ -39,5 +30,8 @@ module.exports = {
     },
     splitArray: (value) => {
         return value.toString().split('|');
+    },
+    parseXML: (xml) => {
+        return parser.parseStringAsync(xml);
     }
 };

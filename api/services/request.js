@@ -1,7 +1,9 @@
 /**
  * Created by Edward Luna Noriega on 15/09/17.
  */
-const request = require('request');
+
+const Promise = require('bluebird');
+const request = Promise.promisify(require('request'));
 const configs = require('./config');
 const utils = require('./utils');
 
@@ -11,49 +13,31 @@ module.exports = (name) => {
         authenticate: function () {
             const config = configs(name).account();
             config.jar = this.cookie;
-            return new Promise((resolve, reject) => {
-                request(config, (error, response, body) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    resolve();
-                });
-            });
+            return request(config);
         },
-        fleetData: function (group) {
+        data: function (res) {
+            if (res.body === 'LOGOUT\n') {
+                return Promise.reject('Logout');
+            }
+            return utils.parseXML(res.body);
+        },
+        fleet: function (group) {
             const config = configs(name).fleet(group);
             config.jar = this.cookie;
-            return new Promise((resolve, reject) => {
-                request(config, (error, response, body) => {
-                    if (error || body === 'LOGOUT\n') {
-                        console.log(error);
-                        return reject(group);
-                    }
-                    resolve(body);
-                });
-            }).then(utils.parseXML).catch((group) => {
+            return request(config).then(this.data).catch((err) => {
                 return this.authenticate().then(() => {
-                    return this.fleetData(group);
+                    return this.fleet(group);
                 });
             });
         },
-        deviceData: function (device, limit) {
+        device: function (device, limit) {
             const config = configs(name).device(device, limit);
             config.jar = this.cookie;
-            return new Promise((resolve, reject) => {
-                request(config, (error, response, body) => {
-                    if (error || body === 'LOGOUT\n') {
-                        console.log(error);
-                        return reject({device: device, limit: limit});
-                    }
-                    resolve(body);
-                });
-            }).then(utils.parseXML).catch((data) => {
+            return request(config).then(this.data).catch((err) => {
                 return this.authenticate().then(() => {
-                    return this.deviceData(data.device, data.limit);
+                    return this.device(device, limit);
                 });
             });
         }
-
-    };
+    }
 };

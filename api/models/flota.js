@@ -3,21 +3,21 @@
  */
 const utils = require('../services/utils');
 
-module.exports = (data) => {
+module.exports = (dataset) => {
     const fleet = [];
-    const dataset = value.MapData.DataSet;
+    const data = utils.dataArray(dataset);
     for (let i = 0; i < data.length; i++) {
-        if (!utils.rowValidation(data[i])) {
+        if (utils.rowValidation(data[i])) {
             continue;
         }
-        const row = utils.splitArray(dataset[i].P);
+        const row = utils.splitArray(data[i].P);
         const device = {
             id: utils.formatId(row[0]),
             device: data[i].$.id,
             vehicle: utils.formatVehicle(row[1]),
             datetime: `${row[3]} ${row[4]}`,
             status: utils.decodeUnicode(row[6]),
-            coords: {
+            position: {
                 lat: parseFloat(row[8]),
                 lng: parseFloat(row[9])
             },

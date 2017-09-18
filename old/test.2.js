@@ -2,17 +2,17 @@
 
 //console.log(connection);
 
-const prueba = require('./requests')('TERRANORTE');
-const utils = require('./utils');
+const prueba = require('../api/services/request')('TERRANORTE');
+const utils = require('../api/services/utils');
 let cookie = '';
-
+/*
 function requestErrorHandler(error){
 	console.log('Nueva Cookie');
 	return prueba.getNewCookie().then((value) => {
         cookie = value;
         return prueba.getFleetData(cookie, 'all').then(pruebaConsola);
 	});
-}
+}*/
 /*
 function setNewCookie(value){
 	cookie = value;
@@ -44,12 +44,12 @@ function a(){
 })
 ;
 */
-prueba.getFleetData(cookie, 'all')
-	.then(pruebaConsola)
-	.catch(requestErrorHandler)
-	.then(utils.parseXML).then((result) => {
-	console.log(result);
-});
+prueba.fleet('all')
+	.then((x)=>{
+        //utils.dataArray(x)
+	console.log(utils.dataArray(x))
+	});
 
 }
+a();
 setInterval(a, 3000);
