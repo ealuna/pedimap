@@ -22,11 +22,11 @@ module.exports = {
         return !row.hasOwnProperty('P') || !row.hasOwnProperty('$');
     },
     formatId: (value) => {
-        return value.replace(/^(.-)|\(|\)/g, '');
+        return value.replace(/^(.-)|\(|\)/g, '').trim();
         //return value.replace(/.*?-|\)/g, '');
     },
     formatVehicle: (value) => {
-        return value.replace(/.*?\(|\)/g, '');
+        return value.replace(/.*?\(|\)/g, '').trim();
     },
     splitArray: (value) => {
         return value.toString().split('|');

@@ -15,10 +15,10 @@ function setIntervalandExecute(fn, time) {
 
 setIntervalandExecute(() => {
     controllers.flota('ORIUNDA').list('all').then(data => {
-        fleets.ORIUNDA = data;
+        if(data.length) fleets.ORIUNDA = data;
     });
     controllers.flota('TERRANORTE').list('all').then(data => {
-        fleets.TERRANORTE = data;
+        if(data.length) fleets.TERRANORTE = data;
     });
 }, 10000);
 
