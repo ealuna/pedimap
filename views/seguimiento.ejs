@@ -29,6 +29,49 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
+    <script>
+        var MAP;
+        var MAP_CENTER = {"lat": -11.924000, "lng": -77.071365};
+        var BUSINESS_OFF = {featureType: "poi", stylers: [{visibility: "off"}]};
+        var STATIONS_OFF = {featureType: "transit.station", stylers: [{visibility: "off"}]};
+        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 11, styles: [BUSINESS_OFF, STATIONS_OFF]};
+
+        function loadMap(){
+            MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
+            var script = document.createElement('script');
+            script.src = '/assets/js/map.js';
+            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
+        }
+
+        //function initMap() {
+           /* if (document.addEventListener) {
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+                    loadMap();
+                }, false);
+            } else if (document.attachEvent) {
+                document.attachEvent("onreadystatechange", function () {
+                    if (document.readyState === "complete") {
+                        document.detachEvent("onreadystatechange", arguments.callee);
+                        loadMap();
+                    }
+                });
+            }*/
+            (function () {
+                var script = document.createElement('script');
+                script.async = true;
+                script.defer = true;
+                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=loadMap';
+                (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
+                //loadMap();
+            })();
+        //}
+    </script>
+    <!--<script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=initMap">
+    </script>-->
+
+
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
 <div class="wrapper">
@@ -515,25 +558,10 @@
 </div>
 -->
 <!-- ./wrapper -->
-<script>
-    var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('mapa'), {
-            center: {"lat": -11.924000, "lng": -77.071365},
-            zoom: 11,
-            styles: [{
-                featureType: "poi", stylers: [{visibility: "off"}]
-            }, {
-                featureType: "transit.station", stylers: [{visibility: "off"}]
-            }]
-        });
-    }
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=initMap">
-</script>
+
 <script src="/assets/lib/jquery/dist/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/assets/js/map.js"></script>
+<!--<script src="/assets/js/map.js"></script>-->
 
 <!-- jQuery 3 -->
 
@@ -551,7 +579,7 @@
 <script src="/assets/lib/jquery-ui/jquery-ui.min.js"></script>
 
 <script src="/assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-
+<!--
 <script>
     $(function () {
         $("#draggable").draggable({
@@ -560,5 +588,6 @@
         });
     });
 </script>
+-->
 </body>
 </html>

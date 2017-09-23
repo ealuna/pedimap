@@ -1,6 +1,9 @@
 /**
  * Created by Edward Luna Noriega on 13/09/17.
  */
+
+"use strict";
+
 const utils = require('../services/utils');
 
 module.exports = (dataset) => {

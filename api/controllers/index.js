@@ -4,3 +4,6 @@
 
 
 module.exports.flota = require('./flota');
+
+
+module.exports.usuarios = require('./usuario');

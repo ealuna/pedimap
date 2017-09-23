@@ -2,6 +2,8 @@
  * Created by Edward Luna Noriega on 15/09/17.
  */
 
+"use strict";
+
 const Promise = require('bluebird');
 const request = Promise.promisify(require('request'));
 const configs = require('./config');
@@ -16,7 +18,7 @@ module.exports = (name) => {
             config.forever = true;
             return request(config);
         },
-        data: function (res) {
+        validate: function (res) {
             if (res.body === 'LOGOUT\n') {
                 return Promise.reject('Logout');
             }
@@ -26,7 +28,7 @@ module.exports = (name) => {
             const config = configs(name).fleet(group);
             config.jar = this.cookie;
             config.forever = true;
-            return request(config).then(this.data).catch((err) => {
+            return request(config).then(this.validate).catch((err) => {
                 return this.authenticate().then(() => {
                     return this.fleet(group);
                 });
@@ -35,7 +37,7 @@ module.exports = (name) => {
         device: function (device, limit) {
             const config = configs(name).device(device, limit);
             config.jar = this.cookie;
-            return request(config).then(this.data).catch((err) => {
+            return request(config).then(this.validate).catch((err) => {
                 return this.authenticate().then(() => {
                     return this.device(device, limit);
                 });

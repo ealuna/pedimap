@@ -2,30 +2,51 @@
  * Created by Edward Luna Noriega on 17/08/17.
  */
 
-const connections = require('../services/connection').getConnections();
+//const connections = require('../services/connection').getConnections();
+const jwt = require('jsonwebtoken');
+const secretOrKey = 'EvilSecret';
 
-let keys = Object.keys(connections);
-let models = {};
+module.exports = (models) => {
+    return {
+        create: function (req, res) {
+            const data = req.body;
+            if (data.clave !== data.confirmar) {
+                return res.status(401).json({err: 'Las contraseñas son distintas'});
+            }
+            delete  data.confirmar;
 
-for (let i = 0; i < keys.length; i++) {
-    let name = keys[i];
-    models[name] = require('../models/usuario')(connections[name]);
-}
+            models.usuarios.create(data).then(user => {
+                res.status(200).json({
+                    user: user.toJSON(),
+                    token: jwt.sign({id: user.get('nrousua')}, secretOrKey)
+                });
+            }).catch(err => {
+                console.log('Adios-------------------------------------');
+                res.status(401).json({err: err});
+            });
+        },
+        authenticate: function (req, res) {
+            if (req.body.name && req.body.password) {
+                const name = req.body.name;
+                const password = req.body.password;
+            }
 
-module.exports = {
-    create: function (req, res) {
-        let name = req.body.empresa.toString();
-        if (req.body.password !== req.body.confirmPassword) {
-            return res.json(401, {err: 'Las contraseñas ingresadas son distintas'});
-        } else {
-            models[name].create(req.body, function (err, user) {
-                if (err) {
-                    return res.json(err.status, {err: err});
-                } else if (user) {
-                    res.json(200, {
-                        user: user.toJSON(),
-                        token: jwToken.generateToken({id: user.get('nrousua')})
+            models.usuarios.findAll({where: {usuario: req.body.usuario}}).then(usuario => {
+                if (usuario[0]) {
+                    usuario[0].comparePassword(req.body.clave).then(match => {
+                        if (!match) {
+                            res.status(401).json({message: "Contraseña incorrecta."});
+                        } else {
+                            const payload = {id: usuario.nrousua};
+                            const token = jwt.sign(payload, secretOrKey);
+                            res.json({message: "Ok", token: token});
+                        }
+                    }).catch(err => {
+                        res.status(500).json({message: err});
                     });
+
+                } else {
+                    res.status(401).json({message: "Usuario no encontrado."});
                 }
             });
         }

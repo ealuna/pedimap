@@ -1,3 +1,5 @@
+"use strict";
+
 const Promise = require('bluebird');
 const parser = Promise.promisifyAll(require('xml2js').Parser());
 const dateformat = require('dateformat');
@@ -33,8 +35,5 @@ module.exports = {
     },
     parseXML: (xml) => {
         return parser.parseStringAsync(xml);
-    },
-    parseXML2: (xml, fn) => {
-        parser.parseString(xml, fn);
     }
 };
