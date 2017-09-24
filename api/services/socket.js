@@ -25,6 +25,7 @@ setIntervalandExecute(() => {
 
 socket.of('/oriunda').on('connection', (socket) => {
     const repeat = setIntervalandExecute(function () {
+        //console.log(socket.handshake);
         socket.emit('flota', fleets.ORIUNDA);
     }, 9000);
     socket.on('disconnect', function () {
@@ -34,6 +35,7 @@ socket.of('/oriunda').on('connection', (socket) => {
 
 socket.of('/terranorte').on('connection', (socket) => {
     const repeat = setIntervalandExecute(function () {
+       // console.log(socket.handshake);
         socket.emit('flota', fleets.TERRANORTE);
     }, 9000);
     socket.on('disconnect', function () {

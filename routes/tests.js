@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 
-const connection = require('../api/services/connection').ORIUNDA;
+const connection = require('../api/services/connection').HOME;
 const models = require('../api/models')(connection);
 const controllers = require('../api/controllers');
 
@@ -16,7 +16,7 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
 const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
     secretOrKey: 'EvilSecret'
 };
 
@@ -26,10 +26,9 @@ const settings = {
     }
 };
 
-const p = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
-    console.log('HOLAA____________________________________________')
-    models.usuario.findAll({where: {nrousua: jwt_payload.id}}).then(usuario => {
-        if(usuario[0]){
+passport.use(new JwtStrategy(jwtOptions, (jwt_payload, next) => {
+    models.usuarios.findAll({where: {nrousua: jwt_payload.id}}).then(usuario => {
+        if (usuario[0]) {
             return next(null, usuario[0].toJSON());
         } else {
             return next(null, false);
@@ -37,16 +36,21 @@ const p = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
     }).catch(err => {
         console.log(err)
     });
-});
-
-
-passport.use(p);
+}));
 
 router.use(passport.initialize());
 router.use(helmet({noCache: true}));
 
+router.use(function (req, res, next) {
+    if (req.cookies.token && !req.headers.authorization) {
+        req.headers.authorization = `JWT ${req.cookies.token}`;
+    }
+    next();
+});
+
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
+
     res.render('login');
 });
 
@@ -64,12 +68,16 @@ router.post("/login", function (req, res) {
 });
 
 router.post("/usuario/create", function (req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     controllers.usuarios(models).create(req, res);
 });
 
+router.get("/logout", function (req, res) {
+    res.cookie('token', '', {expires: new Date(0)});
+    res.json({message: 'Logout Success!!!!'});
+});
 
-router.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+router.get("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
 });
 

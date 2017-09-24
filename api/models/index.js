@@ -7,8 +7,8 @@
 const path = require("path");
 const models = {};
 const files = [
-    'fleteros',
-    'clientes',
+    //'fleteros',
+    //'clientes',
     'usuario'
 ];
 

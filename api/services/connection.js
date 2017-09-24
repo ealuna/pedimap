@@ -7,8 +7,10 @@ const config = require('../../config/database');
 
 const oriunda = new sequelize(config.ORIUNDA);
 const terranorte = new sequelize(config.TERRANORTE);
+const pruebas = new sequelize(config.HOME);
 
 module.exports = {
     ORIUNDA: oriunda,
-    TERRANORTE: terranorte
+    TERRANORTE: terranorte,
+    HOME: pruebas
 };
