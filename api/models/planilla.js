@@ -1,9 +1,9 @@
 /**
  * Created by Edward Luna Noriega on 25/08/17.
  */
-const DataTypes = require('sequelize').DataTypes;
+//const DataTypes = require('sequelize').DataTypes;
 
-module.exports = (sequelize) => {
+module.exports = function (sequelize, DataTypes)  {
     return sequelize.define(
         'mascstock',
         {
@@ -25,19 +25,15 @@ module.exports = (sequelize) => {
             },
             idDepo: {
                 type: DataTypes.INTEGER
-            },
-            idTransporte: {
-                type: DataTypes.INTEGER,
-                field: 'idcliente'
             }
         },
         {
-            schema: 'PUB',
+            schema: 'dbo',
             timestamps: false,
             freezeTableName: true,
             hooks: {},
             defaultScope: {
-                attributes: {
+                /*attributes: {
                     exclude: ['serie', 'codprov', 'tipomov'],
                     include: [{
                         model: mascara,
@@ -48,11 +44,11 @@ module.exports = (sequelize) => {
                             tipopla: {$col: 'planilla.tipomov'}
                         }
                     }]
-                },
+                },*/
                 where: {
                     tipomov: 'CAR',
-                    fecentre: sequelize.fn('CONVERT', sequelize.literal('DATE'), sequelize.fn('GETDATE')),
-                    anulado: 0
+                    //fecentre: sequelize.fn('CONVERT', sequelize.literal('DATE'), sequelize.fn('GETDATE')),
+                    anulado: false
                 }
             }
         }

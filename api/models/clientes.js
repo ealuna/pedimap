@@ -46,8 +46,13 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BOOLEAN
         }
     }, {
-        schema: 'PUB',
+        schema: 'dbo',
         timestamps: false,
         freezeTableName: true,
+        defaultScope: {
+            where: {
+                anulado: false
+            }
+        }
     });
 };
