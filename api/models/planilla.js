@@ -2,8 +2,9 @@
  * Created by Edward Luna Noriega on 25/08/17.
  */
 //const DataTypes = require('sequelize').DataTypes;
+"use strict";
 
-module.exports = function (sequelize, DataTypes)  {
+module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
         'mascstock',
         {
@@ -28,26 +29,26 @@ module.exports = function (sequelize, DataTypes)  {
             }
         },
         {
-            schema: 'dbo',
+            schema: 'PUB',
             timestamps: false,
             freezeTableName: true,
             hooks: {},
             defaultScope: {
                 /*attributes: {
-                    exclude: ['serie', 'codprov', 'tipomov'],
-                    include: [{
-                        model: mascara,
-                        where: {
-                            seriepla: {$col: 'planilla.serie'},
-                            codprov: {$col: 'planilla.codprov'},
-                            nropla: {$col: 'planilla.nromov'},
-                            tipopla: {$col: 'planilla.tipomov'}
-                        }
-                    }]
-                },*/
+                 exclude: ['serie', 'codprov', 'tipomov'],
+                 include: [{
+                 model: mascara,
+                 where: {
+                 seriepla: {$col: 'planilla.serie'},
+                 codprov: {$col: 'planilla.codprov'},
+                 nropla: {$col: 'planilla.nromov'},
+                 tipopla: {$col: 'planilla.tipomov'}
+                 }
+                 }]
+                 },*/
                 where: {
                     tipomov: 'CAR',
-                    //fecentre: sequelize.fn('CONVERT', sequelize.literal('DATE'), sequelize.fn('GETDATE')),
+                    fecentre: sequelize.fn('CONVERT', sequelize.literal('DATE'), sequelize.fn('GETDATE')),
                     anulado: false
                 }
             }

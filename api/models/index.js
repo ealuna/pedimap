@@ -5,9 +5,12 @@
 "use strict";
 
 const path = require("path");
-const models = {};
 const files = [
     'planilla',
+    'articulos',
+    'documento',
+    'detalle',
+    'vendedor',
     'fleteros',
     'clientes',
     'usuario'

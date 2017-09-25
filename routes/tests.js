@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 
-const connection = require('../api/services/connection').HOME;
+const connection = require('../api/services/connection').ORIUNDA;
 const models = require('../api/models')(connection);
 const controllers = require('../api/controllers');
 
@@ -42,8 +42,8 @@ router.use(passport.initialize());
 router.use(helmet({noCache: true}));
 
 router.use(function (req, res, next) {
-    if (req.cookies.token && !req.headers.authorization) {
-        req.headers.authorization = `JWT ${req.cookies.token}`;
+    if (req.cookies.SESSIONID && !req.headers.authorization) {
+        req.headers.authorization = `JWT ${req.cookies.SESSIONID}`;
     }
     next();
 });
@@ -62,18 +62,17 @@ router.get('/inicio', function (req, res, next) {
     res.render('flota', {settings: settings});
 });
 
-
 router.post("/login", function (req, res) {
     controllers.usuarios(models).authenticate(req, res);
 });
 
 router.post("/usuario/create", function (req, res) {
     //console.log(req.body);
-    controllers.usuarios(models).create(req, res);
+    controllers.usuarios(models).massive(req, res);
 });
 
 router.get("/logout", function (req, res) {
-    res.cookie('token', '', {expires: new Date(0)});
+    res.cookie('SESSIONID', '', {expires: new Date(0)});
     res.json({message: 'Logout Success!!!!'});
 });
 

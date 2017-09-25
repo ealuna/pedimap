@@ -1,14 +1,14 @@
 /**
  * Created by Edward Luna Noriega on 18/08/17.
  */
-//const DataTypes = require('sequelize').DataTypes;
+
+"use strict";
+
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
 
 module.exports = (sequelize, DataTypes) => {
-    let usuario = sequelize.define(
-        'usuarios',
-        {
+    const usuario = sequelize.define('usuarios', {
             nrousua: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -23,21 +23,21 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            hash: {
+            descrip: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            descrip: {
-                type: DataTypes.STRING,
-            },
             activo: {
-                type: DataTypes.BOOLEAN
+                type: DataTypes.BOOLEAN,
+                allowNull: false
             },
-            idSucur: {
-                type: DataTypes.INTEGER
+            tipousua: {
+                type: DataTypes.INTEGER,
+                allowNull: false
             },
-            codtipusua: {
-                type: DataTypes.INTEGER
+            codigo: {
+                type: DataTypes.INTEGER,
+                allowNull: false
             }
         },
         {
@@ -48,10 +48,8 @@ module.exports = (sequelize, DataTypes) => {
             updatedAt: 'fhlog',
             hooks: {
                 beforeCreate: (user, options) => {
-                    console.log("HOLA________________")
                     return bcrypt.genSaltAsync(10).then(salt => {
-                        return bcrypt.hashAsync(user.clave, salt).then( hash => {
-                            user.hash = salt;
+                        return bcrypt.hashAsync(user.clave, salt).then(hash => {
                             user.clave = hash;
                             return Promise.resolve();
                         });
@@ -61,10 +59,9 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     usuario.prototype.toJSON = function () {
-        const obj = this.get();
-        delete obj.clave;
-        delete obj.hash;
-        return obj;
+        const data = this.get();
+        delete data.clave;
+        return data;
     };
     usuario.prototype.comparePassword = function (password) {
         return bcrypt.compareAsync(password, this.clave);
