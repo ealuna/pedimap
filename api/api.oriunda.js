@@ -37,7 +37,7 @@ const models = require('./models')(sequelize);
  });
  */
 
-models.mascara.scope('with_lineas').findAll().then(result => {
+models.mascara.scope({method:['documentos', '2017/09/12']}).findAll().then(result => {
     if (result.length)
         for (let i = 0; i < result.length; i++)
             console.log(result[i].toJSON());

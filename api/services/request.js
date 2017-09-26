@@ -19,7 +19,7 @@ module.exports = (name) => {
             return request(config);
         },
         validate: function (res) {
-            if (res.body === 'LOGOUT\n') {
+            if (res.body === 'LOGOUT\n'){
                 return Promise.reject('Logout');
             }
             return utils.parseXML(res.body);
@@ -42,6 +42,6 @@ module.exports = (name) => {
                     return this.device(device, limit);
                 });
             });
-        }
+        },
     }
 };
