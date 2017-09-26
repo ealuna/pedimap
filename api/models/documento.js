@@ -18,6 +18,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             primaryKey: true
         },
+
         serie: {
             type: DataTypes.INTEGER,
             primaryKey: true
