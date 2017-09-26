@@ -89,14 +89,6 @@ module.exports = function (sequelize, DataTypes) {
                 }
             };
         });
-
-        mascara.addScope('carga', function (value) {
-            return {
-                where: {
-                    fechafac: value
-                }
-            };
-        });
     };
 
     return mascara;
