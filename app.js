@@ -10,6 +10,8 @@ const helmet = require('helmet');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const pruebas = require('./routes/tests');
+const oriunda = require('./routes/oriunda');
+const terranorte = require('./routes/terranorte');
 
 const app = express();
 
@@ -30,6 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/oriunda', oriunda);
+app.use('/terranorte', terranorte);
 app.use('/prueba', pruebas);
 
 // catch 404 and forward to error handler

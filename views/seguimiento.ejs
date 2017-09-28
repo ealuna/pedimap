@@ -34,9 +34,9 @@
         var MAP_CENTER = {"lat": -11.924000, "lng": -77.071365};
         var BUSINESS_OFF = {featureType: "poi", stylers: [{visibility: "off"}]};
         var STATIONS_OFF = {featureType: "transit.station", stylers: [{visibility: "off"}]};
-        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 11, styles: [BUSINESS_OFF, STATIONS_OFF]};
+        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 11, styles: [BUSINESS_OFF, STATIONS_OFF], gestureHandling: 'greedy'};
 
-        function loadMap(){
+        function loadMap() {
             MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
             var script = document.createElement('script');
             script.src = '/assets/js/map.js';
@@ -44,27 +44,27 @@
         }
 
         //function initMap() {
-           /* if (document.addEventListener) {
-                document.addEventListener("DOMContentLoaded", function () {
-                    document.removeEventListener("DOMContentLoaded", arguments.callee, false);
-                    loadMap();
-                }, false);
-            } else if (document.attachEvent) {
-                document.attachEvent("onreadystatechange", function () {
-                    if (document.readyState === "complete") {
-                        document.detachEvent("onreadystatechange", arguments.callee);
-                        loadMap();
-                    }
-                });
-            }*/
-            (function () {
-                var script = document.createElement('script');
-                script.async = true;
-                script.defer = true;
-                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=loadMap';
-                (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
-                //loadMap();
-            })();
+        /* if (document.addEventListener) {
+         document.addEventListener("DOMContentLoaded", function () {
+         document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+         loadMap();
+         }, false);
+         } else if (document.attachEvent) {
+         document.attachEvent("onreadystatechange", function () {
+         if (document.readyState === "complete") {
+         document.detachEvent("onreadystatechange", arguments.callee);
+         loadMap();
+         }
+         });
+         }*/
+        (function () {
+            var script = document.createElement('script');
+            script.async = true;
+            script.defer = true;
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=loadMap';
+            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
+            //loadMap();
+        })();
         //}
     </script>
     <!--<script async defer
@@ -300,10 +300,11 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
-                    <ul class="treeview-menu">
+                    <ul id="fleteros" class="treeview-menu">
                         <li><a href="#"><i class="fa fa-map-marker"></i> Todos</a></li>
-                        <li><a href="#"><i class="fa fa-map-marker"></i> T-88</a></li>
-                        <li><a href="#"><i class="fa fa-map-marker"></i> T-588</a></li>
+                        <% for(var i = 0; i < fleteros.length; i++) { %>
+                        <li><a href="#"><i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %></a></li>
+                        <% } %>
                     </ul>
                 </li>
                 <li class="treeview">

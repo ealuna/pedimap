@@ -4,6 +4,6 @@
 
 
 module.exports.flota = require('./flota');
-
-
+module.exports.vehiculo = require('./vehiculo');
+module.exports.fleteros = require('./fleteros');
 module.exports.usuarios = require('./usuario');

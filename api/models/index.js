@@ -6,13 +6,13 @@
 
 const path = require("path");
 const files = [
-    'planilla',
-    'articulos',
-    'documento',
-    'detalle',
-    'vendedor',
-    'fleteros',
-    'clientes',
+    //'planilla',
+    //'articulos',
+    //'documento',
+    //'detalle',
+    //'vendedor',
+    //'fleteros',
+    //'clientes',
     'usuario'
 ];
 

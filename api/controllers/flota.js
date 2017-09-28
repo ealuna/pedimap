@@ -6,12 +6,12 @@
 
 const fleet = require('../models/flota');
 
-module.exports = (name) => {
+module.exports = name => {
     return {
         group: (group, next) => {
             fleet(name).getGroup(group).then(result => {
                 next(null, result);
-            }).catch(err =>{
+            }).catch(err => {
                 next(err, null);
             });
         }

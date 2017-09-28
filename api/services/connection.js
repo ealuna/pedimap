@@ -9,8 +9,6 @@ const oriunda = new sequelize(config.ORIUNDA);
 const terranorte = new sequelize(config.TERRANORTE);
 //const pruebas = new sequelize(config.HOME);
 
-module.exports = {
-    ORIUNDA: oriunda,
-    TERRANORTE: terranorte
-    //HOME: pruebas
-};
+module.exports.ORIUNDA = oriunda;
+module.exports.TERRANORTE = terranorte;
+//module.exports.HOME = pruebas;

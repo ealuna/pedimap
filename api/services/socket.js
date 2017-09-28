@@ -1,6 +1,9 @@
 /**
  * Created by Edward Luna Noriega on 22/08/17.
  */
+
+"use strict";
+
 const socket = require('socket.io')();
 const controllers = require('../controllers');
 const fleets = {
@@ -30,22 +33,29 @@ setIntervalandExecute(() => {
 
 
 socket.of('/oriunda').on('connection', (socket) => {
-    //const repeat = setIntervalandExecute(function () {
     socket.emit('flota', fleets.ORIUNDA);
-    //}, 9000);
-    socket.on('device', function (device) {
-        clearInterval(repeat);
+
+    socket.on('vehiculo', function (device) {
+        controllers.vehiculo('ORIUNDA').points(device, (err, data) => {
+            if (!err && data.length) {
+                socket.emit('device', data);
+            }
+        });
     });
+
 });
 
 socket.of('/terranorte').on('connection', (socket) => {
-    //const repeat = setIntervalandExecute(function () {
-    // console.log(socket.handshake);
     socket.emit('flota', fleets.TERRANORTE);
-    //}, 9000);
-    /*socket.on('disconnect', function () {
-     clearInterval(repeat);
-     });*/
+
+    socket.on('vehiculo', function (device) {
+        controllers.vehiculo('TERRANORTE').points(device, (err, data) => {
+            if (!err && data.length) {
+                socket.emit('device', data);
+            }
+        });
+    });
+
 });
 
 module.exports = socket;

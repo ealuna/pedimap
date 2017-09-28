@@ -3,9 +3,10 @@
  */
 const express = require('express');
 const router = express.Router();
+const compression = require('compression');
 
-const connection = require('../api/services/connection').ORIUNDA;
-const models = require('../api/models')(connection);
+const connection = require('../api/services/connection').TERRANORTE;
+//const models = require('../api/models')(connection);
 const controllers = require('../api/controllers');
 
 const helmet = require('helmet');
@@ -38,6 +39,7 @@ passport.use(new JwtStrategy(jwtOptions, (jwt_payload, next) => {
     });
 }));
 
+router.use(compression());
 router.use(passport.initialize());
 router.use(helmet({noCache: true}));
 
@@ -55,7 +57,7 @@ router.get('/login', function (req, res, next) {
 });
 
 router.get('/seguimiento', function (req, res, next) {
-    res.render('seguimiento');
+    res.render('seguimiento', {fleteros: []});
 });
 
 router.get('/inicio', function (req, res, next) {
@@ -80,5 +82,13 @@ router.get("/secret", passport.authenticate('jwt', {session: false}), function (
     res.json({message: "Success! You can not see this without a token"});
 });
 
+/*router.get("/clientes", (req, res) => {
+    connection.query("EXEC [SP].[cliente]").spread(result => {
+       // res.send(result);
+        const a = JSON.stringify(result)
+        res.set('Content-Type', 'application/json');
+        res.send(a);
+    });
+});*/
 
 module.exports = router;

@@ -11,7 +11,7 @@ const utils = require('../services/utils');
 const request = require('../services/request');
 
 function setFormat(dataset) {
-const device = {};
+    const vehicles = [];
     const points = [];
     const data = utils.dataArray(dataset);
     for (let i = 0; i < data.length; i++) {
@@ -20,26 +20,39 @@ const device = {};
         }
 
         const rows = data[i].P;
-        const info = rows[rows.length - 1].split("|");
-        device.id = utils.formatId(info[0]);
-        for (let j = 0; i < rows.length; j++) {
-            const row = rows.split("|");
+        const values = rows[0].split('|');
 
+        const vehicle = {
+            id: utils.formatId(values[0]),
+            device: data[i].$.id,
+            vehicle: utils.formatVehicle(values[1])
+        };
+
+        for (let j = 0; j < rows.length; j++) {
+            const row = rows[j].split('|');
             const point = {
-                lat: parseFloat(row[8]),
-                lng: parseFloat(row[9])
+                datetime: `${row[3]} ${row[4]}`,
+                status: utils.decodeUnicode(row[6]),
+                position: {
+                    lat: parseFloat(row[8]),
+                    lng: parseFloat(row[9])
+                },
+                kmh: row[12],
+                location: utils.decodeUnicode(row[20]).replace(/"/g, '')
             };
             points.push(point);
         }
+        vehicle.points = points;
+        vehicles.push(vehicle);
     }
-    return points;
+    return vehicles;
 }
 
 function validation(res) {
     if (res.body === 'LOGOUT\n' || !res) {
         return Promise.reject({status: 401, msg: 'No se puede acceder al servicio.'});
     }
-    return utils.parseXML(res.body)//.then(setFormat);
+    return utils.parseXML(res.body).then(setFormat);
 }
 
 module.exports = name => {
@@ -52,7 +65,7 @@ module.exports = name => {
                         return source.device(device, limit).then(validation);
                     });
                 }
-                return err;
+                return Promise.reject(err);
             });
         }
     };

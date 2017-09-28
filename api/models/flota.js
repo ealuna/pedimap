@@ -14,7 +14,8 @@ function setFormat(dataset) {
         if (utils.rowValidation(data[i])) {
             continue;
         }
-        const row = utils.splitArray(data[i].P);
+        const values = data[i].P;
+        const row = values[0].split('|');
         const device = {
             id: utils.formatId(row[0]),
             device: data[i].$.id,
@@ -50,7 +51,7 @@ module.exports = name => {
                         return source.fleet(group).then(validation);
                     });
                 }
-                return err;
+                return Promise.reject(err);
             });
         }
     };

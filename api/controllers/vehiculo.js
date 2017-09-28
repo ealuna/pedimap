@@ -6,8 +6,14 @@
 
 const vehicle = require('../models/vehiculo');
 
-vehicle('TERRANORTE').getPoints('352544070752218', 15).then((c) => {
-    console.log(c.MapData.DataSet)
-}).catch((c)=>{
-    console.log(c)
-});
+module.exports = name => {
+    return {
+        points: (device, next) => {
+            vehicle(name).getPoints(device.id, device.limit).then(result => {
+                next(null, result);
+            }).catch(err => {
+                next(err, null);
+            });
+        }
+    };
+};
