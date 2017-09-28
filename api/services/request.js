@@ -5,43 +5,42 @@
 "use strict";
 
 const Promise = require('bluebird');
+const dateformat = require('dateformat');
 const request = Promise.promisify(require('request'));
-const configs = require('./config');
+
 const utils = require('./utils');
+const fleets = require('../../config/fleet');
+const devices = require('../../config/device');
+const account = require('../../config/account');
+
 
 module.exports = (name) => {
     return {
         cookie: request.jar(),
         authenticate: function () {
-            const config = configs(name).account();
+            const config = account[name];
             config.jar = this.cookie;
             config.forever = true;
             return request(config);
         },
-        validate: function (res) {
-            if (res.body === 'LOGOUT\n'){
-                return Promise.reject('Logout');
-            }
-            return utils.parseXML(res.body);
-        },
         fleet: function (group) {
-            const config = configs(name).fleet(group);
+            const config = fleets[name];
+            config.qs['_uniq'] = Math.random();
+            config.qs['date_to'] = dateformat("yyyy/mm/dd/HH:MM");
+            config.qs['group'] = group;
             config.jar = this.cookie;
             config.forever = true;
-            return request(config).then(this.validate).catch((err) => {
-                return this.authenticate().then(() => {
-                    return this.fleet(group);
-                });
-            });
+            return request(config);
         },
         device: function (device, limit) {
-            const config = configs(name).device(device, limit);
+            const config = devices[name];
+            config.qs['_uniq'] = Math.random();
+            config.qs['date_to'] = dateformat("dd/mm/yyyy/HH:MM");
+            config.qs['device'] = device;
+            config.qs['limit'] = limit;
             config.jar = this.cookie;
-            return request(config).then(this.validate).catch((err) => {
-                return this.authenticate().then(() => {
-                    return this.device(device, limit);
-                });
-            });
-        },
+            config.forever = true;
+            return request(config);
+        }
     }
 };

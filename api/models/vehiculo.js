@@ -4,58 +4,56 @@
 /**
  * Created by Edward Luna Noriega on 13/09/17.
  */
-const request = require('request');
-const dateformat = require('dateformat');
+
+"use strict";
+
 const utils = require('../services/utils');
-const accounts = require('../../config/account');
-const devices = require('../../config/device');
-//const fleets = require('../../config/sinergy.fleet');
+const request = require('../services/request');
 
+function setFormat(dataset) {
+const device = {};
+    const points = [];
+    const data = utils.dataArray(dataset);
+    for (let i = 0; i < data.length; i++) {
+        if (utils.rowValidation(data[i])) {
+            continue;
+        }
 
-module.exports = (name) => {
-    return {
-        cookie: request.jar(),
-        accountConfig: function () {
-            const config = accounts[name];
-            config.jar = this.cookie;
-            return config;
-        },
-        deviceConfig: function(device, limit) {
-            const config = devices[name];
-            config.qs['_uniq'] = Math.random();
-            config.qs['date_to'] = dateformat("dd/mm/yyyy/HH:MM:ss");
-            config.qs['device'] = device;
-            config.qs['limit'] = limit;
-            config.jar = this.cookie;
-            return config;
-        },
-        authenticate: function () {
-            const config = this.accountConfig();
-            return new Promise((resolve, reject) => {
-                request(config, (error, response, body) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    resolve();
-                });
-            });
-        },
-        deviceData: function (device, limit) {
-            const config = this.deviceConfig(device, limit);
-            console.log(config)
-            return new Promise((resolve, reject) => {
-                request(config, (error, response, body) => {
-                    if (error || body === 'LOGOUT\n') {
-                        console.log(error);
-                        return reject({device: device, limit:limit});
-                    }
-                    resolve(body);
-                });
-            }).then(utils.parseXML).catch((data) => {
-                return this.authenticate().then(() => {
-                    return this.deviceData(data.device, data.limit);
-                });
-            });
+        const rows = data[i].P;
+        const info = rows[rows.length - 1].split("|");
+        device.id = utils.formatId(info[0]);
+        for (let j = 0; i < rows.length; j++) {
+            const row = rows.split("|");
+
+            const point = {
+                lat: parseFloat(row[8]),
+                lng: parseFloat(row[9])
+            };
+            points.push(point);
         }
     }
+    return points;
+}
+
+function validation(res) {
+    if (res.body === 'LOGOUT\n' || !res) {
+        return Promise.reject({status: 401, msg: 'No se puede acceder al servicio.'});
+    }
+    return utils.parseXML(res.body)//.then(setFormat);
+}
+
+module.exports = name => {
+    return {
+        getPoints: (device, limit) => {
+            const source = request(name);
+            return source.device(device, limit).then(validation).catch(err => {
+                if (err.status && err.status === 401) {
+                    return source.authenticate(name).then((res) => {
+                        return source.device(device, limit).then(validation);
+                    });
+                }
+                return err;
+            });
+        }
+    };
 };

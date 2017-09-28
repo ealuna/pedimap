@@ -14,33 +14,38 @@ function setIntervalandExecute(fn, time) {
 }
 
 setIntervalandExecute(() => {
-    controllers.flota('ORIUNDA').list('all').then(data => {
-        if(data.length) fleets.ORIUNDA = data;
+    controllers.flota('ORIUNDA').group('all', (err, data) => {
+        if (!err && data.length) {
+            fleets.ORIUNDA = data;
+            socket.of('/oriunda').emit('flota', data);
+        }
     });
-    controllers.flota('TERRANORTE').list('all').then(data => {
-        if(data.length) fleets.TERRANORTE = data;
+    controllers.flota('TERRANORTE').group('all', (err, data) => {
+        if (!err && data.length) {
+            fleets.TERRANORTE = data;
+            socket.of('/terranorte').emit('flota', data);
+        }
     });
 }, 10000);
 
 
 socket.of('/oriunda').on('connection', (socket) => {
-    const repeat = setIntervalandExecute(function () {
-        //console.log(socket.handshake);
-        socket.emit('flota', fleets.ORIUNDA);
-    }, 9000);
-    socket.on('disconnect', function () {
+    //const repeat = setIntervalandExecute(function () {
+    socket.emit('flota', fleets.ORIUNDA);
+    //}, 9000);
+    socket.on('device', function (device) {
         clearInterval(repeat);
     });
 });
 
 socket.of('/terranorte').on('connection', (socket) => {
-    const repeat = setIntervalandExecute(function () {
-       // console.log(socket.handshake);
-        socket.emit('flota', fleets.TERRANORTE);
-    }, 9000);
-    socket.on('disconnect', function () {
-        clearInterval(repeat);
-    });
+    //const repeat = setIntervalandExecute(function () {
+    // console.log(socket.handshake);
+    socket.emit('flota', fleets.TERRANORTE);
+    //}, 9000);
+    /*socket.on('disconnect', function () {
+     clearInterval(repeat);
+     });*/
 });
 
 module.exports = socket;

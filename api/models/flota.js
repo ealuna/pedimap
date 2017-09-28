@@ -5,8 +5,9 @@
 "use strict";
 
 const utils = require('../services/utils');
+const request = require('../services/request');
 
-module.exports = (dataset) => {
+function setFormat(dataset) {
     const fleet = [];
     const data = utils.dataArray(dataset);
     for (let i = 0; i < data.length; i++) {
@@ -30,6 +31,29 @@ module.exports = (dataset) => {
         fleet.push(device);
     }
     return fleet;
+}
+
+function validation(res) {
+    if (res.body === 'LOGOUT\n' || !res) {
+        return Promise.reject({status: 401, msg: 'No se puede acceder al servicio.'});
+    }
+    return utils.parseXML(res.body).then(setFormat);
+}
+
+module.exports = name => {
+    return {
+        getGroup: (group) => {
+            const source = request(name);
+            return source.fleet(group).then(validation).catch(err => {
+                if (err.status && err.status === 401) {
+                    return source.authenticate(name).then((res) => {
+                        return source.fleet(group).then(validation);
+                    });
+                }
+                return err;
+            });
+        }
+    };
 };
 
 

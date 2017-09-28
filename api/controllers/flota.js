@@ -4,14 +4,15 @@
 
 "use strict";
 
-const request = require('../services/request');
 const fleet = require('../models/flota');
 
 module.exports = (name) => {
     return {
-        list: (group) => {
-            return request(name).fleet(group).then(data => {
-                return fleet(data);
+        group: (group, next) => {
+            fleet(name).getGroup(group).then(result => {
+                next(null, result);
+            }).catch(err =>{
+                next(err, null);
             });
         }
     };
