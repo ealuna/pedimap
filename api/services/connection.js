@@ -4,9 +4,10 @@
 
 const sequelize = require('sequelize');
 const config = require('../../config/database');
+const models = require('../models');
 
-const oriunda = new sequelize(config.ORIUNDA);
-const terranorte = new sequelize(config.TERRANORTE);
+const oriunda = models(new sequelize(config.ORIUNDA));
+const terranorte = models(new sequelize(config.TERRANORTE));
 //const pruebas = new sequelize(config.HOME);
 
 module.exports.ORIUNDA = oriunda;

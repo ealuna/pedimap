@@ -38,6 +38,7 @@
 
         function loadMap() {
             MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
+            ///MAP.setOptions({ minZoom: 1, maxZoom: 15 });
             var script = document.createElement('script');
             script.src = '/assets/js/map.js';
             (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
@@ -112,31 +113,56 @@
                     <!-- Messages: style can be found in dropdown.less-->
                     <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
+                            <i class="fa fa-user-o"></i>
+                            <!--<span class="label label-success">4</span>-->
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
+                            <li class="header">Clientes</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
                                     <li><!-- start message -->
-                                        <a href="#">
+                                        <a href="javascript:mostrarClientes()">
                                             <div class="pull-left">
-                                                <img src="/assets/img/default-user.png" class="img-circle"
+                                                <img src="/assets/img/location_customer.png" class="img-circle"
                                                      alt="User Image">
                                             </div>
                                             <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                Mostrar clientes
                                             </h4>
-                                            <p>Why not buy a new awesome theme?</p>
+                                            <p>Muestra clientes con pedido.</p>
+                                        </a>
+                                    </li>
+                                    <li><!-- start message -->
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img src="/assets/img/sad_customer.png">
+                                            </div>
+                                            <h4>
+                                                Clientes sin pedidos
+                                                <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
+                                            </h4>
+                                            <p>Mostrar clientes sin pedido en el mapa.</p>
+                                        </a>
+                                    </li>
+                                    <!-- end message -->
+                                    <li><!-- start message -->
+                                        <a href="javascript:borrarClientes()">
+                                            <div class="pull-left">
+                                                <img src="/assets/img/delete_customer.png"
+                                                     alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Ocultar clientes
+                                                <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
+                                            </h4>
+                                            <p>Oculta los clientes en el mapa.</p>
                                         </a>
                                     </li>
                                     <!-- end message -->
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
+                            <li class="footer"><!--<a href="javascript:borrarClientes()">See All Messages</a>--></li>
                         </ul>
                     </li>
                     <!-- Notifications: style can be found in dropdown.less -->
@@ -301,9 +327,9 @@
                         </span>
                     </a>
                     <ul id="fleteros" class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-map-marker"></i> Todos</a></li>
+                        <li><a href="javascript:focusVehicle(null)"><i class="fa fa-map-marker"></i> Todos</a></li>
                         <% for(var i = 0; i < fleteros.length; i++) { %>
-                        <li><a href="#"><i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %></a></li>
+                        <li><a href="javascript:focusVehicle('<%= fleteros[i].numcam %>')"><i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %></a></li>
                         <% } %>
                     </ul>
                 </li>

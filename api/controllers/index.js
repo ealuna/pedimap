@@ -6,4 +6,5 @@
 module.exports.flota = require('./flota');
 module.exports.vehiculo = require('./vehiculo');
 module.exports.fleteros = require('./fleteros');
+module.exports.clientes = require('./clientes');
 module.exports.usuarios = require('./usuario');

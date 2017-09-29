@@ -52,7 +52,6 @@ router.use(function (req, res, next) {
 
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
-
     res.render('login');
 });
 

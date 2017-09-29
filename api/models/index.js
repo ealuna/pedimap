@@ -21,12 +21,12 @@ module.exports = (sequelize) => {
     files.forEach(function (file) {
         sequelize.import(path.join(__dirname, file));
     });
-    Object.keys(sequelize.models).forEach(function(model) {
+    /*Object.keys(sequelize.models).forEach(function(model) {
         if ("associate" in sequelize.models[model]) {
             sequelize.models[model].associate(sequelize.models);
         }
-    });
-    return sequelize.models;
+    });*/
+    return sequelize;
 };
 
 
