@@ -5,10 +5,10 @@
 "use strict";
 
 
-const sequelize = require('./services/connection').HOME;
+const sequelize = require('./services/connection').TERRANORTE;
 
 
-sequelize.query(' EXEC [SP].[cliente] @fecha = \'2017-10-01 14:54:36.875 -05:00\', @pedido = 0').then(a =>{
+sequelize.query(' EXEC [SP].[cliente] @fecha = \'2017-10-02 14:54:36.875 -05:00\', @pedido = 0').then(a =>{
 	console.log(a);
 	//console.log(s);
 });

@@ -9,14 +9,18 @@ var infowindow = new google.maps.InfoWindow({maxWidth: 350});
 var VEHICLES = {};
 var TRUCKS = {};
 var CLIENTS = {};
+var ROUTES = {};
 var NO_SALES = {};
 var FOCUS = null;
 var CLIENTS_IN_MAP = false;
 var NO_SALES_IN_MAP = false;
+var ROUTES_IN_MAP = null;
+var FOCUS_POLYLINE = null;
+var FOCUS_POLYLINE_POINTS = [];
 
 $($.ajax({
     type: 'POST',
-    url: '/prueba/app/fleteros',
+    url: '/terranorte/app/fleteros',
     contentType: "application/json",
     data: JSON.stringify({fecha: new Date(), fletero: null}),
     success: function (result) {
@@ -30,16 +34,18 @@ $($.ajax({
 
 SOCKET.on('flota', function (data) {
     iterarflota(data);
+    RefreshPolyline();
 });
 
 SOCKET.on('device', function (data) {
+    console.log(data);
     CreatePolyline(data[0]);
 });
 
 
 $($.ajax({
     type: 'POST',
-    url: '/prueba/app/clientes/today',
+    url: '/terranorte/app/clientes/today',
     success: function (result) {
         //console.log(result);
         for (var j = 0; j < result.length; j++) {
@@ -52,7 +58,22 @@ $($.ajax({
 
 $($.ajax({
     type: 'POST',
-    url: '/prueba/app/clientes/sinpedido',
+    url: '/terranorte/app/rutas/today',
+    success: function (result) {
+        //console.log(result);
+        for (var j = 0; j < result.length; j++) {
+            //var id = result[i].idcliente;
+            //CLIENTS[id] = result[i];
+            SavePolygons(result[j]);
+        }
+    }
+}));
+
+
+
+$($.ajax({
+    type: 'POST',
+    url: '/terranorte/app/clientes/sinpedido',
     success: function (result) {
         console.log(result);
         for (var j = 0; j < result.length; j++) {
@@ -97,7 +118,9 @@ function viewClientInMap(data) {
 }
 
 function SaveNoSalesMarkers(data) {
+    //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     data.icon = '/assets/img/customer_reject.png';
+    //data.icon = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     var sinpedido = new google.maps.Marker(data);
 
     var content = '<div id="content"><div id="bodyContent">';
@@ -153,8 +176,15 @@ function saveVehicle(vehiculo) {
             vehiculo.setMap(MAP);
         }
     }
-
     VEHICLES[id] = vehiculo;
+}
+
+
+function RefreshPolyline(){
+    ClearPolylineInMap();
+    if(FOCUS && VEHICLES.hasOwnProperty(FOCUS)){
+        SOCKET.emit('vehiculo', { id: VEHICLES[FOCUS].device, limit: 50 });
+    }
 }
 
 function focusVehicle(vehicle) {
@@ -168,7 +198,7 @@ function focusVehicle(vehicle) {
     }
 
     if (!vehicle) {
-        //MAP.setZoom(12);
+        MAP.setZoom(12);
         MAP.setCenter(MAP_CENTER);
     }
 
@@ -177,15 +207,13 @@ function focusVehicle(vehicle) {
             return item.setMap(null);
         }
         if (vehicle) {
-            MAP.setZoom(16);
+            //MAP.setZoom(16);
             MAP.setCenter(item.getPosition());
         }
         item.setMap(MAP);
     });
-
-    if(vehicle && VEHICLES.hasOwnProperty(vehicle)) {
-        SOCKET.emit('vehiculo', { device: VEHICLES[vehicle].device, limit: 8 });
-    }
+//console.log(VEHICLES[vehicle].device)
+    RefreshPolyline();
 }
 
 
@@ -233,23 +261,103 @@ function ClearNoSalesInMap() {
 
 
 function CreatePolyline(data){
-    var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
+
+    ClearPolylineInMap();
+
+    //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
+    var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#000000', fillColor: '#000000', fillOpacity: 1};
     var points = data.points;
     var path = [];
+
     for(var i = 0; i < points.length; i++){
+
         var point = points[i];
         point.icon = symbol;
         var marker = new google.maps.Marker(point);
+
         path.push(point.position);
+        FOCUS_POLYLINE_POINTS.push(marker);
+
         marker.setMap(MAP);
     }
     var line = new google.maps.Polyline({path: path});
 
+    FOCUS_POLYLINE = line;
+
     line.setMap(MAP);
 }
 
+function ClearPolylineInMap() {
+    if(FOCUS_POLYLINE){
+        FOCUS_POLYLINE.setMap(null);
+        FOCUS_POLYLINE = null;
+    }
+    if(FOCUS_POLYLINE_POINTS.length){
+        for(var i = 0; i < FOCUS_POLYLINE_POINTS.length; i++){
+            FOCUS_POLYLINE_POINTS[i].setMap(null);
+        }
+        FOCUS_POLYLINE_POINTS = [];
+    }
+}
 
+function ClearCustomersInMap(){
+    ClearNoSalesInMap();
+    borrarClientes();
+}
 
+function SavePolygons(ruta) {
+    var arrayCords = [];
+    var coords = ruta.coords.match(/\([^\(\)]+\)/g);
+    if (coords !== null) {
+        for (var i = 0; i < coords.length; i++) {
+            var coord = coords[i].match(/-?\d+\.?\d*/g);
+            if (coord !== null) {
+                for (var j = 0; j < coord.length; j += 2) {
+                    arrayCords.push(
+                        {
+                            lng: Number(coord[j]),
+                            lat: Number(coord[j + 1])
+                        }
+                    );
+                }
+            }
+        }
+    }
+
+    ROUTES[ruta.ruta] = new google.maps.Polygon({
+        ruta: ruta.ruta,
+        vendedor: ruta.vendedor,
+        supervisor: ruta.supervisor,
+        paths: arrayCords,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0
+    });
+
+}
+
+function ShowPolygonsInMap() {
+    if(ROUTES_IN_MAP) {
+        return ClearPolygonsInMap();
+    }
+    //borrarClientes();
+    ROUTES_IN_MAP = true;
+    $.each(ROUTES, function (key, item) {
+        /*if (!FOCUS || item.fletero.toString() === FOCUS) {
+            return item.setMap(MAP);
+        }*/
+        item.setMap(MAP);
+    });
+}
+
+function ClearPolygonsInMap(){
+    ROUTES_IN_MAP = false;
+    $.each(ROUTES, function (key, item) {
+        item.setMap(null);
+    });
+}
 
 
 

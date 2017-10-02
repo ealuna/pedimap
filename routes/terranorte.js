@@ -54,6 +54,14 @@ app.post('/clientes/today', (req, res) => {
     controllers.clientes('TERRANORTE').today(req, res);
 });
 
+app.post('/clientes/sinpedido', (req, res) => {
+    controllers.clientes('TERRANORTE').sinpedido(req, res);
+});
+
+app.post('/rutas/today', (req, res) => {
+    controllers.rutas('TERRANORTE').today(req, res);
+});
+
 app.post("/authenticate", function (req, res) {
     controllers.usuarios('TERRANORTE').AuthenticateApi(req, res);
 });

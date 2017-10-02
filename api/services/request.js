@@ -35,7 +35,7 @@ module.exports = (name) => {
         device: function (device, limit) {
             const config = devices[name];
             config.qs['_uniq'] = Math.random();
-            config.qs['date_to'] = dateformat("dd/mm/yyyy/HH:MM");
+            config.qs['date_to'] = `${dateformat('dd/mm/yyyy')}/23:59`;
             config.qs['device'] = device;
             config.qs['limit'] = limit;
             config.jar = this.cookie;

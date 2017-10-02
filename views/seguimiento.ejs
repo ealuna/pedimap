@@ -114,6 +114,7 @@
                     <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-user-o"></i>
+                            <span class="hidden-xs"> Clientes</span>
                             <!--<span class="label label-success">4</span>-->
                         </a>
                         <ul class="dropdown-menu">
@@ -124,8 +125,7 @@
                                     <li><!-- start message -->
                                         <a href="javascript:mostrarClientes()">
                                             <div class="pull-left">
-                                                <img src="/assets/img/location_customer.png" class="img-circle"
-                                                     alt="User Image">
+                                                <img src="/assets/img/location_customer.png">
                                             </div>
                                             <h4>
                                                 Mostrar clientes
@@ -147,10 +147,9 @@
                                     </li>
                                     <!-- end message -->
                                     <li><!-- start message -->
-                                        <a href="javascript:borrarClientes()">
+                                        <a href="javascript:ClearCustomersInMap()">
                                             <div class="pull-left">
-                                                <img src="/assets/img/delete_customer.png"
-                                                     alt="User Image">
+                                                <img src="/assets/img/delete_customer.png">
                                             </div>
                                             <h4>
                                                 Ocultar clientes
@@ -166,61 +165,33 @@
                         </ul>
                     </li>
                     <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown notifications-menu">
+                    <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
+                            <i class="fa fa-road"></i>
+                            <span class="hidden-xs">Rutas</span>
+                            <!--<span class="label label-warning">10</span>-->
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
+                            <li class="header">Rutas</li>
                             <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
-                                </ul>
+                            <ul class="menu">
+                                <li><!-- start message -->
+                                    <a href="javascript:ShowPolygonsInMap()">
+                                        <div class="pull-left">
+                                            <img src="/assets/img/route_default.png">
+                                        </div>
+                                        <h4>
+                                            Mostrar Rutas
+                                            <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
+                                        </h4>
+                                        <p>Mostrar rutas asignadas.</p>
+                                    </a>
+                                </li>
+                            </ul>
                             </li>
-                            <li class="footer"><a href="#">View all</a></li>
+                            <!--<li class="footer"><a href="#">View all</a></li>-->
                         </ul>
                     </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">9</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 9 tasks</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Design some buttons
-                                                <small class="pull-right">20%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-aqua" style="width: 20%"
-                                                     role="progressbar"
-                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="#">View all tasks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="/assets/img/default-user.png" class="user-image" alt="User Image">
@@ -255,9 +226,9 @@
                             -->
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
+                                <!--<div class="pull-left">
                                     <a href="#" class="btn btn-default btn-flat">Perfil</a>
-                                </div>
+                                </div>-->
                                 <div class="pull-right">
                                     <a href="#" class="btn btn-default btn-flat">Salir</a>
                                 </div>

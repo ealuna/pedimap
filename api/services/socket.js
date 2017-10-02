@@ -35,6 +35,10 @@ setIntervalandExecute(() => {
 socket.of('/oriunda').on('connection', (socket) => {
     socket.emit('flota', fleets.ORIUNDA);
 
+    socket.on('entrega', function (resultado) {
+        socket.emit('resultado', resultado);
+    });
+
     socket.on('vehiculo', function (device) {
         controllers.vehiculo('ORIUNDA').points(device, (err, data) => {
             if (!err && data.length) {
@@ -47,8 +51,13 @@ socket.of('/oriunda').on('connection', (socket) => {
 
 socket.of('/terranorte').on('connection', (socket) => {
     socket.emit('flota', fleets.TERRANORTE);
+    
+    socket.on('entrega', function (resultado) {
+        socket.emit('resultado', resultado);
+    });
 
     socket.on('vehiculo', function (device) {
+        //console.log(device)
         controllers.vehiculo('TERRANORTE').points(device, (err, data) => {
             if (!err && data.length) {
                 socket.emit('device', data);

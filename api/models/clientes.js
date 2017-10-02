@@ -3,10 +3,7 @@
  */
 "use strict";
 
-const dateformat = require('dateformat');
-
 const connection = require('../services/connection');
-
 
 module.exports = name => {
 
@@ -14,7 +11,7 @@ module.exports = name => {
 
     return {
         today: function() {
-            //const sequelize = connection[name];
+
             return sequelize.query(
                 'EXEC [SP].[despacho] @fecha = :fecha',
                 {
@@ -22,18 +19,18 @@ module.exports = name => {
                     replacements: {fecha: new Date()},
                     type: sequelize.QueryTypes.SELECT
                 });
+
         },
         sinpedido: function() {
-            //const sequelize = connection[name];
+
             return sequelize.query(
                 `EXEC [SP].[cliente] @fecha = :fecha, @pedido = :pedido`, 
                 {
                     nest: true,
-                    //replacements: {fecha: dateformat('dd/mm/yyyy'), pedido: 0},
                     replacements: {fecha: new Date(), pedido: 0},
-                    //replacements: [new Date(), 0],
                     type: sequelize.QueryTypes.SELECT
                 });
+
         },
         all: () => {
             const sequelize = connection[name];

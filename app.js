@@ -9,7 +9,7 @@ const helmet = require('helmet');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
-const pruebas = require('./routes/home');
+//const pruebas = require('./routes/home');
 const oriunda = require('./routes/oriunda');
 const terranorte = require('./routes/terranorte');
 
@@ -18,7 +18,6 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -34,7 +33,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/oriunda', oriunda);
 app.use('/terranorte', terranorte);
-app.use('/prueba', pruebas);
+//app.use('/prueba', pruebas);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
