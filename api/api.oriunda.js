@@ -5,9 +5,15 @@
 "use strict";
 
 
-const sequelize = require('./services/connection').ORIUNDA;
+const sequelize = require('./services/connection').HOME;
 
-const models = require('./models')(sequelize);
+
+sequelize.query(' EXEC [SP].[cliente] @fecha = \'2017-10-01 14:54:36.875 -05:00\', @pedido = 0').then(a =>{
+	console.log(a);
+	//console.log(s);
+});
+
+//const models = require('./models')(sequelize);
 //console.log(models)
 /*
  models.fleteros.findAll({
@@ -37,8 +43,8 @@ const models = require('./models')(sequelize);
  });
  */
 
-models.mascara.scope({method:['documentos', '2017/09/12']}).findAll().then(result => {
+/*models.mascara.scope({method:['documentos', '2017/09/12']}).findAll().then(result => {
     if (result.length)
         for (let i = 0; i < result.length; i++)
             console.log(result[i].toJSON());
-});
+});*/

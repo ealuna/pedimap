@@ -8,8 +8,8 @@ const models = require('../models');
 
 const oriunda = models(new sequelize(config.ORIUNDA));
 const terranorte = models(new sequelize(config.TERRANORTE));
-//const pruebas = new sequelize(config.HOME);
+const pruebas = models(new sequelize(config.HOME));
 
 module.exports.ORIUNDA = oriunda;
 module.exports.TERRANORTE = terranorte;
-//module.exports.HOME = pruebas;
+module.exports.HOME = pruebas;

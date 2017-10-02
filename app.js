@@ -9,7 +9,7 @@ const helmet = require('helmet');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
-//const pruebas = require('./routes/tests');
+const pruebas = require('./routes/home');
 const oriunda = require('./routes/oriunda');
 const terranorte = require('./routes/terranorte');
 
@@ -34,7 +34,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/oriunda', oriunda);
 app.use('/terranorte', terranorte);
-//app.use('/prueba', pruebas);
+app.use('/prueba', pruebas);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
