@@ -82,4 +82,12 @@ router.get('/seguimiento', function (req, res) {
     controllers.fleteros('TERRANORTE').render(req, res);
 });
 
+router.get('/transporte', function (req, res) {
+    res.render('fletero');
+});
+
+router.get('/inicio', function (req, res) {
+    res.render('flota', {settings: settings});
+});
+
 module.exports = router;

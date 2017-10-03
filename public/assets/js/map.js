@@ -5,18 +5,19 @@
 var SOCKET = io.connect('/terranorte', {'forceNew': true});
 var HOVER_OFF_SET = 80000;
 var ICON_CONFIG = {url: '/assets/img/marker-truck.png', labelOrigin: new google.maps.Point(25, 10)};
+//var clusterer = new Clusterer(MAP);
 var infowindow = new google.maps.InfoWindow({maxWidth: 350});
 var VEHICLES = {};
 var TRUCKS = {};
 var CLIENTS = {};
 var ROUTES = {};
-var NO_SALES = {};
+var NO_SALES = [];
 var FOCUS = null;
 var CLIENTS_IN_MAP = false;
 var NO_SALES_IN_MAP = false;
 var ROUTES_IN_MAP = null;
 var FOCUS_POLYLINE = null;
-var FOCUS_POLYLINE_POINTS = [];
+//var FOCUS_POLYLINE_POINTS = [];
 
 $($.ajax({
     type: 'POST',
@@ -70,7 +71,6 @@ $($.ajax({
 }));
 
 
-
 $($.ajax({
     type: 'POST',
     url: '/terranorte/app/clientes/sinpedido',
@@ -119,7 +119,7 @@ function viewClientInMap(data) {
 
 function SaveNoSalesMarkers(data) {
     //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
-    data.icon = '/assets/img/customer_reject.png';
+    data.icon = '/assets/img/marker_no_sales_3.png';
     //data.icon = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     var sinpedido = new google.maps.Marker(data);
 
@@ -130,15 +130,14 @@ function SaveNoSalesMarkers(data) {
     content += '<br><b>RUTA:</b> ' + data.ruta;
     content += '<br><b>TIPO NEGOCIO:</b> ' + data.tiponego;
     content += '<br><b>DIRECCIÓN:</b> ' + data.domicli;
-
     content += '</div></div>';
 
     sinpedido.addListener('click', function () {
         infowindow.setContent(content);
         infowindow.open(MAP, sinpedido);
     });
-
-    NO_SALES[data.idcliente] = sinpedido;
+    NO_SALES.push(sinpedido);
+    //NO_SALES[data.idcliente] = sinpedido;
     //cliente.setMap(MAP);
 }
 
@@ -180,15 +179,15 @@ function saveVehicle(vehiculo) {
 }
 
 
-function RefreshPolyline(){
+function RefreshPolyline() {
     ClearPolylineInMap();
-    if(FOCUS && VEHICLES.hasOwnProperty(FOCUS)){
-        SOCKET.emit('vehiculo', { id: VEHICLES[FOCUS].device, limit: 50 });
+    if (FOCUS && VEHICLES.hasOwnProperty(FOCUS)) {
+        SOCKET.emit('vehiculo', {id: VEHICLES[FOCUS].device, limit: 50});
     }
 }
 
 function focusVehicle(vehicle) {
-    
+
     infowindow.close();
     FOCUS = vehicle;
 
@@ -226,8 +225,8 @@ function borrarClientes() {
 
 
 function mostrarClientes() {
-    if(CLIENTS_IN_MAP) {
-        return borrarClientes();    
+    if (CLIENTS_IN_MAP) {
+        return borrarClientes();
     }
     //borrarClientes();
     CLIENTS_IN_MAP = true;
@@ -240,45 +239,68 @@ function mostrarClientes() {
 }
 
 function ShowNoSalesInMap() {
-    if(NO_SALES_IN_MAP){
-        return ClearNoSalesInMap();    
-    }    
+    if (NO_SALES_IN_MAP) {
+        return ClearNoSalesInMap();
+    }
     NO_SALES_IN_MAP = true;
-    $.each(NO_SALES, function (key, item) {
+
+    for(var i = 0; i < NO_SALES.length; i++){
+        ShowInMap(NO_SALES[i]);
+    }
+    //$.each(NO_SALES, function (key, item) {
         /*if (!FOCUS || item.fletero.toString() === FOCUS) {
-            return item.setMap(MAP);
-        }*/
-        item.setMap(MAP);
-    });
+         return item.setMap(MAP);
+         }*/
+        //item.setMap(MAP);
+    //});
 }
+
+function ShowInMap(marker){
+    setTimeout(function () {
+        //clusterer.AddMarker(marker, 'hola');
+        marker.setMap(MAP);
+    }, 1);
+}
+
+function ClearInMap(marker){
+    setTimeout(function () {
+        //clusterer.RemoveMarker(marker);
+        marker.setMap(null);
+    }, 1);
+}
+
 
 function ClearNoSalesInMap() {
     NO_SALES_IN_MAP = false;
-    $.each(NO_SALES, function (key, item) {
+    /*$.each(NO_SALES, function (key, item) {
         item.setMap(null);
-    });
+    });*/
+    for(var i = 0; i < NO_SALES.length; i++){
+        ClearInMap(NO_SALES[i]);
+        //NO_SALES[i].setMap(null);
+    }
 }
 
 
-function CreatePolyline(data){
+function CreatePolyline(data) {
 
     ClearPolylineInMap();
 
     //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
-    var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#000000', fillColor: '#000000', fillOpacity: 1};
+    //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#000000', fillColor: '#000000', fillOpacity: 1};
     var points = data.points;
     var path = [];
 
-    for(var i = 0; i < points.length; i++){
+    for (var i = 0; i < points.length; i++) {
 
         var point = points[i];
-        point.icon = symbol;
-        var marker = new google.maps.Marker(point);
+        //point.icon = symbol;
+        //var marker = new google.maps.Marker(point);
 
         path.push(point.position);
-        FOCUS_POLYLINE_POINTS.push(marker);
+        //FOCUS_POLYLINE_POINTS.push(marker);
 
-        marker.setMap(MAP);
+        //marker.setMap(MAP);
     }
     var line = new google.maps.Polyline({path: path});
 
@@ -288,19 +310,19 @@ function CreatePolyline(data){
 }
 
 function ClearPolylineInMap() {
-    if(FOCUS_POLYLINE){
+    if (FOCUS_POLYLINE) {
         FOCUS_POLYLINE.setMap(null);
         FOCUS_POLYLINE = null;
     }
-    if(FOCUS_POLYLINE_POINTS.length){
-        for(var i = 0; i < FOCUS_POLYLINE_POINTS.length; i++){
+    /*if (FOCUS_POLYLINE_POINTS.length) {
+        for (var i = 0; i < FOCUS_POLYLINE_POINTS.length; i++) {
             FOCUS_POLYLINE_POINTS[i].setMap(null);
         }
         FOCUS_POLYLINE_POINTS = [];
-    }
+    }*/
 }
 
-function ClearCustomersInMap(){
+function ClearCustomersInMap() {
     ClearNoSalesInMap();
     borrarClientes();
 }
@@ -313,21 +335,18 @@ function SavePolygons(ruta) {
             var coord = coords[i].match(/-?\d+\.?\d*/g);
             if (coord !== null) {
                 for (var j = 0; j < coord.length; j += 2) {
-                    arrayCords.push(
-                        {
-                            lng: Number(coord[j]),
-                            lat: Number(coord[j + 1])
-                        }
-                    );
+                    var point = {lng: Number(coord[j]), lat: Number(coord[j + 1])};
+                    arrayCords.push(point);
                 }
             }
         }
     }
 
-    ROUTES[ruta.ruta] = new google.maps.Polygon({
+    var polygon = new google.maps.Polygon({
         ruta: ruta.ruta,
         vendedor: ruta.vendedor,
         supervisor: ruta.supervisor,
+        center: ruta.position,
         paths: arrayCords,
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -336,23 +355,42 @@ function SavePolygons(ruta) {
         fillOpacity: 0
     });
 
+    var content = '<div id="content"><div id="bodyContent">';
+    content += '<b>RUTA:</b> ' + ruta.ruta;
+    content += '<br><b>VENDEDOR:</b> ' + ruta.vendedor;
+    content += '<br><b>SUPERVISOR:</b> ' + ruta.supervisor;
+    content += '</div></div>';
+
+    google.maps.event.addListener(polygon, 'click', function(event) {
+        infowindow.setContent(content);
+        infowindow.setPosition(event.latLng);
+        infowindow.open(MAP);
+    });
+
+    ROUTES[ruta.ruta] = polygon;
 }
 
+SOCKET.on('recibido', function (data) {
+    alert(data);
+});
+
+
 function ShowPolygonsInMap() {
-    if(ROUTES_IN_MAP) {
+    SOCKET.emit('Prueba', 'HOLA MIRA ESTA PRUEBA');
+    if (ROUTES_IN_MAP) {
         return ClearPolygonsInMap();
     }
     //borrarClientes();
     ROUTES_IN_MAP = true;
     $.each(ROUTES, function (key, item) {
         /*if (!FOCUS || item.fletero.toString() === FOCUS) {
-            return item.setMap(MAP);
-        }*/
+         return item.setMap(MAP);
+         }*/
         item.setMap(MAP);
     });
 }
 
-function ClearPolygonsInMap(){
+function ClearPolygonsInMap() {
     ROUTES_IN_MAP = false;
     $.each(ROUTES, function (key, item) {
         item.setMap(null);

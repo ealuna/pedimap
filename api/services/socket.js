@@ -4,7 +4,7 @@
 
 "use strict";
 
-const socket = require('socket.io')();
+const io = require('socket.io')();
 const controllers = require('../controllers');
 const fleets = {
     ORIUNDA: [],
@@ -20,19 +20,19 @@ setIntervalandExecute(() => {
     controllers.flota('ORIUNDA').group('all', (err, data) => {
         if (!err && data.length) {
             fleets.ORIUNDA = data;
-            socket.of('/oriunda').emit('flota', data);
+            io.of('/oriunda').emit('flota', data);
         }
     });
     controllers.flota('TERRANORTE').group('all', (err, data) => {
         if (!err && data.length) {
             fleets.TERRANORTE = data;
-            socket.of('/terranorte').emit('flota', data);
+            io.of('/terranorte').emit('flota', data);
         }
     });
 }, 10000);
 
 
-socket.of('/oriunda').on('connection', (socket) => {
+io.of('/oriunda').on('connection', (socket) => {
     socket.emit('flota', fleets.ORIUNDA);
 
     socket.on('entrega', function (resultado) {
@@ -49,11 +49,16 @@ socket.of('/oriunda').on('connection', (socket) => {
 
 });
 
-socket.of('/terranorte').on('connection', (socket) => {
+io.of('/terranorte').on('connection', (socket) => {
     socket.emit('flota', fleets.TERRANORTE);
     
     socket.on('entrega', function (resultado) {
         socket.emit('resultado', resultado);
+    });
+
+    socket.on('Prueba', function (resultado) {
+        console.log(resultado)
+        socket.broadcast.emit('recibido', resultado);
     });
 
     socket.on('vehiculo', function (device) {
@@ -67,4 +72,4 @@ socket.of('/terranorte').on('connection', (socket) => {
 
 });
 
-module.exports = socket;
+module.exports = io;

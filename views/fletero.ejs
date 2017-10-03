@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Seguimiento | Pedimap</title>
+    <title>Transportes | Pedimap</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/assets/lib/AdminLTE/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="/assets/lib/jquery-ui/themes/base/jquery-ui.min.css">
 
     <link rel="stylesheet" href="/assets/css/oriunda-skin.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -28,53 +27,7 @@
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-    <script>
-        var MAP;
-        var MAP_CENTER = {"lat": -11.924000, "lng": -77.071365};
-        var BUSINESS_OFF = {featureType: "poi", stylers: [{visibility: "off"}]};
-        var STATIONS_OFF = {featureType: "transit.station", stylers: [{visibility: "off"}]};
-        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 11, styles: [BUSINESS_OFF, STATIONS_OFF], gestureHandling: 'greedy'};
-
-        function loadMap() {
-            MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
-            ///MAP.setOptions({ minZoom: 1, maxZoom: 15 });
-            var script = document.createElement('script');
-            script.src = '/assets/js/map.js';
-           // var script2 = document.createElement('script');
-            //script2.src = '/assets/js/Clusterer2.js';
-            //(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script2);
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
-        }
-
-        //function initMap() {
-        /* if (document.addEventListener) {
-         document.addEventListener("DOMContentLoaded", function () {
-         document.removeEventListener("DOMContentLoaded", arguments.callee, false);
-         loadMap();
-         }, false);
-         } else if (document.attachEvent) {
-         document.attachEvent("onreadystatechange", function () {
-         if (document.readyState === "complete") {
-         document.detachEvent("onreadystatechange", arguments.callee);
-         loadMap();
-         }
-         });
-         }*/
-        (function () {
-            var script = document.createElement('script');
-            script.async = true;
-            script.defer = true;
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=loadMap';
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
-            //loadMap();
-        })();
-        //}
-    </script>
-    <!--<script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqHbqBdi02O7RkIsu75B89vjsRO2lEbl4&callback=initMap">
-    </script>-->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 </head>
 <body class="hold-transition skin-blue-light sidebar-mini">
@@ -113,88 +66,8 @@
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-user-o"></i>
-                            <span class="hidden-xs"> Clientes</span>
-                            <!--<span class="label label-success">4</span>-->
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Clientes</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- start message -->
-                                        <a href="javascript:mostrarClientes()">
-                                            <div class="pull-left">
-                                                <img src="/assets/img/location_customer.png">
-                                            </div>
-                                            <h4>
-                                                Mostrar clientes
-                                            </h4>
-                                            <p>Muestra clientes con pedido.</p>
-                                        </a>
-                                    </li>
-                                    <li><!-- start message -->
-                                        <a href="javascript:ShowNoSalesInMap()">
-                                            <div class="pull-left">
-                                                <img src="/assets/img/sad_customer.png">
-                                            </div>
-                                            <h4>
-                                                Clientes sin pedidos
-                                                <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
-                                            </h4>
-                                            <p>Mostrar clientes sin pedido en el mapa.</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                    <li><!-- start message -->
-                                        <a href="javascript:ClearCustomersInMap()">
-                                            <div class="pull-left">
-                                                <img src="/assets/img/delete_customer.png">
-                                            </div>
-                                            <h4>
-                                                Ocultar clientes
-                                                <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
-                                            </h4>
-                                            <p>Oculta los clientes en el mapa.</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                </ul>
-                            </li>
-                            <li class="footer"><!--<a href="javascript:borrarClientes()">See All Messages</a>--></li>
-                        </ul>
-                    </li>
-                    <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown messages-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-road"></i>
-                            <span class="hidden-xs">Rutas</span>
-                            <!--<span class="label label-warning">10</span>-->
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Rutas</li>
-                            <li>
-                            <ul class="menu">
-                                <li><!-- start message -->
-                                    <a href="javascript:ShowPolygonsInMap()">
-                                        <div class="pull-left">
-                                            <img src="/assets/img/route_default.png">
-                                        </div>
-                                        <h4>
-                                            Mostrar Rutas
-                                            <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
-                                        </h4>
-                                        <p>Mostrar rutas asignadas.</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            </li>
-                            <!--<li class="footer"><a href="#">View all</a></li>-->
-                        </ul>
-                    </li>
+
+
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="/assets/img/default-user.png" class="user-image" alt="User Image">
@@ -292,52 +165,29 @@
                     </ul>
                     -->
                 </li>
-                <li class="active treeview">
-                    <a href="#">
+                <li>
+                    <a href="/terranorte/seguimiento">
                         <i class="fa fa-globe"></i>
                         <span>Seguimiento</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
                     </a>
-                    <ul id="fleteros" class="treeview-menu">
-                        <li><a href="javascript:focusVehicle(null)"><i class="fa fa-map-marker"></i> Todos</a></li>
-                        <% for(var i = 0; i < fleteros.length; i++) { %>
-                        <li><a href="javascript:focusVehicle('<%= fleteros[i].numcam %>')"><i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %></a></li>
-                        <% } %>
-                    </ul>
                 </li>
-                <li>
-                    <a href="/terranorte/transporte">
+                <li class="active treeview">
+                    <a href="#">
                         <i class="fa fa-truck"></i>
                         <span>Transportes</span>
                     </a>
                 </li>
-                <li class="treeview">
+                <li>
                     <a href="#">
                         <i class="fa fa-users"></i>
                         <span>Clientes</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-truck"></i> T-88</a></li>
-                        <li><a href="#"><i class="fa fa-truck"></i> T-588</a></li>
-                    </ul>
                 </li>
-                <li class="treeview">
+                <li>
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Reportes</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-truck"></i> T-88</a></li>
-                        <li><a href="#"><i class="fa fa-truck"></i> T-588</a></li>
-                    </ul>
                 </li>
                 <!--
                 <li class="treeview">
@@ -510,21 +360,36 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Seguimiento en línea
-                <small>Geolocalización</small>
+                Transportes
+                <small>Información General</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
                 <li><a href="#">Transporte</a></li>
-                <li class="active">Seguimiento</li>
+                <li class="active">Transportes</li>
             </ol>
         </section>
 
         <!-- Main content -->
-        <section class="content" style="height: 625px">
-            <div id="mapa" style="height: 100%; width: 100%"></div>
+        <section class="content">
+<div class="row">
+            <div class="col-md-6">
 
-            <!-- /.row -->
+
+            </div>
+
+            <div class="col-md-6">
+
+            </div>
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Clientes Asignados</h3>
+            </div>
+            <div class="box-body chart-container" style="position: relative; height:40vh; width:80vw"><canvas id="myChart"></canvas></div>
+        </div>
+    </div>
+</div>
 
         </section>
         <!-- /.content -->
@@ -554,25 +419,21 @@
 <!-- ./wrapper -->
 
 <script src="/assets/lib/jquery/dist/jquery.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<!--<script src="/assets/js/map.js"></script>-->
+<script src="/assets/lib/Chart.PieceLabel.min.js"></script>
+
 
 <!-- jQuery 3 -->
 
 <!-- Bootstrap 3.3.7 -->
 <script src="/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- ChartJS -->
-<!--<script src="/assets/lib/Chart.js/Chart.js"></script>-->
+<<script src="/assets/js/chart.js"></script>
 <!-- FastClick -->
-<script src="/assets/lib/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="/assets/lib/AdminLTE/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
 
-<script src="/assets/lib/jquery-ui/jquery-ui.min.js"></script>
-
-<script src="/assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 <!--
 <script>
     $(function () {
