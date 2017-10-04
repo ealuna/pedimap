@@ -182,7 +182,7 @@ function saveVehicle(vehiculo) {
 function RefreshPolyline() {
     ClearPolylineInMap();
     if (FOCUS && VEHICLES.hasOwnProperty(FOCUS)) {
-        SOCKET.emit('vehiculo', {id: VEHICLES[FOCUS].device, limit: 50});
+        SOCKET.emit('vehiculo', {id: VEHICLES[FOCUS].device, limit: 1000});
     }
 }
 
