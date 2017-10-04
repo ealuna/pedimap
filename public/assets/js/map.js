@@ -4,7 +4,7 @@
 
 var SOCKET = io.connect('/terranorte', {'forceNew': true});
 var HOVER_OFF_SET = 80000;
-var ICON_CONFIG = {url: '/assets/img/marker-truck.png', labelOrigin: new google.maps.Point(25, 10)};
+var ICON_CONFIG = {url: '/assets/img/marker-truck.png', labelOrigin: new google.maps.Point(25, 10), anchor: new google.maps.Point(7, 20)};
 //var clusterer = new Clusterer(MAP);
 var infowindow = new google.maps.InfoWindow({maxWidth: 350});
 var VEHICLES = {};
@@ -104,7 +104,7 @@ function viewClientInMap(data) {
     content += '<br><b>RUTA:</b> ' + data.ruta;
     content += '<br><b>TIPO NEGOCIO:</b> ' + data.tiponego;
     content += '<br><b>DIRECCIÓN:</b> ' + data.domicli;
-
+//content += '<input type="button" value ="prueba" />';
     content += '</div></div>';
 
     cliente.addListener('click', function () {
@@ -120,6 +120,7 @@ function viewClientInMap(data) {
 function SaveNoSalesMarkers(data) {
     //var symbol = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     data.icon = '/assets/img/marker_no_sales_3.png';
+    data.icon = '/assets/img/no_sales_marker.png';
     //data.icon = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     var sinpedido = new google.maps.Marker(data);
 
@@ -182,7 +183,7 @@ function saveVehicle(vehiculo) {
 function RefreshPolyline() {
     ClearPolylineInMap();
     if (FOCUS && VEHICLES.hasOwnProperty(FOCUS)) {
-        SOCKET.emit('vehiculo', {id: VEHICLES[FOCUS].device, limit: 1000});
+        SOCKET.emit('vehiculo', {id: VEHICLES[FOCUS].device, limit: 50});
     }
 }
 
@@ -351,7 +352,7 @@ function SavePolygons(ruta) {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        //fillColor: '#FF0000',
         fillOpacity: 0
     });
 
@@ -370,13 +371,13 @@ function SavePolygons(ruta) {
     ROUTES[ruta.ruta] = polygon;
 }
 
-SOCKET.on('recibido', function (data) {
+/*SOCKET.on('recibido', function (data) {
     alert(data);
-});
+});*/
 
 
 function ShowPolygonsInMap() {
-    SOCKET.emit('Prueba', 'HOLA MIRA ESTA PRUEBA');
+    //SOCKET.emit('Prueba', 'HOLA MIRA ESTA PRUEBA');
     if (ROUTES_IN_MAP) {
         return ClearPolygonsInMap();
     }
