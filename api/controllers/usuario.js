@@ -52,6 +52,7 @@ module.exports = name => {
             return models.usuarios.findAll(options);
         },
         AuthenticateApi: function (req, res) {
+
             const data = req.body;
             const models = connection[name].models;
             const secret = config[name].SECRET_KEY;
@@ -64,18 +65,21 @@ module.exports = name => {
                 if (usuario && usuario.length) {
                     usuario[0].comparePassword(data.clave).then(match => {
                         if (!match) {
-                            res.status(401).json({message: "Contraseña incorrecta."});
+                            //res.status(401).json({message: "Contraseña incorrecta."});
+                            res.status(401).send('Contraseña incorrecta.');
                         } else {
                             const payload = usuario[0].toJSON();
                             const token = jwt.sign(payload, secret);
+                            delete payload.nrousua;
                             //res.cookie('SESSIONID', token, {httpOnly: true});
-                            res.status(200).json({message: "Ok", token: `JWT ${token}`});
+                            res.status(200).json({message: "Ok", usuario: payload, token: `JWT ${token}`});
                         }
                     }).catch(err => {
                         res.status(500).json({message: err});
                     });
                 } else {
-                    res.status(401).json({message: "Usuario no encontrado."});
+                    res.status(401).send('Usuario no encontrado.');
+                    //res.status(401).json({message: "Usuario no encontrado."});
                 }
             });
         },

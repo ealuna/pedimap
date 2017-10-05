@@ -86,6 +86,11 @@ router.get('/transporte', function (req, res) {
     res.render('fletero');
 });
 
+
+router.get('/entregas', function (req, res) {
+    res.render('entregar');
+});
+
 router.get('/inicio', function (req, res) {
     res.render('flota', {settings: settings});
 });
