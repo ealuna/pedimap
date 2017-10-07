@@ -66,6 +66,22 @@ app.post("/authenticate", function (req, res) {
     controllers.usuarios('TERRANORTE').AuthenticateApi(req, res);
 });
 
+app.post("/reporte/cobertura_p", function (req, res) {
+    controllers.reporte('TERRANORTE').cobertura_p(req, res);
+});
+
+app.post("/reporte/cobertura_r", function (req, res) {
+    controllers.reporte('TERRANORTE').cobertura_r(req, res);
+});
+
+app.post("/reporte/venta_neta", function (req, res) {
+    controllers.reporte('TERRANORTE').ventas(req, res);
+});
+
+app.post("/reporte/empleados", function (req, res) {
+    controllers.reporte('TERRANORTE').empleados(req, res);
+});
+
 app.post("/usuario/create", function (req, res) {
     controllers.usuarios('TERRANORTE').create(req, res);
 });

@@ -9,3 +9,4 @@ module.exports.fleteros = require('./fleteros');
 module.exports.clientes = require('./clientes');
 module.exports.rutas = require('./ruta');
 module.exports.usuarios = require('./usuario');
+module.exports.reporte = require('./reportes');
