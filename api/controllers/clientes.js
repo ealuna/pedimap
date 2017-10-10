@@ -20,9 +20,30 @@ module.exports = name => {
                 res.status(500).json({error: err});
             });
         },
+        despacho: (req, res) => {
+
+            const data = req.body;
+
+            clientes.despacho(data.fecha, data.fletero).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+
+        },
+
+        entrega: (data, fn) => {
+
+            clientes.entrega(data.codprov, data.tipopla, data.seriepla, data.nropla, data.cliente, data.resultado).then(result => {
+                fn(null, result);
+            }).catch(err => {
+                fn(err, null);
+            });
+
+        },
         sinpedido: (req, res) => {
             //const clientes = model(name);
-            clientes.sinpedido().then(result => {             
+            clientes.sinpedido().then(result => {
                 res.status(200).json(result);
             }).catch(err => {
                 console.log(err)

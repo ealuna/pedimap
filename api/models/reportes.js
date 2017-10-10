@@ -54,6 +54,28 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
 
+        },
+        indicador1: (fecdesde, fechasta) => {
+
+            return sequelize.query(
+                'EXEC [RP].[indicador1] @fechaini = :fecdesde, @fechahas = :fechasta',
+                {
+                    nest: true,
+                    replacements: {fecdesde: fecdesde, fechasta: fechasta},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
+        indicador2: (fecdesde, fechasta) => {
+
+            return sequelize.query(
+                'EXEC [RP].[indicador2] @fechaini= :fecdesde, @fechahas = :fechasta',
+                {
+                    nest: true,
+                    replacements: {fecdesde: fecdesde, fechasta: fechasta},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
         }
     };
 };

@@ -58,6 +58,10 @@ app.post('/clientes/sinpedido', (req, res) => {
     controllers.clientes('TERRANORTE').sinpedido(req, res);
 });
 
+app.post('/clientes/despacho', (req, res) => {
+    controllers.clientes('TERRANORTE').despacho(req, res);
+});
+
 app.post('/rutas/today', (req, res) => {
     controllers.rutas('TERRANORTE').today(req, res);
 });
@@ -86,6 +90,14 @@ app.post("/usuario/create", function (req, res) {
     controllers.usuarios('TERRANORTE').create(req, res);
 });
 
+app.post("/reporte/indicador1", function (req, res) {
+    controllers.reporte('TERRANORTE').indicador1(req, res);
+});
+
+app.post("/reporte/indicador2", function (req, res) {
+    controllers.reporte('TERRANORTE').indicador2(req, res);
+});
+
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
 });
@@ -102,6 +114,18 @@ router.get('/transporte', function (req, res) {
     res.render('fletero');
 });
 
+
+router.get('/entregas', function (req, res) {
+    res.render('entregar');
+});
+
+router.get('/reporte/cumplimiento', function (req, res) {
+    res.render('reporte1');
+});
+
+router.get('/reporte/completos', function (req, res) {
+    res.render('reporte2');
+});
 
 router.get('/entregas', function (req, res) {
     res.render('entregar');

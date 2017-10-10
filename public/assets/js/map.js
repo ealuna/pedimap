@@ -94,7 +94,7 @@ function iterarflota(data) {
 
 
 function viewClientInMap(data) {
-    data.icon = '/assets/img/customer_default.png';
+    data.icon = data.estado === 0 ? '/assets/img/customer_default.png' : data.estado === 1 ? '/assets/img/customer_success.png' : '/assets/img/customer_reject.png';
     var cliente = new google.maps.Marker(data);
 
     var content = '<div id="content"><div id="bodyContent">';
@@ -399,5 +399,22 @@ function ClearPolygonsInMap() {
 }
 
 
+SOCKET.on('entregado', function (data) {
+    infowindow.close();
+    var id = data.cliente;
+    var marker = CLIENTS[id];
 
+    var content = '<div id="content"><div id="bodyContent">';
+    content += '<b>Cliente:</b> ' + marker.idcliente + ' - ' + marker.nomcli;
+    content += '<br><b>Resultado:</b> ';
+    content += data.resultado === 1 ? 'Entregado' : 'Rechazado';
+//content += '<input type="button" value ="prueba" />';
+    content += '</div></div>';
+
+    infowindow.setContent(content);
+    infowindow.open(MAP, marker);
+    setTimeout(infowindow.close, 5000);
+
+    CLIENTS[id].setIcon(data.resultado === 1 ? '/assets/img/customer_success.png':'/assets/img/customer_reject.png');
+});
 

@@ -69,5 +69,31 @@ module.exports = name => {
                 res.status(500).json({error: err});
             });
         },
+        indicador1: (req, res) => {
+            const data = req.body;
+            console.log(req.body)
+            if (!data.fechainicial || !data.fechafinal) {
+                return res.status(400).json({msg: 'El campo fecha es requerido'})
+            }
+
+            reportes.indicador1(data.fechainicial, data.fechafinal).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        indicador2: (req, res) => {
+            const data = req.body;
+            console.log(req.body)
+            if (!data.fechainicial || !data.fechafinal) {
+                return res.status(400).json({msg: 'El campo fecha es requerido'})
+            }
+
+            reportes.indicador2(data.fechainicial, data.fechafinal).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
     };
 };

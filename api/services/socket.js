@@ -51,14 +51,22 @@ io.of('/oriunda').on('connection', (socket) => {
 
 io.of('/terranorte').on('connection', (socket) => {
     socket.emit('flota', fleets.TERRANORTE);
-    
+
     socket.on('entrega', function (resultado) {
         socket.emit('resultado', resultado);
     });
 
-    socket.on('Prueba', function (resultado) {
-        console.log(resultado)
-        socket.broadcast.emit('recibido', resultado);
+    socket.on('resultado', function (resultado) {
+        console.log(resultado);
+        controllers.clientes('TERRANORTE').entrega(resultado, (err, result) => {
+            console.log(err)
+            console.log(result)
+            if(!err){
+
+                socket.broadcast.emit('entregado', resultado);
+                console.log(resultado)
+            }
+        });
     });
 
     socket.on('vehiculo', function (device) {

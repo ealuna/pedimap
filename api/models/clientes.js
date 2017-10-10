@@ -21,6 +21,28 @@ module.exports = name => {
                 });
 
         },
+        despacho: function(fecha, fletero) {
+
+            return sequelize.query(
+                'EXEC [SP].[despacho] @fecha = :fecha, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
+        entrega: function(codprov, tipopla, seriepla, nropla, idcliente, resultado) {
+
+            return sequelize.query(
+                'EXEC [SP].[resultado] @codprov = :codprov, @tipopla = :tipopla, @seriepla = :seriepla, @nropla = :nropla, @idcliente = :idcliente, @resultado = :resultado',
+                {
+                    nest: true,
+                    replacements: {codprov: codprov, tipopla: tipopla, seriepla: seriepla, nropla: nropla, idcliente: idcliente, resultado: resultado},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
         sinpedido: function() {
 
             return sequelize.query(

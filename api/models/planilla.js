@@ -4,6 +4,11 @@
 //const DataTypes = require('sequelize').DataTypes;
 "use strict";
 
+
+
+
+
+/*
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
         'mascstock',
@@ -34,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
             freezeTableName: true,
             hooks: {},
             defaultScope: {
-                /*attributes: {
+                attributes: {
                  exclude: ['serie', 'codprov', 'tipomov'],
                  include: [{
                  model: mascara,
@@ -45,7 +50,7 @@ module.exports = function (sequelize, DataTypes) {
                  tipopla: {$col: 'planilla.tipomov'}
                  }
                  }]
-                 },*/
+                 },
                 where: {
                     tipomov: 'CAR',
                     fecentre: sequelize.fn('CONVERT', sequelize.literal('DATE'), sequelize.fn('GETDATE')),
@@ -55,11 +60,12 @@ module.exports = function (sequelize, DataTypes) {
         }
     )
         ;
-    /*planilla.prototype.toJSON = function () {
+    planilla.prototype.toJSON = function () {
      let obj = this.get();
      delete obj.clave;
      delete obj.sha1;
      return obj;
-     }; */
+     };
 };
 
+*/
