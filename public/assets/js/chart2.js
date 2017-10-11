@@ -26,7 +26,8 @@ function ExtraerDatos(result) {
         entregados += result[i].entregados;
         completos += result[i].completos;
     }
-    CrearGrafico(entregados, entregados - completos );
+
+    CrearGrafico(completos, entregados - completos );
 }
 
 

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--Google maps-->
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.6 -->
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="/assets/lib/bootstrap/dist/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.8/jquery.slimscroll.js"></script>
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="/assets/lib/select2/dist/css/select2.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="/assets/lib/AdminLTE/dist/css/AdminLTE.min.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="/assets/lib/AdminLTE/dist/css/skins/_all-skins.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="/assets/lib/datatables.net-bs/css/dataTables.bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.1/css/buttons.dataTables.min.css">
+        <!-- Alert persoanlizados -->
+        <!-- JavaScript -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
+        <!-- Semantic UI theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
+        <!-- Bootstrap theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+        <style>
+            Table{
+                font-family:Arial, Helvetica, sans-serif;
+                text-align:center;
+            }
+            th{
+                font-family:Arial, Helvetica, sans-serif;
+                text-align:center;
+            }
+        </style>
+        <script type="text/javascript">
+            var baseurl = "<?php echo base_url(); ?>";
+        </script>
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+
+            <header class="main-header">
+                <!-- Logo -->
+                <a class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>SI</b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>Sistema informático</b></span>
+                </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+
+                    <div class="navbar-custom-menu">
+
+                    </div>
+                </nav>
+            </header>
+            <aside class="main-sidebar">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <!--<img src="assets/images/logoOriunda.jpg" class="img-circle" alt="User Image">-->
+                        </div>
+                        <div class="pull-left info">
+                            <p><!--<?//= $this->session->userdata('cuenta') ?>--></p>
+                            <a><i class="glyphicon glyphicon-info-sign"></i> Online</a>
+                        </div>
+                    </div>
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <li class="header"><i class="glyphicon glyphicon-inbox"></i>   <strong>Navegador principal</strong></li>
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <div class="content">
+                    <div class="container">
+                        <section class="contenido">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="box box-solid">
+                                        <div class="box-body">
+                                            <!-- Tabla para ubicar una ruta por su centro -->
+                                            <div class="panel box">
+                                                <div class="box-header with-border">
+                                                    <h4 class="box-title">
+                                                        <i class="fa fa-user">
+                                                            <strong>Lista de productos y pedidos</strong>
+                                                        </i>
+                                                    </h4>
+                                                    <div class="box-tools pull-right">
+                                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="nav-tabs-custom">
+                                                        <ul class="nav nav-tabs">
+                                                            <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-user"></i></a></li>
+                                                            <li class=""><a href="#tab_2" data-toggle="tab"><i class="fa fa-cubes"></i></a></li>
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="tab_1">
+                                                                <table class="table table-bordered table-striped" cellspacing="0" id="tabla1" style="font-size: xx-small; ">
+                                                                    <thead style="width: 100%">
+                                                                        <tr>
+                                                                            <th colspan="5">TABLA PRODUCTOS</th>                                                                                
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>CODART</th>
+                                                                            <th>ARTÍCULO</th>
+                                                                            <th>PRESENTACIÓN</th>
+                                                                            <th>RESTO</th>
+                                                                            <th>OPCIONES</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody style="text-align: left">
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="tab-pane" id="tab_2">
+                                                                <div id="tabla-detalle">
+                                                                    <table class="table table-bordered table-striped" cellspacing="0" id="tabla2" style="font-size: xx-small; ">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="6">TABLA PEDIDOS</th>                                                                                
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>N DOC</th>
+                                                                                <th>TIPO</th>
+                                                                                <th>CLIENTE</th>
+                                                                                <th>MOONTO</th>
+                                                                                <th>ESTADO</th>
+                                                                                <th>DETALLE</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>                                                                
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h3 class="modal-title" id="myModalLabel">AGREGAR PEDIDO</h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class='table table-responsive' aling='center' style="width:100%">
+                                                        <tr>
+                                                            <td>
+                                                                <label>CODIGO DEL <br> ARTÍCULO</label>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="codart" disabled="">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label>ARTÍCULO</label></td>
+                                                            <td><input type="text" id="descript" disabled=""></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label>CANTIDAD</label></td>
+                                                            <td><input type="number" id="cant"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class="col-lg-12">
+                                                                    <button id="agregar" class="btn btn-default">Agregar</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div><!-- modal content -->
+                                        </div><!-- modal dialog--> 
+                                    </div><!-- modal fade -->
+                                    <!-- Cierra Modal -->
+                                </div>  
+                                
+                                <div class="col-lg-12">
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h3 class="modal-title" id="myModalLabel">DETALLE PEDIDO</h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class='table table-responsive' aling='center' style="width:100%">
+                                                        <tr>
+                                                            <td>
+                                                                <label>CODIGO DEL <br> ARTÍCULO</label>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" id="cod" disabled="">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label>ARTÍCULO</label></td>
+                                                            <td><input type="text" id="art" disabled=""></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div><!-- modal content -->
+                                        </div><!-- modal dialog--> 
+                                    </div><!-- modal fade -->
+                                    <!-- Cierra Modal -->
+                                </div>  
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+        <!-- ./wrapper -->
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+        <!-- ./wrapper -->
+        <script src="/assets/lib/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.6 -->
+        <script src="/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Select2 -->
+        <script src="/assets/lib/select2/dist/js/select2.full.min.js"></script>
+        <!-- Bootstrap WYSIHTML5 -->
+        <script src="/assets/lib/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+        <script src="/assets/lib/AdminLTE/dist/js/app.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
+        <!--datatables-->
+        <script src="/assets/lib/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="/assets/lib/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
+        <SCRIPT type="text/javascript" src="//cdn.datatables.net/buttons/1.4.1/js/buttons.colVis.min.js"></script>
+        <!--<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.3/js/dataTables.fixedColumns.min.js"></script>-->
+        <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.2/js/dataTables.fixedColumns.min.js"></script>
+        <script src="/assets/lib/jquery-ui/jquery-ui.min.js"></script>
+
+        <script src="/assets/js/pedido_java.js"></script>
+
+</html>

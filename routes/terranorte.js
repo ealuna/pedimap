@@ -135,4 +135,12 @@ router.get('/inicio', function (req, res) {
     res.render('flota', {settings: settings});
 });
 
+router.get('/login', function (req, res, next) {
+    res.render('login');
+});
+
+router.get('/pedidos', function (req, res, next) {
+    res.render('pedido_v');
+});
+
 module.exports = router;
