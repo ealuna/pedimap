@@ -143,4 +143,8 @@ router.get('/pedidos', function (req, res, next) {
     res.render('pedido_v');
 });
 
+router.get('/seguimiento/reporte', function (req, res, next) {
+    res.render('reporte', {fleteros: []});
+});
+
 module.exports = router;

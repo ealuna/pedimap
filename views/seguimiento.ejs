@@ -31,10 +31,11 @@
 
     <script>
         var MAP;
-        var MAP_CENTER = {"lat": -11.924000, "lng": -77.071365};
+        //var MAP_CENTER = {"lat": -11.924000, "lng": -77.071365};
+        var MAP_CENTER = {"lat": -11.936396, "lng": -77.070768};
         var BUSINESS_OFF = {featureType: "poi", stylers: [{visibility: "off"}]};
         var STATIONS_OFF = {featureType: "transit.station", stylers: [{visibility: "off"}]};
-        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 11, styles: [BUSINESS_OFF, STATIONS_OFF], gestureHandling: 'greedy'};
+        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 12, styles: [BUSINESS_OFF, STATIONS_OFF], gestureHandling: 'greedy'};
 
         function loadMap() {
             MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
