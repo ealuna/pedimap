@@ -10,18 +10,24 @@
     <link rel="stylesheet" href="/assets/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/lib/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/assets/lib/select2/dist/css/select2.min.css">
     <link rel="stylesheet" href="/assets/lib/AdminLTE/dist/css/AdminLTE.min.css">
 
     <link rel="stylesheet" href="/assets/css/default.css">
 
     <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css"/>
     <link rel="stylesheet"
           href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
 
     <script>
         var map;
+
         function LoadMap() {
             map = new google.maps.Map(document.getElementById('mapa'), {
                 center: new google.maps.LatLng(-11.936396, -77.070768),
@@ -191,103 +197,135 @@
                 </li>
                 <li>
                     <a href="/terranorte/seguimiento">
-                        <i class="fa fa-globe"></i>
-                        <span>Seguimiento</span>
-                        <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+                        <i class="fa fa-globe"></i> <span>Seguimiento</span>
                     </a>
-                    <ul id="fleteros" class="treeview-menu">
-                        <li><a href="#" onclick="SeleccionarFletero(null)"><i class="fa fa-map-marker"></i> Todos</a>
-                        </li>
-                        <% if(fleteros && Array.isArray(fleteros)){ %>
-                        <% for(var i = 0; i < fleteros.length; i++) { %>
-                        <li><a href="#" onclick="SeleccionarFletero(<%= fleteros[i].numcam %>)"><i
-                                        class="fa fa-map-marker"></i><%= fleteros[i].numcam %></a></li>
-                        <% } %>
-                        <% } %>
-                    </ul>
                 </li>
-                <li>
+                <li class="active">
                     <a href="#">
-                        <i class="fa fa-map-o"></i>
-                        <span>Reportes</span>
+                        <i class="fa fa-map-o"></i> <span>Reportes</span>
                     </a>
                 </li>
             </ul>
         </section>
     </aside>
-    <aside class="main-sidebar">
-        <section class="sidebar">
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="/assets/img/logo-terranorte.svg"
-                         onerror="this.onerror=null; this.src='/assets/img/logo-terranorte.png'">
-                </div>
-                <div class="pull-left info">
-                    <p>Terranorte S.A.C.</p>
-                    <a href="#"><i class="fa fa-circle success-icon"></i> Conectado</a>
-                </div>
-            </div>
-            <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">PANEL DE OPCIONES</li>
-                <li>
-                    <a href="/terranorte/inicio">
-                        <i class="fa fa-line-chart"></i> <span>Informe General</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/terranorte/seguimiento">
-                        <i class="fa fa-globe"></i>
-                        <span>Seguimiento</span>
-                        <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                    </a>
-                    <ul id="fleteros" class="treeview-menu">
-                        <li><a href="#" onclick="SeleccionarFletero(null)"><i class="fa fa-map-marker"></i> Todos</a>
-                        </li>
-                        <% if(fleteros && Array.isArray(fleteros)){ %>
-                        <% for(var i = 0; i < fleteros.length; i++) { %>
-                        <li><a href="#" onclick="SeleccionarFletero(<%= fleteros[i].numcam %>)"><i
-                                        class="fa fa-map-marker"></i><%= fleteros[i].numcam %></a></li>
-                        <% } %>
-                        <% } %>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-map-o"></i>
-                        <span>Reportes</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-    </aside>
-
     <div id="content-test" class="content-wrapper">
-        <section class="content-header hidden-xs">
-            <h1>
-                Seguimiento en línea
-                <small>Geolocalización</small>
+        <section id="content-header" class="content-header">
+            <h1 class="hidden-xs">
+                Reporte de seguimiento
+                <small>Histórico</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
-                <li><a href="#">Transporte</a></li>
-                <li class="active">Seguimiento</li>
+                <li><a href="#">Seguimiento</a></li>
+                <li class="active">Reporte</li>
             </ol>
         </section>
-        <section class="content" style="height: 675px">
-            <div id="mapa" style="height: 100%; width: 100%"></div>
+        <section id="section-map" class="content">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box">
+                        <div class="box-header box-widget">
+                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            <h3 class="box-title">Busqueda</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Transporte:</label>
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-truck" aria-hidden="true"></i>
+                                </span>
+                                    <select class="form-control has-feedback" style="width: 100%">
+                                        <option>588</option>
+                                        <option>591</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha:</label>
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </span>
+                                    <input type="text" class="form-control" id="datepicker">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Hora inicial:</label>
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </span>
+                                    <input type="text" class="form-control timepicker" id="startTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Hora final:</label>
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </span>
+                                    <input type="text" class="form-control timepicker" id="endTime">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="content-map" class="box">
+                        <div id="mapa" class="box-map"></div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
+<script type="text/javascript">
+    var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    var header = document.getElementsByTagName("header")[0].clientHeight;
+    var content_header = document.getElementById('content-header').clientHeight;
+    var height_map = height - header - content_header;
+    document.getElementById('mapa').style.height = height_map + 'px';
+</script>
 
-<script src="/assets/lib/jquery/dist/jquery.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/assets/lib/fastclick/lib/fastclick.js"></script>
-<script src="/assets/lib/AdminLTE/dist/js/adminlte.min.js"></script>
-<script src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
+<script type="text/javascript" src="/assets/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.js"></script>
+<script type="text/javascript" src="/assets/lib/AdminLTE/dist/js/adminlte.min.js"></script>
+<script type="text/javascript" src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
+<script src="/assets/lib/select2/dist/js/select2.full.min.js"></script>
+
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+            $('select').select2();
+            var picker = $('#datepicker');
+            picker.datepicker(
+                {
+                    autoclose: true,
+                    weekStart: 0,
+                    inline: true,
+                    language: 'es-ES',
+                    format: 'dd/mm/yyyy',
+                    orientation: 'bottom'
+                }
+            );
+            picker.datepicker('setDate', new Date());
+            $('.timepicker').timepicker({
+                showInputs: false
+                //showMeridian: false
+            });
+            $('#startTime').timepicker('setTime', '05:00');
+            $('#endTime').timepicker('setTime', '19:00');
+        }
+    );
+</script>
+
 </body>
 </html>

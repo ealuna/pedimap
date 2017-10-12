@@ -35,7 +35,8 @@
 }
 
 .skin .main-header .navbar .sidebar-toggle:hover {
-    background-color: #11558b;
+    /*background-color: #11558b;*/
+    background-color: rgba(0, 0, 0, 0.1)
 }
 
 @media (max-width: 767px) {
@@ -216,4 +217,17 @@
     .main-sidebar {
         padding-top: 50px;
     }
+}
+
+.box {
+    /*height: 100vh;*/
+}
+
+.user-panel > .info {
+    position: static;
+}
+
+.user-panel {
+    display: flex;
+    align-items: center;
 }
