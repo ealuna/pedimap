@@ -32,10 +32,11 @@ module.exports = (name) => {
             config.forever = true;
             return request(config);
         },
-        device: function (device, limit) {
+        device: function (device, limit, date_fr, date_to) {
             const config = devices[name];
             config.qs['_uniq'] = Math.random();
-            config.qs['date_to'] = `${dateformat('dd/mm/yyyy')}/23:59`;
+            config.qs['date_fr'] = date_fr || '';
+            config.qs['date_to'] = date_to || `${dateformat('dd/mm/yyyy')}/23:59`;
             config.qs['device'] = device;
             config.qs['limit'] = limit;
             config.jar = this.cookie;

@@ -56,13 +56,26 @@ function validation(res) {
 }
 
 module.exports = name => {
+
+    const source = request(name);
+
     return {
         getPoints: (device, limit) => {
-            const source = request(name);
+
             return source.device(device, limit).then(validation).catch(err => {
                 if (err.status && err.status === 401) {
                     return source.authenticate(name).then((res) => {
                         return source.device(device, limit).then(validation);
+                    });
+                }
+                return Promise.reject(err);
+            });
+        },
+        reporte: (device, date_fr, date_to) => {
+            return source.device(device, 0, date_fr, date_to).then(validation).catch(err => {
+                if (err.status && err.status === 401) {
+                    return source.authenticate(name).then((res) => {
+                        return source.device(device, 0, date_fr, date_to).then(validation);
                     });
                 }
                 return Promise.reject(err);

@@ -87,7 +87,7 @@
                             <li>
                                 <ul class="menu">
                                     <li>
-                                        <a href="javascript:mostrarClientes()">
+                                        <a href="#" onclick="customersInMap()">
                                             <div class="pull-left">
                                                 <img src="/assets/img/location_customer.png">
                                             </div>
@@ -95,28 +95,6 @@
                                                 Mostrar clientes
                                             </h4>
                                             <p>Muestra clientes con pedido.</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:ShowNoSalesInMap()">
-                                            <div class="pull-left">
-                                                <img src="/assets/img/sad_customer.png">
-                                            </div>
-                                            <h4>
-                                                Clientes sin pedidos
-                                            </h4>
-                                            <p>Mostrar clientes sin pedido en el mapa.</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:ClearCustomersInMap()">
-                                            <div class="pull-left">
-                                                <img src="/assets/img/delete_customer.png">
-                                            </div>
-                                            <h4>
-                                                Ocultar clientes
-                                            </h4>
-                                            <p>Oculta los clientes en el mapa.</p>
                                         </a>
                                     </li>
                                 </ul>
@@ -223,10 +201,15 @@
         <section id="section-map" class="content">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="box">
-                        <div class="box-header box-widget">
-                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-search" aria-hidden="true"></i>
                             <h3 class="box-title">Busqueda</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="box-body">
                             <div class="form-group">
@@ -235,9 +218,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-truck" aria-hidden="true"></i>
                                 </span>
-                                    <select class="form-control has-feedback" style="width: 100%">
-                                        <option>588</option>
-                                        <option>591</option>
+                                    <select id="fleteros" class="form-control has-feedback" style="width: 100%">
                                     </select>
                                 </div>
                             </div>
@@ -268,12 +249,39 @@
                                     <input type="text" class="form-control timepicker" id="endTime">
                                 </div>
                             </div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-block btn-primary" onclick="generarReporte()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    Generar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Resultado</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart-container">
+                                <canvas id="reporte"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div id="content-map" class="box">
+                    <div id="content-map" class="box box-solid">
                         <div id="mapa" class="box-map"></div>
+                        <div id="legend">
+                            <label>Leyenda:</label>
+                            <div><img src="/assets/img/marker2.png"> Entregado</div>
+                            <div><img src="/assets/img/no_sales_marker.png"> Rechazo</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -295,16 +303,21 @@
 <script type="text/javascript" src="/assets/lib/AdminLTE/dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="/assets/lib/AdminLTE/dist/js/demo.js"></script>
 <script src="/assets/lib/select2/dist/js/select2.full.min.js"></script>
-
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="/assets/lib/Chart.PieceLabel.min.js"></script>
 <script type="text/javascript">
     $(function () {
-            $('select').select2();
+            $('select').select2(
+                {
+                    placeholder: 'Cargando.....'
+                }
+            );
             var picker = $('#datepicker');
             picker.datepicker(
                 {
@@ -317,10 +330,12 @@
                 }
             );
             picker.datepicker('setDate', new Date());
-            $('.timepicker').timepicker({
-                showInputs: false
-                //showMeridian: false
-            });
+            $('.timepicker').timepicker(
+                {
+                    showInputs: false
+                    //showMeridian: false //Formato de 24 horas
+                }
+            );
             $('#startTime').timepicker('setTime', '05:00');
             $('#endTime').timepicker('setTime', '19:00');
         }

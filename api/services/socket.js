@@ -50,34 +50,64 @@ io.of('/oriunda').on('connection', (socket) => {
 });
 
 io.of('/terranorte').on('connection', (socket) => {
+
     socket.emit('flota', fleets.TERRANORTE);
 
-    socket.on('entrega', function (resultado) {
-        socket.emit('resultado', resultado);
-    });
+    /*socket.on('entrega',
+     function (resultado) {
+     socket.emit('resultado', resultado);
+     }
+     );*/
 
-    socket.on('resultado', function (resultado) {
-        console.log(resultado);
-        controllers.clientes('TERRANORTE').entrega(resultado, (err, result) => {
-            console.log(err)
-            console.log(result)
-            if(!err){
-
-                socket.broadcast.emit('entregado', resultado);
-                console.log(resultado)
+    socket.on('fleteros',
+        () => {
+            if (fleets.TERRANORTE.length) {
+                socket.emit('fleteros', fleets.TERRANORTE);
             }
-        });
-    });
+        }
+    );
 
-    socket.on('vehiculo', function (device) {
-        //console.log(device)
-        controllers.vehiculo('TERRANORTE').points(device, (err, data) => {
-            if (!err && data.length) {
-                socket.emit('device', data);
-            }
-        });
-    });
+    socket.on('resultado',
+        data => {
+            controllers.clientes('TERRANORTE').entrega(data,
+                (err, result) => {
+                    if (!err) socket.broadcast.emit('entregado', data);
+                }
+            );
+        }
+    );
+
+    socket.on('vehiculo',
+        data => {
+            controllers.vehiculo('TERRANORTE').points(data,
+                (err, result) => {
+                    if (!err) socket.emit('device', result);
+                }
+            );
+        }
+    );
 
 });
+
+io.of('/terranorte/reportes').on('connection', function (socket) {
+    socket.on('fleteros',
+        () => {
+            if (fleets.TERRANORTE.length) {
+                socket.emit('fleteros', fleets.TERRANORTE);
+            }
+        }
+    );
+    socket.on('reporte',
+        data => {
+            controllers.vehiculo('TERRANORTE').reporte(data,
+                (err, result) => {
+                console.log(result || err)
+                    if (!err) socket.emit('reporte', result);
+                }
+            );
+        }
+    );
+});
+
 
 module.exports = io;

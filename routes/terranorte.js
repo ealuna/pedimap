@@ -98,6 +98,12 @@ app.post("/reporte/indicador2", function (req, res) {
     controllers.reporte('TERRANORTE').indicador2(req, res);
 });
 
+app.post("/reporte/despacho", function (req, res) {
+    controllers.clientes('TERRANORTE').reporteDespacho(req, res);
+});
+
+
+
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
 });
