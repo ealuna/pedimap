@@ -21,6 +21,17 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
 
+        },
+        reporte: (fecha, fletero) => {
+
+            return sequelize.query(
+                'EXEC [SP].[rutas] @fecha = :fecha, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
         }
     };
 };

@@ -12,7 +12,6 @@ const request = require('../services/request');
 
 function setFormat(dataset) {
     const vehicles = [];
-    const points = [];
     const data = utils.dataArray(dataset);
     for (let i = 0; i < data.length; i++) {
         if (utils.rowValidation(data[i])) {
@@ -25,11 +24,19 @@ function setFormat(dataset) {
         const vehicle = {
             id: utils.formatId(values[0]),
             device: data[i].$.id,
-            vehicle: utils.formatVehicle(values[1])
+            vehicle: utils.formatVehicle(values[1]),
+            points: []
         };
+
+        const lastposition = {lat: 0, lng: 0};
 
         for (let j = 0; j < rows.length; j++) {
             const row = rows[j].split('|');
+
+            if (lastposition.lat === parseFloat(row[8]) && lastposition.lng === parseFloat(row[9])) {
+                continue;
+            }
+
             const point = {
                 datetime: `${row[3]} ${row[4]}`,
                 status: utils.decodeUnicode(row[6]),
@@ -40,9 +47,10 @@ function setFormat(dataset) {
                 kmh: row[12],
                 location: utils.decodeUnicode(row[20]).replace(/"/g, '')
             };
-            points.push(point);
+            lastposition.lat = parseFloat(row[8]);
+            lastposition.lng = parseFloat(row[9]);
+            vehicle.points.push(point);
         }
-        vehicle.points = points;
         vehicles.push(vehicle);
     }
     return vehicles;

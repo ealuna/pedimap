@@ -112,7 +112,7 @@
                             <li>
                                 <ul class="menu">
                                     <li>
-                                        <a href="javascript:ShowPolygonsInMap()">
+                                        <a href="javascript:routesInMap()">
                                             <div class="pull-left">
                                                 <img src="/assets/img/route_default.png">
                                             </div>
@@ -170,7 +170,7 @@
                 <li class="header">PANEL DE OPCIONES</li>
                 <li>
                     <a href="/terranorte/inicio">
-                        <i class="fa fa-line-chart"></i> <span>Informe General</span>
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i><span>Informe General</span>
                     </a>
                 </li>
                 <li>
@@ -180,7 +180,7 @@
                 </li>
                 <li class="active">
                     <a href="#">
-                        <i class="fa fa-map-o"></i> <span>Reportes</span>
+                        <i class="fa fa-pie-chart" aria-hidden="true"></i><span>Reportes</span>
                     </a>
                 </li>
             </ul>
@@ -269,7 +269,7 @@
                         </div>
                         <div class="box-body">
                             <div class="chart-container">
-                                <canvas id="reporte"></canvas>
+                                <canvas id="reporte" class="pie-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -277,10 +277,15 @@
                 <div class="col-md-8">
                     <div id="content-map" class="box box-solid">
                         <div id="mapa" class="box-map"></div>
-                        <div id="legend">
+                        <div id="legend" class="legend">
                             <label>Leyenda:</label>
                             <div><img src="/assets/img/marker2.png"> Entregado</div>
                             <div><img src="/assets/img/no_sales_marker.png"> Rechazo</div>
+                        </div>
+                        <div id="options" data-html2canvas-ignore="true">
+                            <a href="#" onclick="createPDF()" class="btn btn-app">
+                                <i class="fa fa-camera" aria-hidden="true"></i> Captura
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -288,6 +293,7 @@
         </section>
     </div>
 </div>
+
 <script type="text/javascript">
     var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     var header = document.getElementsByTagName("header")[0].clientHeight;
@@ -311,6 +317,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script src="/assets/lib/Chart.PieceLabel.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script type="text/javascript">
     $(function () {
             $('select').select2(
@@ -336,7 +344,7 @@
                     //showMeridian: false //Formato de 24 horas
                 }
             );
-            $('#startTime').timepicker('setTime', '05:00');
+            $('#startTime').timepicker('setTime', '07:00');
             $('#endTime').timepicker('setTime', '19:00');
         }
     );

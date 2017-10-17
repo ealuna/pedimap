@@ -92,16 +92,14 @@ io.of('/terranorte').on('connection', (socket) => {
 io.of('/terranorte/reportes').on('connection', function (socket) {
     socket.on('fleteros',
         () => {
-            if (fleets.TERRANORTE.length) {
-                socket.emit('fleteros', fleets.TERRANORTE);
-            }
+            if (fleets.TERRANORTE.length) socket.emit('fleteros', fleets.TERRANORTE);
+
         }
     );
     socket.on('reporte',
         data => {
             controllers.vehiculo('TERRANORTE').reporte(data,
                 (err, result) => {
-                console.log(result || err)
                     if (!err) socket.emit('reporte', result);
                 }
             );

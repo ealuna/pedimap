@@ -66,6 +66,10 @@ app.post('/rutas/today', (req, res) => {
     controllers.rutas('TERRANORTE').today(req, res);
 });
 
+app.post('/rutas/reporte', (req, res) => {
+    controllers.rutas('TERRANORTE').reporte(req, res);
+});
+
 app.post("/authenticate", function (req, res) {
     controllers.usuarios('TERRANORTE').AuthenticateApi(req, res);
 });

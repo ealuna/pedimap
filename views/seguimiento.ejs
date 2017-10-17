@@ -35,14 +35,19 @@
         var MAP_CENTER = {"lat": -11.936396, "lng": -77.070768};
         var BUSINESS_OFF = {featureType: "poi", stylers: [{visibility: "off"}]};
         var STATIONS_OFF = {featureType: "transit.station", stylers: [{visibility: "off"}]};
-        var MAP_OPTIONS = {center: MAP_CENTER, zoom: 12, styles: [BUSINESS_OFF, STATIONS_OFF], gestureHandling: 'greedy'};
+        var MAP_OPTIONS = {
+            center: MAP_CENTER,
+            zoom: 12,
+            styles: [BUSINESS_OFF, STATIONS_OFF],
+            gestureHandling: 'greedy'
+        };
 
         function loadMap() {
             MAP = new google.maps.Map(document.getElementById('mapa'), MAP_OPTIONS);
             ///MAP.setOptions({ minZoom: 1, maxZoom: 15 });
             var script = document.createElement('script');
             script.src = '/assets/js/map.js';
-           // var script2 = document.createElement('script');
+            // var script2 = document.createElement('script');
             //script2.src = '/assets/js/Clusterer2.js';
             //(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script2);
             (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
@@ -178,20 +183,20 @@
                         <ul class="dropdown-menu">
                             <li class="header">Rutas</li>
                             <li>
-                            <ul class="menu">
-                                <li><!-- start message -->
-                                    <a href="javascript:ShowPolygonsInMap()">
-                                        <div class="pull-left">
-                                            <img src="/assets/img/route_default.png">
-                                        </div>
-                                        <h4>
-                                            Mostrar Rutas
-                                            <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
-                                        </h4>
-                                        <p>Mostrar rutas asignadas.</p>
-                                    </a>
-                                </li>
-                            </ul>
+                                <ul class="menu">
+                                    <li><!-- start message -->
+                                        <a href="javascript:ShowPolygonsInMap()">
+                                            <div class="pull-left">
+                                                <img src="/assets/img/route_default.png">
+                                            </div>
+                                            <h4>
+                                                Mostrar Rutas
+                                                <!--<small><i class="fa fa-clock-o"></i> 5 mins</small>-->
+                                            </h4>
+                                            <p>Mostrar rutas asignadas.</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <!--<li class="footer"><a href="#">View all</a></li>-->
                         </ul>
@@ -280,10 +285,8 @@
                 <li class="header">PANEL DE OPCIONES</li>
                 <li>
                     <a href="/terranorte/inicio">
-                        <i class="fa fa-line-chart"></i> <span>Informe General</span>
-
-                            <small class="label pull-right bg-green">nuevo</small>
-                            <!-- <i class="fa fa-angle-left pull-right"></i> -->
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i> <span>Informe General</span>
+                        <!-- <i class="fa fa-angle-left pull-right"></i> -->
 
                     </a>
                     <!--
@@ -295,7 +298,7 @@
                 </li>
                 <li class="active treeview">
                     <a href="#">
-                        <i class="fa fa-globe"></i>
+                        <i class="fa fa-globe" aria-hidden="true"></i>
                         <span>Seguimiento</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
@@ -304,7 +307,11 @@
                     <ul id="fleteros" class="treeview-menu">
                         <li><a href="javascript:focusVehicle(null)"><i class="fa fa-map-marker"></i> Todos</a></li>
                         <% for(var i = 0; i < fleteros.length; i++) { %>
-                        <li><a href="javascript:focusVehicle('<%= fleteros[i].numcam %>')"><i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %></a></li>
+                        <li>
+                            <a href="javascript:focusVehicle('<%= fleteros[i].numcam %>')">
+                                <i class="fa fa-map-marker"></i> <%= fleteros[i].numcam %>
+                            </a>
+                        </li>
                         <% } %>
                     </ul>
                 </li>
@@ -327,18 +334,10 @@
                         <li><a href="#"><i class="fa fa-truck"></i> T-588</a></li>
                     </ul>
                 </li>-->
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>Reportes</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
+                <li>
+                    <a href="/terranorte/seguimiento/reporte">
+                        <i class="fa fa-pie-chart" aria-hidden="true"> </i><span>Reportes</span>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="/terranorte/reporte/cumplimiento"><i class="fa fa-truck"></i> Cumplimiento de despacho</a></li>
-                        <li><a href="/terranorte/reporte/completos"><i class="fa fa-truck"></i> Entregas completas</a></li>
-                    </ul>
                 </li>
                 <!--
                 <li class="treeview">

@@ -232,21 +232,34 @@
     align-items: center;
 }
 
-#legend {
+.legend {
     font-family: Arial, sans-serif;
     font-size: 14px;
     background: #fff;
     padding: 10px;
     margin: 10px;
-    /*border: 3px solid #000;*/
 }
-#legend h3 {
+
+.legend h3 {
     margin-top: 0;
 }
-#legend img {
+
+.legend img {
     vertical-align: middle;
 }
 
-.box.box-solid.box-primary>.box-header, .btn-primary {
+.box.box-solid.box-primary > .box-header, .btn-primary {
     background: #135f9b;
 }
+
+.pie-chart {
+    max-height: 300px !important;
+    height: auto !important;
+    max-width: 300px;
+    width: 100% !important;
+    display: block;
+    margin: 0 auto;
+}
+
+th { font-size: 13px; }
+td { font-size: 13px; }
