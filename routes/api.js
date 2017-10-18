@@ -1,5 +1,5 @@
 /**
- * Created by Edward Luna Noriega on 28/09/17.
+ * Created by Edward Luna Noriega on 18/10/17.
  */
 
 "use strict";
@@ -11,33 +11,6 @@ const compression = require('compression');
 const controllers = require('../api/controllers');
 const SecretKey = require('../config/crypto.json').TERRANORTE.SECRET_KEY;
 const settings = {'view options': {delimiter: '?'}};
-
-const app = express.Router();
-const router = express.Router();
-
-
-const passport = require("passport");
-const passportJWT = require("passport-jwt");
-
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-
-const JwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-    secretOrKey: SecretKey
-};
-
-passport.use(new JwtStrategy(JwtOptions, (payload, next) => {
-    controllers.usuarios('TERRANORTE').findAll({where: {usuario: payload.usuario}}).then(usuario => {
-        if (usuario[0]) {
-            return next(null, usuario[0].toJSON());
-        } else {
-            return next(null, false);
-        }
-    }).catch(err => {
-        console.log(err)
-    });
-}));
 
 app.use(helmet());
 app.use(compression());
@@ -109,55 +82,3 @@ app.post("/reporte/despacho", function (req, res) {
 app.post("/reporte/entregas", function (req, res) {
     controllers.reporte('TERRANORTE').entregas(req, res);
 });
-
-
-app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
-    res.json({message: "Success! You can not see this without a token"});
-});
-
-router.use('/app', app);
-router.use(compression());
-router.use(helmet({noCache: true}));
-
-router.get('/seguimiento', function (req, res) {
-    controllers.fleteros('TERRANORTE').render(req, res);
-});
-
-router.get('/transporte', function (req, res) {
-    res.render('fletero');
-});
-
-
-router.get('/entregas', function (req, res) {
-    res.render('entregar');
-});
-
-router.get('/reporte/cumplimiento', function (req, res) {
-    res.render('reporte1');
-});
-
-router.get('/reporte/completos', function (req, res) {
-    res.render('reporte2');
-});
-
-router.get('/entregas', function (req, res) {
-    res.render('entregar');
-});
-
-router.get('/inicio', function (req, res) {
-    res.render('flota', {settings: settings});
-});
-
-router.get('/login', function (req, res, next) {
-    res.render('login');
-});
-
-router.get('/pedidos', function (req, res, next) {
-    res.render('pedido_v');
-});
-
-router.get('/seguimiento/reporte', function (req, res, next) {
-    res.render('reporte');
-});
-
-module.exports = router;

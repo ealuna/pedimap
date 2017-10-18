@@ -24,9 +24,15 @@ module.exports = name => {
         render: (req, res) => {
             const fletero = model(name);
             fletero.find(null, new Date()).then(result => {
+                if (name === 'TERRANORTE')
                 res.render('seguimiento', {fleteros: result});
+                else
+                    res.render('seguimiento_ori', {fleteros: result});
             }).catch(err => {
+                if (name === 'TERRANORTE')
                 res.render('seguimiento', {fleteros: []});
+                else
+                    res.render('seguimiento_ori', {fleteros: []});
             });
         }
     };

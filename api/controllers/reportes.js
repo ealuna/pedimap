@@ -2,7 +2,6 @@
  * Created by Edward Luna Noriega on 06/10/17.
  */
 
-
 "use strict";
 
 const model = require('../models/reportes');

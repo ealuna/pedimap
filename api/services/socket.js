@@ -35,17 +35,40 @@ setIntervalandExecute(() => {
 io.of('/oriunda').on('connection', (socket) => {
     socket.emit('flota', fleets.ORIUNDA);
 
-    socket.on('entrega', function (resultado) {
-        socket.emit('resultado', resultado);
-    });
+    /*socket.on('entrega',
+     function (resultado) {
+     socket.emit('resultado', resultado);
+     }
+     );*/
 
-    socket.on('vehiculo', function (device) {
-        controllers.vehiculo('ORIUNDA').points(device, (err, data) => {
-            if (!err && data.length) {
-                socket.emit('device', data);
+    socket.on('fleteros',
+        () => {
+            if (fleets.ORIUNDA.length) {
+                socket.emit('fleteros', fleets.ORIUNDA);
             }
-        });
-    });
+        }
+    );
+
+    socket.on('resultado',
+        data => {
+            controllers.clientes('ORIUNDA').entrega(data,
+                (err, result) => {
+                    if (!err) socket.broadcast.emit('entregado', data);
+                }
+            );
+        }
+    );
+
+    socket.on('vehiculo',
+        data => {
+            controllers.vehiculo('ORIUNDA').points(data,
+                (err, result) => {
+                    if (!err) socket.emit('device', result);
+                }
+            );
+        }
+    );
+
 
 });
 
@@ -99,6 +122,25 @@ io.of('/terranorte/reportes').on('connection', function (socket) {
     socket.on('reporte',
         data => {
             controllers.vehiculo('TERRANORTE').reporte(data,
+                (err, result) => {
+                    if (!err) socket.emit('reporte', result);
+                }
+            );
+        }
+    );
+});
+
+
+io.of('/oriunda/reportes').on('connection', function (socket) {
+    socket.on('fleteros',
+        () => {
+            if (fleets.ORIUNDA.length) socket.emit('fleteros', fleets.ORIUNDA);
+
+        }
+    );
+    socket.on('reporte',
+        data => {
+            controllers.vehiculo('ORIUNDA').reporte(data,
                 (err, result) => {
                     if (!err) socket.emit('reporte', result);
                 }

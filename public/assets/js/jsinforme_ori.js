@@ -2,7 +2,7 @@
  * Created by Edward Luna Noriega on 16/10/17.
  */
 
-var socket = io.connect('/terranorte', {'forceNew': true});
+var socket = io.connect('/oriunda', {'forceNew': true});
 
 socket.on('flota', function (data) {
     console.log(data)

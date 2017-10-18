@@ -40,7 +40,7 @@
                 gestureHandling: 'greedy'
             });
             var script = document.createElement('script');
-            script.src = '/assets/js/jsmap.js';
+            script.src = '/assets/js/jsmap_ori.js';
             (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script);
         }
 
@@ -158,23 +158,23 @@
         <section class="sidebar">
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="/assets/img/logo-terranorte.svg"
-                         onerror="this.onerror=null; this.src='/assets/img/logo-terranorte.png'">
+                    <img src="/assets/img/logo-oriunda.svg"
+                         onerror="this.onerror=null; this.src='/assets/img/logo-oriunda.png'">
                 </div>
                 <div class="pull-left info">
-                    <p>Terranorte S.A.C.</p>
+                    <p>Oriunda S.A.C.</p>
                     <a href="#"><i class="fa fa-circle success-icon"></i> Conectado</a>
                 </div>
             </div>
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">PANEL DE OPCIONES</li>
                 <li>
-                    <a href="/terranorte/inicio">
+                    <a href="/oriunda/inicio">
                         <i class="fa fa-file-text-o" aria-hidden="true"></i><span>Informe General</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/terranorte/seguimiento">
+                    <a href="/oriunda/seguimiento">
                         <i class="fa fa-globe"></i> <span>Seguimiento</span>
                     </a>
                 </li>
@@ -186,11 +186,6 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
-                    <ul class="treeview-menu" style="display: block;">
-                        <li><a href="/terranorte/reporte/cumplimiento"><i class="fa fa-truck"></i> Cumplimiento de despacho</a></li>
-                        <li><a href="/terranorte/reporte/completos"><i class="fa fa-truck"></i> Entregas completas</a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </section>
