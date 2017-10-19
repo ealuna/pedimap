@@ -110,6 +110,10 @@ app.post("/reporte/entregas", function (req, res) {
     controllers.reporte('TERRANORTE').entregas(req, res);
 });
 
+app.post("/pedidos/facturado", function (req, res) {
+    controllers.documentos('TERRANORTE').pedidos(req, res);
+});
+
 
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
@@ -158,6 +162,10 @@ router.get('/pedidos', function (req, res, next) {
 
 router.get('/seguimiento/reporte', function (req, res, next) {
     res.render('reporte');
+});
+
+router.get('/preventa/pedidos', function (req, res, next) {
+    res.render('pedidos');
 });
 
 module.exports = router;

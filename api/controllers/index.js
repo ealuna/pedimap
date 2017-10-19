@@ -10,3 +10,4 @@ module.exports.clientes = require('./clientes');
 module.exports.rutas = require('./ruta');
 module.exports.usuarios = require('./usuario');
 module.exports.reporte = require('./reportes');
+module.exports.documentos = require('./documentos');

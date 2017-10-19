@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "start-nodemon": "nodemon ./bin/www SET NODE_ENV=production",
+    "production": "forever start ./bin/www",
     "debug-nodemon": "nodemon --debug ./bin/www"
   },
   "dependencies": {

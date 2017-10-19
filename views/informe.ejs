@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Reportes | Pedimap</title>
+
+    <% include layouts/meta.ejs %>
+    <% include layouts/styles/default.ejs %>
+    <% include layouts/styles/datatable.ejs %>
+
+    <link rel="stylesheet" href="/assets/css/default.css">
+
+</head>
+
+<body class="hold-transition skin sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <% include layouts/logo.ejs %>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/assets/img/default-user.png" class="user-image" alt="User Image">
+                            <span class="hidden-xs">Administrador</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <img src="/assets/img/default-user.png" class="img-circle" alt="User Image">
+
+                                <p>
+                                    Usuario Administrador
+                                    <small>Miembro desde Sep. 2017</small>
+                                </p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-default btn-flat">Salir</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-gears"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="/assets/img/logo-terranorte.svg"
+                         onerror="this.onerror=null; this.src='/assets/img/logo-terranorte.png'">
+                </div>
+                <div class="pull-left info">
+                    <p>Terranorte S.A.C.</p>
+                    <a href="#"><i class="fa fa-circle success-icon"></i> Conectado</a>
+                </div>
+            </div>
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">PANEL DE OPCIONES</li>
+                <li class="active">
+                    <a href="/terranorte/inicio">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i> <span>Informe General</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/terranorte/seguimiento">
+                        <i class="fa fa-globe" aria-hidden="true"></i> <span>Seguimiento</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/terranorte/seguimiento/reporte">
+                        <i class="fa fa-pie-chart" aria-hidden="true"></i><span>Reportes</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <div id="content-test" class="content-wrapper">
+        <section id="content-header" class="content-header">
+            <h1 class="hidden-xs">
+                Informe General
+                <small>Seguimiento</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
+                <li><a href="#">Seguimiento</a></li>
+                <li class="active">Reporte</li>
+            </ol>
+        </section>
+        <section id="section-map" class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de entregas</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart-container">
+                                <canvas id="reporte_pie" class="pie-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de entregas</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart-container">
+                                <canvas id="reporte_line"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-truck" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de flota</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered table-striped table-responsive" cellspacing="0"
+                                   id="fleteros" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Transporte</th>
+                                    <th>Placa</th>
+                                    <th>Dirección</th>
+                                    <th>Estado</th>
+                                    <th>Fecha / Hora</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<% include layouts/scripts/default.ejs %>
+<% include layouts/scripts/chart.ejs %>
+<% include layouts/scripts/jspdf.ejs %>
+<% include layouts/scripts/datatable.ejs %>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+
+<script src="/assets/js/jsinforme.js"></script>
+
+</body>
+</html>

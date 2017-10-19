@@ -4,6 +4,27 @@
 
 "use strict";
 
+const connection = require('../services/connection');
+
+module.exports = name => {
+    const sequelize = connection[name];
+
+    return {
+        pedidos: (fecha, fletero = null, vendedor = null, supervisor = null) => {
+            return sequelize.query(
+                'EXEC [SP].[documento] @fecha = :fecha, @fletero = :fletero, @vendedor = :vendedor, @supervisor = :supervisor',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha, fletero: fletero, vendedor: vendedor, supervisor: supervisor},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        }
+    };
+};
+
+
+
+/*
 module.exports = function (sequelize, DataTypes) {
     const mascara = sequelize.define('mascara', {
         letra: {
@@ -92,4 +113,4 @@ module.exports = function (sequelize, DataTypes) {
     };
 
     return mascara;
-};
+};*/

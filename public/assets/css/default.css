@@ -219,10 +219,6 @@
     }
 }
 
-.box {
-    /*height: 100vh;*/
-}
-
 .user-panel > .info {
     position: static;
 }
@@ -250,6 +246,22 @@
 
 .box.box-solid.box-primary > .box-header, .btn-primary {
     background: #135f9b;
+}
+
+.logo-mini img {
+    height:auto;
+    max-width:100%;
+    padding: 5px;
+}
+
+.logo-content {
+    height: 50px;
+}
+
+.logo-content img {
+    height: 100%;
+    max-width:100%;
+    padding: 10px;
 }
 
 .pie-chart {

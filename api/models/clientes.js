@@ -21,7 +21,7 @@ module.exports = name => {
                 });
 
         },
-        despacho: function (fecha, fletero) {
+        despacho: function (fecha, fletero = null) {
             return sequelize.query(
                 'EXEC [SP].[despacho] @fecha = :fecha, @fletero = :fletero',
                 {
