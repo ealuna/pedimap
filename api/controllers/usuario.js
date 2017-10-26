@@ -12,16 +12,19 @@ const connection = require('../services/connection');
 //const secretOrKey = 'EvilSecret';
 
 module.exports = name => {
+
+    const models = connection[name].models;
+    const secret = config[name].SECRET_KEY;
+
     return {
         create: function (req, res) {
             const data = req.body;
-            const models = connection[name].models;
 
             if (data.clave !== data.confirmar) {
                 return res.status(401).json({err: 'Las contraseñas son distintas'});
             }
 
-            delete  data.confirmar;
+            delete data.confirmar;
 
             models.usuarios.create(data).then(user => {
                 res.status(200).json({user: user.toJSON()});
@@ -30,14 +33,14 @@ module.exports = name => {
             });
 
         },
-        massive: function (req, res) {
+        /*massive: function (req, res) {
             const data = req.body;
-            const models = connection[name].models;
 
             for (let i = 0; i < data.length; i++) {
                 if (data[i].clave !== data[i].confirmar) {
                     return res.status(401).json({err: 'Las contraseñas son distintas'});
                 }
+
                 delete  data[i].confirmar;
 
                 models.usuarios.create(data[i]).then(user => {
@@ -46,18 +49,15 @@ module.exports = name => {
                 });
             }
             res.json({message: 'Success !!!!'});
-        },
+        },*/
         findAll: function (options) {
-            const models = connection[name].models;
             return models.usuarios.findAll(options);
         },
         AuthenticateApi: function (req, res) {
 
             const data = req.body;
-            const models = connection[name].models;
-            const secret = config[name].SECRET_KEY;
 
-            if(!data.usuario && !data.clave){
+            if (!data.usuario && !data.clave) {
                 res.status(401).json({message: "Ingrese los datos correctamente."});
             }
 
@@ -88,7 +88,7 @@ module.exports = name => {
             const models = connection[name].models;
             const secret = config[name].SECRET_KEY;
 
-            if(!data.usuario && ! data.clave){
+            if (!data.usuario && !data.clave) {
                 res.render('login', {message: "Ingrese los datos correctamente."});
             }
 

@@ -126,7 +126,7 @@
                         </div>
                         <div class="box-body">
                             <div class="chart-container">
-                                <canvas id="reporte_line"></canvas>
+                                <canvas id="reporte_line" width="390" height="225" class="line-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                 <div class="col-md-12">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-truck" aria-hidden="true"></i>
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i>
                             <h3 class="box-title">Estado de flota</h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -143,21 +143,12 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <table class="table table-bordered table-striped table-responsive" cellspacing="0"
-                                   id="fleteros" style="font-size: xx-small; width: 100%">
-                                <thead style="width: 100%">
-                                <tr>
-                                    <th>Transporte</th>
-                                    <th>Placa</th>
-                                    <th>Dirección</th>
-                                    <th>Estado</th>
-                                    <th>Fecha / Hora</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot></tfoot>
-                            </table>
+                            <div class="chart-container hidden-xs hidden-sm">
+                                <canvas id="reporte_bar" width="600" height="400"></canvas>
+                            </div>
+                            <div class="chart-container hidden-md hidden-lg">
+                                <canvas id="reporte_bar_horizontal" width="600" height="400"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

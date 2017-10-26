@@ -18,6 +18,24 @@ module.exports = name => {
                     replacements: {fecha: fecha, fletero: fletero, vendedor: vendedor, supervisor: supervisor},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        entregas: (fecha) => {
+            return sequelize.query(
+                'EXEC [RP].[entregas_general] @fechadesde = :fechadesde, @fechahasta = :fechahasta',
+                {
+                    nest: true,
+                    replacements: {fechadesde: fecha, fechahasta: fecha},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        entregas_horas: (fecha) => {
+            return sequelize.query(
+                'EXEC [RP].[entregas_horas] @fecha = :fecha',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha},
+                    type: sequelize.QueryTypes.SELECT
+                });
         }
     };
 };

@@ -114,6 +114,20 @@ app.post("/pedidos/facturado", function (req, res) {
     controllers.documentos('TERRANORTE').pedidos(req, res);
 });
 
+app.post("/fleteros/entregas", function (req, res) {
+    controllers.fleteros('TERRANORTE').entregas(req, res);
+});
+
+app.post("/documentos/entregas", function (req, res) {
+    controllers.documentos('TERRANORTE').entregas(req, res);
+});
+
+app.post("/documentos/entregas_horas", function (req, res) {
+    controllers.documentos('TERRANORTE').entregas_horas(req, res);
+});
+
+
+
 
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
@@ -149,7 +163,7 @@ router.get('/entregas', function (req, res) {
 });
 
 router.get('/inicio', function (req, res) {
-    res.render('flota', {settings: settings});
+    res.render('informe');
 });
 
 router.get('/login', function (req, res, next) {

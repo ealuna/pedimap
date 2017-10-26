@@ -17,7 +17,7 @@ var clientes = $('#clientes').DataTable({
     'ajax': {
         "url": "/terranorte/app/clientes/despacho",
         "type": "POST",
-        data: {fecha: new Date().toJSON(), fletero: 588},
+        data: {fecha: getNow(), fletero: 588},
         dataSrc: ''
     },
     'columns': [
@@ -75,3 +75,16 @@ function EnviarResultado(codprov, tipopla, seriepla, nropla, cliente, resultado)
     });
 }
 
+function getNow() {
+    var today = new Date();
+
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) dd = '0' + dd;
+
+    if (mm < 10) mm = '0' + mm;
+
+    return yyyy + '/' + mm + '/' + dd;
+}

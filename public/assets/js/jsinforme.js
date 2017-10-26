@@ -2,12 +2,34 @@
  * Created by Edward Luna Noriega on 16/10/17.
  */
 
-var socket = io.connect('/terranorte', {'forceNew': true});
+//var socket = io.connect('/terranorte', {'forceNew': true});
+var reporte_pie = document.getElementById('reporte_pie').getContext('2d');
+var reporte_line = document.getElementById('reporte_line').getContext('2d');
+var reporte_bar = document.getElementById('reporte_bar').getContext('2d');
+var reporte_bar_horizontal = document.getElementById('reporte_bar_horizontal').getContext('2d');
+var color_pendiente = 'rgb(132, 134, 137)';
+var color_atendido = 'rgb(16, 209, 69)';
+var color_rechazo = 'rgb(209, 41, 44)';
+/*
+ socket.on('flota', function (data) {
+ console.log(data)
+ //createTable(data);
+ });
+ */
 
-socket.on('flota', function (data) {
-    console.log(data)
-    createTable(data);
-});
+function getNow() {
+    var today = new Date();
+
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) dd = '0' + dd;
+
+    if (mm < 10) mm = '0' + mm;
+
+    return yyyy + '/' + mm + '/' + dd;
+}
 
 function createTable(data) {
     var fleteros = $('#fleteros').DataTable({
@@ -39,30 +61,172 @@ function createTable(data) {
 }
 
 
-function crearGraficoPie() {
+$(function () {
 
-    var rechazo = 123;
-    var atendidos = 24234;
-    var pendientes = 1234;
+    $.ajax({
+        type: 'POST',
+        url: '/terranorte/app/fleteros/entregas',
+        contentType: "application/json",
+        data: JSON.stringify({fecha: getNow()}),
+        success: function (result) {
+            var dataset = cargarBarDataset(result);
+            crearGraficoBarras(dataset);
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/terranorte/app/documentos/entregas',
+        contentType: "application/json",
+        data: JSON.stringify({fecha: getNow()}),
+        success: function (result) {
+            var dataset = cargarPieDataset(result);
+            crearGraficoPie(dataset);
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/terranorte/app/documentos/entregas_horas',
+        contentType: "application/json",
+        data: JSON.stringify({fecha: getNow()}),
+        success: function (result) {
+            var dataset = cargarLineDataset(result);
+            crearGraficoLineas(dataset);
+        }
+    });
+
+});
 
 
-    var data = {
+function cargarLineDataset(data) {
+    var horas = [];
+    var atendidos = [];
+    var rechazos = [];
+    var pendientes = [];
+
+    for (var i = 0; i < data.length; i++) {
+        horas.push(data[i].hora);
+        atendidos.push(data[i].atendidos);
+        rechazos.push(data[i].rechazados);
+        pendientes.push(data[i].pendientes);
+    }
+
+
+    return {
+        labels: horas,
+        datasets: [
+            {
+                label: 'Atendidos',
+                borderColor: color_atendido,
+                backgroundColor: color_atendido,
+                data: atendidos,
+                fill: false
+            }, {
+                label: 'Rechazo',
+                borderColor: color_rechazo,
+                backgroundColor: color_rechazo,
+                data: rechazos,
+                fill: false
+            }, {
+                label: 'Pendientes',
+                borderColor: color_pendiente,
+                backgroundColor: color_pendiente,
+                data: pendientes,
+                fill: false
+            }
+        ]
+    };
+}
+
+
+function crearGraficoLineas(data) {
+    new Chart(reporte_line, {
+        type: 'line',
+        data: data,
+        options: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            pointDotRadius: 10,
+            bezierCurve: false,
+            scaleShowVerticalLines: false,
+            scaleGridLineColor: 'black'
+        }
+    });
+}
+
+function cargarPieDataset(data) {
+
+    if (!data || !data.length) {
+        return;
+    }
+
+    var value = data[0];
+
+    return {
         datasets: [{
-            data: [rechazo, atendidos, pendientes],
+            data: [value.entregado, value.rechazado, value.pendiente],
             backgroundColor: [
-                'rgb(209, 41, 44)',
-                'rgb(16, 209, 69)',
-                'rgb(132, 134, 137)'
+                color_atendido,
+                color_rechazo,
+                color_pendiente
             ]
         }],
         labels: [
-            'Rechazo: S/.' + rechazo,
-            'Atendidos: S/.' + atendidos,
-            'Pendientes: S/.' + pendientes,
+            'Atendidos: S/.' + value.entregado,
+            'Rechazo: S/.' + value.rechazado,
+            'Pendientes: S/.' + value.pendiente,
         ]
     };
 
-    reporte = new Chart(document.getElementById('reporte_pie').getContext('2d'), {
+}
+
+function cargarBarDataset(data) {
+
+    if (!data || !data.length) {
+        return;
+    }
+
+    var fleteros = [];
+    var pendiente = [];
+    var atendidos = [];
+    var rechazo = [];
+
+    for (var i = 0; i < data.length; i++) {
+        fleteros.push(data[i].fletero);
+        pendiente.push(data[i].pendiente);
+        atendidos.push(data[i].entregado);
+        rechazo.push(data[i].rechazado);
+    }
+
+    return {
+        labels: fleteros,
+        datasets: [
+            {
+                label: "Atendido",
+                backgroundColor: color_atendido,
+                data: atendidos
+            }, {
+                label: "Rechazado",
+                backgroundColor: color_rechazo,
+                data: rechazo
+            }, {
+                label: "Pendiente",
+                backgroundColor: color_pendiente,
+                data: pendiente
+            }
+        ]
+    };
+
+}
+
+function crearGraficoPie(data) {
+
+    new Chart(reporte_pie, {
         type: 'pie',
         data: data,
         options: {
@@ -76,51 +240,43 @@ function crearGraficoPie() {
             }
         }
     });
+
 }
 
-crearGraficoPie();
 
-var speedCanvas = document.getElementById("reporte_line");
-
-
-var speedData = {
-    labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
-    datasets: [
-        {
-            label: 'Rechazo',
-            borderColor: 'rgb(209, 41, 44)',
-            backgroundColor: 'rgb(209, 41, 44)',
-            data: [0, 2, 5, 2, 10, 12, 20],
-            fill: false
-        },{
-            label: 'Pendientes',
-            borderColor: 'rgb(132, 134, 137)',
-            backgroundColor: 'rgb(132, 134, 137)',
-            data: [75, 59, 55, 40, 29, 9, 0],
-            fill: false
-        },{
-            label: 'Atendidos',
-            borderColor: 'rgb(16, 209, 69)',
-            backgroundColor: 'rgb(16, 209, 69)',
-            data: [0, 59, 75, 20, 20, 55, 40],
-            fill: false
+function crearGraficoBarras(data) {
+    new Chart(reporte_bar, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            title: {
+                display: true,
+                text: 'Estado de Entregas por Transporte'
+            },
+            pointDotRadius: 10,
+            bezierCurve: false,
+            scaleShowVerticalLines: false,
+            scaleGridLineColor: 'black'
         }
-    ]
-};
-
-var chartOptions = {
-    legend: {
-        display: true,
-        position: 'top',
-        labels: {
-            boxWidth: 80,
-            fontColor: 'black'
+    });
+    new Chart(reporte_bar_horizontal, {
+        type: 'horizontalBar',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Estado de Entregas por Transporte'
+            },
+            pointDotRadius: 10,
+            bezierCurve: false,
+            scaleShowVerticalLines: false,
+            scaleGridLineColor: 'black'
         }
-    }
-};
+    });
+}
 
-var lineChart = new Chart(speedCanvas, {
-    type: 'line',
-    data: speedData,
-    options: chartOptions
-});
+

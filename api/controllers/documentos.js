@@ -25,6 +25,32 @@ module.exports = name => {
             }).catch(err => {
                 res.status(500).json({error: err});
             });
+        },
+        entregas: (req, res) => {
+            const data = req.body;
+
+            if (!data.fecha) {
+                return res.status(400).json({msg: 'El campo fecha es requerido'})
+            }
+
+            documentos.entregas(data.fecha).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        entregas_horas: (req, res) => {
+            const data = req.body;
+
+            if (!data.fecha) {
+                return res.status(400).json({msg: 'El campo fecha es requerido'})
+            }
+
+            documentos.entregas_horas(data.fecha).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
         }
     };
 };

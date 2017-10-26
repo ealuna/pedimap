@@ -7,14 +7,25 @@
 const connection = require('../services/connection');
 
 module.exports = name => {
+
+    const sequelize = connection[name];
+
     return {
         find: (fletero, fecha) => {
-            const sequelize = connection[name];
             return sequelize.query(
                 'EXEC [SP].[fletero] @fecha = :fecha, @numcam = :fletero',
                 {
                     nest: true,
                     replacements: {fecha: fecha, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        entregas: (fecha) => {
+            return sequelize.query(
+                'EXEC [RP].[entregas] @fechadesde = :fechadesde, @fechahasta = :fechahasta',
+                {
+                    nest: true,
+                    replacements: {fechadesde: fecha, fechahasta: fecha},
                     type: sequelize.QueryTypes.SELECT
                 });
         }
