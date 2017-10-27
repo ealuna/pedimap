@@ -68,16 +68,11 @@
                         <i class="fa fa-file-text-o" aria-hidden="true"></i> <span>Informe General</span>
                     </a>
                 </li>
-                <li>
-                    <a href="/terranorte/seguimiento">
-                        <i class="fa fa-globe" aria-hidden="true"></i> <span>Seguimiento</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/terranorte/seguimiento/reporte">
-                        <i class="fa fa-pie-chart" aria-hidden="true"></i><span>Reportes</span>
-                    </a>
-                </li>
+
+                <% include layouts/aside/seguimiento.ejs %>
+                <%- include('layouts/aside/pedidos.ejs', {value: ''}) %>
+                <% include layouts/aside/fleteros.ejs %>
+                <% include layouts/aside/reporte.ejs %>
             </ul>
         </section>
     </aside>
@@ -100,11 +95,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-pie-chart" aria-hidden="true"></i>
                             <h3 class="box-title">Estado de entregas</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
+                            <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
                             <div class="chart-container">
@@ -118,15 +109,11 @@
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                             <h3 class="box-title">Estado de entregas</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
+                            <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
                             <div class="chart-container">
-                                <canvas id="reporte_line" width="390" height="225" class="line-chart"></canvas>
+                                <canvas id="reporte_line" class="line-chart" height="300px"></canvas>
                             </div>
                         </div>
                     </div>
@@ -136,18 +123,14 @@
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
                             <h3 class="box-title">Estado de flota</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
+                            <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
-                            <div class="chart-container hidden-xs hidden-sm">
-                                <canvas id="reporte_bar" width="600" height="400"></canvas>
+                            <div class="hidden-xs hidden-sm">
+                                <canvas id="reporte_bar"></canvas>
                             </div>
-                            <div class="chart-container hidden-md hidden-lg">
-                                <canvas id="reporte_bar_horizontal" width="600" height="400"></canvas>
+                            <div class="hidden-md hidden-lg">
+                                <canvas id="reporte_bar_horizontal"></canvas>
                             </div>
                         </div>
                     </div>

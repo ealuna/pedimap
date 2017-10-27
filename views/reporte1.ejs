@@ -156,28 +156,11 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">PANEL DE OPCIONES</li>
-                <li>
-                    <a href="/terranorte/inicio">
-                        <i class="fa fa-line-chart"></i> <span>Informe General</span>
-
-                        <small class="label pull-right bg-green">nuevo</small>
-                        <!-- <i class="fa fa-angle-left pull-right"></i> -->
-
-                    </a>
-                    <!--
-                    <ul class="treeview-menu">
-                        <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                        <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                    </ul>
-                    -->
-                </li>
-                <li>
-                    <a href="/terranorte/seguimiento">
-                        <i class="fa fa-globe"></i>
-                        <span>Seguimiento</span>
-                    </a>
-                </li>
-                <li class="treeview">
+                <% include layouts/aside/informe.ejs %>
+                <% include layouts/aside/seguimiento.ejs %>
+                <%- include('layouts/aside/pedidos.ejs', {value: ''}) %>
+                <% include layouts/aside/fleteros.ejs %>
+                <li class="treeview active">
                     <a href="#">
                         <i class="fa fa-pie-chart"></i>
                         <span>Reportes</span>

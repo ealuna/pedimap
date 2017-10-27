@@ -284,11 +284,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">PANEL DE OPCIONES</li>
                 <li>
-                    <a href="/terranorte/inicio">
-                        <i class="fa fa-file-text-o" aria-hidden="true"></i> <span>Informe General</span>
-                        <!-- <i class="fa fa-angle-left pull-right"></i> -->
-
-                    </a>
+                    <% include layouts/aside/informe.ejs %>
                     <!--
                     <ul class="treeview-menu">
                         <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
@@ -334,11 +330,9 @@
                         <li><a href="#"><i class="fa fa-truck"></i> T-588</a></li>
                     </ul>
                 </li>-->
-                <li>
-                    <a href="/terranorte/seguimiento/reporte">
-                        <i class="fa fa-pie-chart" aria-hidden="true"> </i><span>Reportes</span>
-                    </a>
-                </li>
+                <%- include('layouts/aside/pedidos.ejs', {value: ''}) %>
+                <% include layouts/aside/fleteros.ejs %>
+                <% include layouts/aside/reporte.ejs %>
                 <!--
                 <li class="treeview">
                     <a href="#">

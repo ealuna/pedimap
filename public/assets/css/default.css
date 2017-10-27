@@ -273,6 +273,33 @@
     margin: 0 auto;
 }
 
+#reporte_bar {
+    /*max-height: 300px !important;*/
+    height: 75% !important;
+    max-width: 800px;
+    width: 100% !important;
+    display: block;
+    margin: 0 auto;
+}
+
+#reporte_bar_horizontal {
+    min-height: 400px !important;
+    height: 100% !important;
+    max-width: 600px;
+    width: 100% !important;
+    display: block;
+    margin: 0 auto;
+}
+
+.line-chart {
+    max-width: 600px;
+    height: 300px;
+    width: 100% !important;
+    display: block;
+    margin: 0 auto;
+}
+
+
 
 
 th { font-size: 13px; }

@@ -178,7 +178,7 @@ router.get('/seguimiento/reporte', function (req, res, next) {
     res.render('reporte');
 });
 
-router.get('/preventa/pedidos', function (req, res, next) {
+router.get('/transporte/pedidos', function (req, res, next) {
     res.render('pedidos');
 });
 
