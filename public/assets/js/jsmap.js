@@ -220,7 +220,7 @@ function clearMap() {
 }
 
 function setCustomerIcon(value) {
-    value.icon = value.resultado === 1 ? '/assets/img/marker2.png' : '/assets/img/no_sales_marker.png';
+    value.icon = (value.rechazo > 0 && value.liquidado === 0) ? '/assets/img/no_sales_marker.png' : '/assets/img/marker3.png';
     return value;
 }
 
@@ -375,11 +375,12 @@ function crearGrafico(values) {
     var atendidos = 0;
 
     for (var i = 0; i < values.length; i++) {
-        if (values[i].resultado === 1) {
+        /*if (values[i].resultado === 1) {
             atendidos++;
             continue;
-        }
-        rechazo++;
+        }*/
+        atendidos += values[i].liquidado;
+        rechazo += values[i].rechazo;
     }
 
     var data = {

@@ -32,7 +32,7 @@ module.exports = name => {
         },
         reporteDespacho: function (fecha, fletero) {
             return sequelize.query(
-                'EXEC [RP].[despacho] @fecha = :fecha, @fletero = :fletero',
+                'EXEC [RP].[fleteros_clientes] @fecha_inicial = :fecha, @fecha_final = :fecha, @fletero = :fletero',
                 {
                     nest: true,
                     replacements: {fecha: fecha, fletero: fletero},
