@@ -119,20 +119,24 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-truck" aria-hidden="true"></i>
                                 </span>
-                                    <select id="fleteros" class="form-control has-feedback" style="width: 100%">
-                                    </select>
+                                    <input type="text" id="fleteros" class="form-control has-feedback"
+                                           style="width: 100%" placeholder="Codigo de transportista">
+                                    </input>
                                 </div>
                             </div>
+                            <!--
                             <div class="form-group">
                                 <label>Vendedor:</label>
                                 <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="icon ion-person" aria-hidden="true"></i>
                                 </span>
-                                    <input type="text" id="vendedor" class="form-control" placeholder="Codigo de vendedor">
+                                    <input type="text" id="vendedor" class="form-control"
+                                           placeholder="Codigo de vendedor">
                                     </input>
                                 </div>
                             </div>
+                            -->
                             <div class="pull-right">
                                 <button type="button" class="btn btn-block btn-primary" onclick="generarReporte()">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -141,7 +145,39 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            <h3 class="box-title">Resumen</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="resumen" class="table table-striped">
+                                <tbody>
+                                <tr>
+                                    <th>Estado</th>
+                                    <th>Importe Neto</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="label" style="background-color: #4a4a4a">Pendiente</span></td>
+                                    <td id="pendientes"></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="label label-success">Entregado</span></td>
+                                    <td id="entregados"></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="label label-danger">Rechazado</span></td>
+                                    <td id="rechazados"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9">
                     <div class="box box-solid box-primary">
@@ -161,9 +197,8 @@
                                 <tr>
                                     <th>Cliente</th>
                                     <th>Domicilio</th>
-                                    <th>Tip. Negocio</th>
-                                    <th>Ruta</th>
-                                    <th>Importe</th>
+                                    <th>Estado</th>
+                                    <th>Importe Neto</th>
                                     <th>Opciones</th>
                                 </tr>
                                 </thead>
@@ -200,11 +235,18 @@
         }
     );
     picker.datepicker('setDate', new Date());
-    $('select').select2(
-        {
-            placeholder: 'Cargando.....'
+    $.ajax({
+        type: 'POST',
+        url: '/terranorte/app/documentos/entregas',
+        contentType: "application/json",
+        data: JSON.stringify({fecha: moment(new Date()).format('YYYY/MM/DD')}),
+        success: function (result) {
+
+            document.getElementById('pendientes').innerHTML = 'S/.' + result[0].pendiente;
+            document.getElementById('entregados').innerHTML = 'S/.' + result[0].entregado;
+            document.getElementById('rechazados').innerHTML = 'S/.' + result[0].rechazado;
         }
-    );
+    });
 
     $('#pedidos').dataTable({
         'destroy': true,
@@ -231,9 +273,25 @@
             }, {
                 'data': 'domicli'
             }, {
-                'data': 'tiponego'
-            }, {
-                'data': 'ruta'
+                'orderable': true,
+                render: function (data, type, row) {
+
+                    switch (row.estado) {
+                        case 0:
+                            return '<span class="label" style="background-color: #4a4a4a">Pendiente</span>';
+                            break;
+                        case 1:
+                            return '<span class="label label-success">Entregado</span>';
+                            break;
+                        case 2:
+                            return '<span class="label label-danger">Rechazado</span>';
+                            break;
+                        default:
+                            return '<span class="label">Desconocido</span>';
+                    }
+
+                }
+
             }, {
                 'data': 'importe'
             }, {
@@ -246,7 +304,8 @@
                         '<span class="caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu pull-right" role="menu">' +
-                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="glyphicon glyphicon-ok-circle"></i>Ver Documentos</a></li>' +
+                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
+                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
                         //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
                         //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
                         '</ul></div></span>';
