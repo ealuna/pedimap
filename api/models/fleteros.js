@@ -20,12 +20,12 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
         },
-        entregas: (fecha) => {
+        entregas: (fecha, fletero = null) => {
             return sequelize.query(
-                'EXEC [RP].[entregas] @fechadesde = :fechadesde, @fechahasta = :fechahasta',
+                'EXEC [RP].[entregas] @fechadesde = :fechadesde, @fechahasta = :fechahasta, @fletero = :fletero',
                 {
                     nest: true,
-                    replacements: {fechadesde: fecha, fechahasta: fecha},
+                    replacements: {fechadesde: fecha, fechahasta: fecha, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
         }

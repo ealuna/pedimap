@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Transportes | Pedimap</title>
+    <title>Entregados | Pedimap</title>
 
     <% include layouts/meta.ejs %>
     <link rel="stylesheet" href="/assets/lib/select2/dist/css/select2.min.css">
@@ -70,21 +70,20 @@
             </div>
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">PANEL DE OPCIONES</li>
-                <%- include('layouts/aside/aside.ejs', {value: 'fleteros'}) %>
-
+                <%- include('layouts/aside/aside.ejs', {value: 'entregas'}) %>
             </ul>
         </section>
     </aside>
     <div id="content-test" class="content-wrapper">
         <section id="content-header" class="content-header">
             <h1 class="hidden-xs">
-                Composición de carga
-                <small>Pedidos</small>
+                Pedidos Liquidados
+                <small>Entregados</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
-                <li><a href="#">Preventa</a></li>
-                <li class="active">Pedidos</li>
+                <li><a href="#">Transporte</a></li>
+                <li class="active">Entregados</li>
             </ol>
         </section>
         <section id="section-map" class="content">
@@ -135,7 +134,7 @@
                             </div>
                             -->
                             <div class="pull-right">
-                                <button type="button" class="btn btn-block btn-primary" onclick="generarReporte()">
+                                <button type="button" class="btn btn-block btn-primary" onclick="actualizar()">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                     Generar
                                 </button>
@@ -160,11 +159,7 @@
                                     <th>Importe Neto</th>
                                 </tr>
                                 <tr>
-                                    <td><span class="label" style="background-color: #4a4a4a">Pendiente</span></td>
-                                    <td id="pendientes"></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="label label-success">Entregado</span></td>
+                                    <td><span class="label label-success">Liquidado</span></td>
                                     <td id="entregados"></td>
                                 </tr>
                                 <tr>
@@ -195,7 +190,8 @@
                                     <th>Cliente</th>
                                     <th>Domicilio</th>
                                     <th>Estado</th>
-                                    <th>Importe Neto</th>
+                                    <th>Liquidado</th>
+                                    <th>Rechazado</th>
                                     <th>Opciones</th>
                                 </tr>
                                 </thead>
@@ -234,82 +230,106 @@
     picker.datepicker('setDate', new Date());
     $.ajax({
         type: 'POST',
-        url: '/terranorte/app/documentos/entregas',
+        url: '/terranorte/app/reporte/despacho',
         contentType: "application/json",
         data: JSON.stringify({fecha: moment(new Date()).format('YYYY/MM/DD')}),
         success: function (result) {
-
-            document.getElementById('pendientes').innerHTML = 'S/.' + result[0].pendiente;
-            document.getElementById('entregados').innerHTML = 'S/.' + result[0].entregado;
-            document.getElementById('rechazados').innerHTML = 'S/.' + result[0].rechazado;
+            crearTablaGeneral(result);
+            crearTabla(result);
         }
     });
 
-    $('#pedidos').dataTable({
-        'destroy': true,
-        'language': {
-            "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-        },
-        dom: 'frtip',
-        'filter': true,
-        responsive: true,
-        'stateSave': false,
-        'ajax': {
-            url: "/terranorte/app/clientes/despacho",
-            "type": "POST",
-            dataType: "json",
-            data: {fecha: new Date().toJSON()},
-            dataSrc: ''
-        },
-        'columns': [
-            {
-                "orderable": true,
-                render: function (data, type, row) {//datatoggle es para abrir el modal
-                    return row.idcliente + ' - ' + row.nomcli;
-                }
-            }, {
-                'data': 'domicli'
-            }, {
-                'orderable': true,
-                render: function (data, type, row) {
+    function crearTablaGeneral(data) {
+        var liquidado = 0;
+        var rechazado = 0;
 
-                    switch (row.estado) {
-                        case 0:
-                            return '<span class="label" style="background-color: #4a4a4a">Pendiente</span>';
-                            break;
-                        case 1:
-                            return '<span class="label label-success">Entregado</span>';
-                            break;
-                        case 2:
+        for (var i = 0; i < data.length; i++) {
+            liquidado += data[i].liquidado;
+            rechazado += data[i].rechazo;
+        }
+
+        document.getElementById('entregados').innerHTML = 'S/. ' + liquidado.toFixed(2);
+        document.getElementById('rechazados').innerHTML = 'S/. ' + rechazado.toFixed(2);
+    }
+
+    function crearTabla(data) {
+        $('#pedidos').dataTable({
+            'destroy': true,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'columns': [
+                {
+                    "orderable": true,
+                    render: function (data, type, row) {//datatoggle es para abrir el modal
+                        return row.idcliente + ' - ' + row.nomcli;
+                    }
+                }, {
+                    'data': 'domicli'
+                }, {
+                    'orderable': true,
+                    render: function (data, type, row) {
+                        if (row.liquidado === 0 && row.rechazo > 0) {
                             return '<span class="label label-danger">Rechazado</span>';
-                            break;
-                        default:
-                            return '<span class="label">Desconocido</span>';
+                        } else if (row.liquidado >= 0 && row.rechazo === 0) {
+                            return '<span class="label label-success">Completo</span>';
+                        }
+                        return '<span class="label label-warning">Incompleto</span>';
+
                     }
 
+                }, {
+                    'data': 'liquidado'
+                },
+                {
+                    'data': 'rechazo'
+                }, {
+                    "orderable": true,
+                    render: function (data, type, row) {//datatoggle es para abrir el modal
+                        return '<span class="pull-right">' +
+                            '<div class="dropdown">' +
+                            '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+                            'Opciones ' +
+                            '<span class="caret"></span>' +
+                            '</button>' +
+                            '<ul class="dropdown-menu pull-right" role="menu">' +
+                            '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
+                            '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
+                            //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
+                            //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
+                            '</ul></div></span>';
+                    }
                 }
+            ]
+        });
+    }
+    function actualizar() {
+        var fletero = parseInt(document.getElementById('fleteros').value);
+        var fecha = moment(document.getElementById('datepicker').value, ['DD/MM/YYYY']).format('YYYY/MM/DD')
 
-            }, {
-                'data': 'importe'
-            }, {
-                "orderable": true,
-                render: function (data, type, row) {//datatoggle es para abrir el modal
-                    return '<span class="pull-right">' +
-                        '<div class="dropdown">' +
-                        '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
-                        'Opciones ' +
-                        '<span class="caret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu pull-right" role="menu">' +
-                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
-                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
-                        //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
-                        //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
-                        '</ul></div></span>';
-                }
+        if (isNaN(fletero)) {
+            fletero = null;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/terranorte/app/reporte/despacho',
+            contentType: "application/json",
+            data: JSON.stringify({fecha: fecha, fletero: fletero}),
+            success: function (result) {
+                crearTablaGeneral(result);
+                crearTabla(result);
             }
-        ]
-    });
+        });
+
+    }
+
+
 </script>
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 

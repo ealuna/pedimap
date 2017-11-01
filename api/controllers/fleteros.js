@@ -47,7 +47,7 @@ module.exports = name => {
                 return res.status(400).json({msg: 'El campo fecha es requerido'})
             }
 
-            fletero.entregas(data.fecha).then(result => {
+            fletero.entregas(data.fecha, data.fletero).then(result => {
                 res.status(200).json(result);
             }).catch(err => {
                 res.status(500).json({error: err});

@@ -140,11 +140,11 @@ router.use(helmet({noCache: true}));
 router.get('/seguimiento', function (req, res) {
     controllers.fleteros('TERRANORTE').render(req, res);
 });
-
+/*
 router.get('/transporte', function (req, res) {
     res.render('fletero');
 });
-
+*/
 
 router.get('/entregas', function (req, res) {
     res.render('entregar');
@@ -180,6 +180,14 @@ router.get('/seguimiento/reporte', function (req, res, next) {
 
 router.get('/transporte/pedidos', function (req, res, next) {
     res.render('pedidos');
+});
+
+router.get('/transporte/entregados', function (req, res, next) {
+    res.render('entregados');
+});
+
+router.get('/transporte/fleteros', function (req, res, next) {
+    res.render('fletero');
 });
 
 module.exports = router;
