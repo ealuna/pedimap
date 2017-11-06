@@ -16,7 +16,7 @@ function GenerarReporte() {
             ExtraerDatos(result);
             CrearTabla(result);
         }
-    })
+    });
 }
 
 function ExtraerDatos(result) {
