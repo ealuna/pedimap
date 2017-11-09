@@ -28,7 +28,17 @@ module.exports = name => {
                     replacements: {fechadesde: fecha, fechahasta: fecha, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        carga: (fecha, fletero = null) => {
+            return sequelize.query(
+                'EXEC [SP].[carga] @fecha = :fecha, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha: new Date(), fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
         }
+
     };
 };
 

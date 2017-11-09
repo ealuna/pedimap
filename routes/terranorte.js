@@ -118,6 +118,10 @@ app.post("/fleteros/entregas", function (req, res) {
     controllers.fleteros('TERRANORTE').entregas(req, res);
 });
 
+app.post("/fleteros/carga", function (req, res) {
+    controllers.fleteros('TERRANORTE').carga(req, res);
+});
+
 app.post("/documentos/entregas", function (req, res) {
     controllers.documentos('TERRANORTE').entregas(req, res);
 });

@@ -52,6 +52,19 @@ module.exports = name => {
             }).catch(err => {
                 res.status(500).json({error: err});
             });
+        },
+        carga: (req, res) => {
+            const data = req.body;
+
+            if (!data.fletero) {
+                return res.status(400).json({msg: 'El campo fletero es requerido'})
+            }
+
+            fletero.carga(data.fecha, data.fletero).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
         }
     };
 };
