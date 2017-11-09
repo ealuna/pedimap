@@ -130,9 +130,6 @@ app.post("/documentos/entregas_horas", function (req, res) {
     controllers.documentos('TERRANORTE').entregas_horas(req, res);
 });
 
-
-
-
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
     res.json({message: "Success! You can not see this without a token"});
 });
