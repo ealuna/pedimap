@@ -122,6 +122,14 @@ app.post("/fleteros/carga", function (req, res) {
     controllers.fleteros('TERRANORTE').carga(req, res);
 });
 
+app.post("/fleteros/detalles", function (req, res) {
+    controllers.fleteros('TERRANORTE').detalles(req, res);
+});
+
+app.post("/fleteros/documentos", function (req, res) {
+    controllers.fleteros('TERRANORTE').documentos(req, res);
+});
+
 app.post("/documentos/entregas", function (req, res) {
     controllers.documentos('TERRANORTE').entregas(req, res);
 });
@@ -146,7 +154,6 @@ router.get('/transporte', function (req, res) {
     res.render('fletero');
 });
 */
-
 router.get('/entregas', function (req, res) {
     res.render('entregar');
 });

@@ -65,6 +65,32 @@ module.exports = name => {
             }).catch(err => {
                 res.status(500).json({error: err});
             });
+        },
+        documentos: (req, res) => {
+            const data = req.body;
+
+            if (!data.fletero) {
+                return res.status(400).json({msg: 'El campo fletero es requerido'})
+            }
+
+            fletero.documentos(data.fecha, data.fletero).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        detalles: (req, res) => {
+            const data = req.body;
+
+            if (!data.fletero) {
+                return res.status(400).json({msg: 'El campo fletero es requerido'})
+            }
+
+            fletero.detalles(data.fecha, data.fletero).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
         }
     };
 };

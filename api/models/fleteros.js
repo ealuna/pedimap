@@ -29,12 +29,30 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
         },
-        carga: (fecha, fletero = null) => {
+        carga: (fecha = new Date(), fletero = null) => {
             return sequelize.query(
                 'EXEC [SP].[carga] @fecha = :fecha, @fletero = :fletero',
                 {
                     nest: true,
-                    replacements: {fecha: new Date(), fletero: fletero},
+                    replacements: {fecha: fecha, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        documentos: (fecha = new Date(), fletero = null) => {
+            return sequelize.query(
+                'EXEC [SP].[clientes_documentos] @fecha = :fecha, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        detalles: (fecha = new Date(), fletero = null) => {
+            return sequelize.query(
+                'EXEC [SP].[clientes_detalles] @fecha = :fecha, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha: fecha, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
         }
