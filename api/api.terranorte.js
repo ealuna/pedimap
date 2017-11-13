@@ -25,6 +25,7 @@
 var request = require("request");
 var tarro = request.jar();
 var fs = require('fs');
+var unzip = require('unzip');
 
 var options = {
     method: 'POST',
@@ -32,6 +33,7 @@ var options = {
     jar: tarro,
     headers: {
         'cache-control': 'no-cache',
+        'Connection':'keep-alive',
         'content-type': 'application/x-www-form-urlencoded'
     },
     form: {
@@ -49,9 +51,12 @@ var options = {
 var options2 = {
     method: 'POST',
     url: 'http://solucionesempresa.entel.pe/gloria_v4/preventa/DESCARGA.ASPX',
+    path: '/',
     jar: tarro,
+    encoding: null,
     headers: {
         'cache-control': 'no-cache',
+        'Connection':'keep-alive',
         'content-type': 'application/x-www-form-urlencoded'
     },
     form: {
@@ -66,54 +71,67 @@ var options2 = {
     },
     timedOut: 10000
 };
-/*
+
+
 request(options, function (error, response, body) {
         if (error) throw new Error(error);
 
-        console.log(response.headers);
-        console.log(tarro);*/
+        console.log(response);
+        console.log(tarro);
         /*
          request.post(options2).on('response', function (response) {
          //console.log(response)
          response.pipe(fs.createWriteStream('./Archivo.zip'));
          });*/
-    /*
+
 
         var through2 = require('through2');
 
         var req = request(options2);
         req.on('error', function (e) {
             // Handle connection errors
-            console.log(e);
+            //console.log(e);
         });
+        var _filename = 'default.zip';
         var bufferedResponse = req.pipe(through2(function (chunk, enc, callback) {
             this.push(chunk);
             callback()
         }));
         req.on('response', function (res) {
             if (res.statusCode === 200) {
+
                 try {
                     var contentDisposition = res.headers['content-disposition'];
                     var match = contentDisposition && contentDisposition.match(/(filename=|filename\*='')(.*)$/);
-                    var filename = match && match[2] || 'default-filename.out';
-                    var dest = fs.createWriteStream(filename);
+                    var filename = match && match[2] || 'default.zip';
+                    _filename = filename;
+                    var dest = fs.createWriteStream(filename, {autoClose: true});
+
                     dest.on('error', function (e) {
                         // Handle write errors
                         console.log(e);
-                        bufferedResponse.resume();
                     });
+
                     dest.on('finish', function () {
                         // The file has been downloaded
+
                         console.log('Downloaded ' + filename);
                     });
+
                     dest.on('resume', function () {
                         // The file has been downloaded
                         console.log('Downloaded ' + filename);
                     });
+
                     bufferedResponse.pipe(dest);
+
                 } catch (e) {
+
                     // Handle request errors
                     console.log(e);
+                } finally {
+
+                    console.log('Downloaded Sales');
                 }
             }
             else {
@@ -121,18 +139,51 @@ request(options, function (error, response, body) {
                 console.log(res.statusCode);
             }
         });
+        req.on('finish', function () {
+
+        });
     }
 );
 
 
-*/
+/*
 
 function a(path, callback) {
     request(options, function (a,b,c) {
         //var aa = request(options2);
         var aa = request(options2)
-        aa.pause();
-            aa.pipe(fs.createWriteStream('./archivos272a.zip'))
+      // aa.pause();
+            aa.pipe(fs.createWriteStream('./archivos11131.zip'));
+        aa.resume()
+            /*
+        aa.on('response', function(response) {
+                    console.log(response.statusCode) // 200
+                    console.log(response.headers['content-type']) // 'image/png'
+                })
+
+        aa.on('finish', function(err) {
+                console.log(err)
+            })
+        aa.on('end', function(err) {
+            console.log(err)
+        })*/
+/*
+        request
+            (options2)
+            .on('error', function(err) {
+                console.log(err)
+            })
+            .pipe(fs.createWriteStream('./archivos11131.zip'))*/
+        /*aa.on('response', function (res) {
+            if(res.statusCode === 200){
+
+                aa.pipe(fs.createWriteStream('./archivos11131.zip')) //pipe to where you want it to go
+                //aa.bufer()
+                aa.destroy()
+            }else{  }
+        })*/
+
+
         //aa.on();
 
 
@@ -149,7 +200,7 @@ function a(path, callback) {
             }).on('resume', function () {
 
         });*/
-    });
+    //});
 
-}
-a('', null)
+//}
+/*a('', null)*/
