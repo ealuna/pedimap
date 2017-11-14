@@ -33,7 +33,7 @@ var options = {
     jar: tarro,
     headers: {
         'cache-control': 'no-cache',
-        'Connection':'keep-alive',
+        'Connection': 'keep-alive',
         'content-type': 'application/x-www-form-urlencoded'
     },
     form: {
@@ -51,17 +51,21 @@ var options = {
 var options2 = {
     method: 'POST',
     url: 'http://solucionesempresa.entel.pe/gloria_v4/preventa/DESCARGA.ASPX',
-    path: '/',
     jar: tarro,
     encoding: null,
     headers: {
-        'cache-control': 'no-cache',
-        'Connection':'keep-alive',
-        'content-type': 'application/x-www-form-urlencoded'
+        'Accept-Language': 'es-419',
+        'Accept': 'text/html, application/xhtml+xml, */*',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'Keep-Alive',
+        'Host': 'solucionesempresa.entel.pe',
+        'Referer': 'http://solucionesempresa.entel.pe/gloria_v4/preventa/DESCARGA.ASPX',
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded',
     },
     form: {
-        txtFechaIni: '18/10/2017',
-        txtFechaFin: '18/10/2017',
+        txtFechaIni: '14/11/2017',
+        txtFechaFin: '14/11/2017',
         txtHoraIni: '00:00',
         txtHoraFin: '23:59',
         __VIEWSTATE: '/wEPDwUKLTM1ODY4Mjg1OQ9kFgICAw9kFgZmD2QWAgIDDw8WAh4EVGV4dAUTQURNLk9SSVVOREEgQUxGQV9WNGRkAgEPZBYCZhA8KwANAQwUKwADBQcwOjAsMDoxFCsAAhYIHgVWYWx1ZQUBOR8ABQ5NQU5URU5JTUlFTlRPUx4LTmF2aWdhdGVVcmwFEy9nbG9yaWFfdjQvcHJldmVudGEeCEltYWdlVXJsBSgvZ2xvcmlhX3Y0L3ByZXZlbnRhL0ltYWdlcy9idG5tYW50ZW4uanBnFCsABwUXMDowLDA6MSwwOjIsMDozLDA6NCwwOjUUKwACFgYfAQUCMTAfAAUIQ0xJRU5URVMfAgUOfi9DbGllbnRlLmFzcHhkFCsAAhYGHwEFAjEzHwAFBVJVVEFTHwIFC34vUnV0YS5hc3B4ZBQrAAIWBh8BBQIxMR8ABQhVU1VBUklPUx8CBQ5+L1VzdWFyaW8uYXNweGQUKwACFgYfAQUCMTIfAAUJUFJPRFVDVE9THwIFD34vUHJvZHVjdG8uYXNweGQUKwACFgYfAQUBMh8ABQVDQVJHQR8CBQx+L0NBUkdBLkFTUFhkFCsAAhYGHwEFATMfAAUIREVTQ0FSR0EfAgUPfi9ERVNDQVJHQS5BU1BYZBQrAAIWCB8BBQE0HwAFCFJFUE9SVEVTHwIFEy9nbG9yaWFfdjQvcHJldmVudGEfAwUoL2dsb3JpYV92NC9wcmV2ZW50YS9JbWFnZXMvYnRucmVwb3J0LmpwZxQrAAcFFzA6MCwwOjEsMDoyLDA6MywwOjQsMDo1FCsAAhYGHwEFATEfAAUHUEVESURPUx8CBRR+L1JlcG9ydGVQZWRpZG8uQVNQWGQUKwACFgYfAQUCMTUfAAUOREVUQUxMRSBQRURJRE8fAgUbfi9SZXBvcnRlUGVkaWRvRGV0YWxsZS5BU1BYZBQrAAIWBh8BBQE1HwAFCk5PIFBFRElET1MfAgUWfi9SZXBvcnRlTm9QZWRpZG8uQVNQWGQUKwACFgYfAQUBNh8ABQpERVZPTFVDSU9OHwIFGH4vUmVwb3J0ZURldm9sdWNpb24uQVNQWGQUKwACFgYfAQUBNx8ABQVDQU5KRR8CBRN+L1JlcG9ydGVDYW5qZS5BU1BYZBQrAAIWBh8BBQE4HwAFCENPQlJBTlpBHwIFFn4vUmVwb3J0ZUNvYnJhbnphLkFTUFhkZGQCCg8PFgIfAGVkZGQDPugpmbCrciDtxala0Y5md5SXZA==',
@@ -76,8 +80,7 @@ var options2 = {
 request(options, function (error, response, body) {
         if (error) throw new Error(error);
 
-        console.log(response);
-        console.log(tarro);
+        //console.log(response);
         /*
          request.post(options2).on('response', function (response) {
          //console.log(response)
@@ -88,15 +91,18 @@ request(options, function (error, response, body) {
         var through2 = require('through2');
 
         var req = request(options2);
+
         req.on('error', function (e) {
             // Handle connection errors
-            //console.log(e);
+            console.log(e);
         });
+
         var _filename = 'default.zip';
         var bufferedResponse = req.pipe(through2(function (chunk, enc, callback) {
             this.push(chunk);
             callback()
         }));
+
         req.on('response', function (res) {
             if (res.statusCode === 200) {
 
@@ -105,7 +111,7 @@ request(options, function (error, response, body) {
                     var match = contentDisposition && contentDisposition.match(/(filename=|filename\*='')(.*)$/);
                     var filename = match && match[2] || 'default.zip';
                     _filename = filename;
-                    var dest = fs.createWriteStream(filename, {autoClose: true});
+                    var dest = fs.createWriteStream(filename);
 
                     dest.on('error', function (e) {
                         // Handle write errors
@@ -118,20 +124,29 @@ request(options, function (error, response, body) {
                         console.log('Downloaded ' + filename);
                     });
 
+                    dest.on('pause', function () {
+                        // The file has been downloaded
+
+                        console.log('Downloaded ' + filename);
+                    });
+
+                    dest.on('close', function () {
+                        // The file has been downloaded
+
+                        console.log('Downloaded ' + filename);
+                    });
+
                     dest.on('resume', function () {
                         // The file has been downloaded
                         console.log('Downloaded ' + filename);
                     });
 
-                    bufferedResponse.pipe(dest);
+                    bufferedResponse.pipe(dest)
 
                 } catch (e) {
 
                     // Handle request errors
                     console.log(e);
-                } finally {
-
-                    console.log('Downloaded Sales');
                 }
             }
             else {
@@ -139,68 +154,7 @@ request(options, function (error, response, body) {
                 console.log(res.statusCode);
             }
         });
-        req.on('finish', function () {
 
-        });
+
     }
 );
-
-
-/*
-
-function a(path, callback) {
-    request(options, function (a,b,c) {
-        //var aa = request(options2);
-        var aa = request(options2)
-      // aa.pause();
-            aa.pipe(fs.createWriteStream('./archivos11131.zip'));
-        aa.resume()
-            /*
-        aa.on('response', function(response) {
-                    console.log(response.statusCode) // 200
-                    console.log(response.headers['content-type']) // 'image/png'
-                })
-
-        aa.on('finish', function(err) {
-                console.log(err)
-            })
-        aa.on('end', function(err) {
-            console.log(err)
-        })*/
-/*
-        request
-            (options2)
-            .on('error', function(err) {
-                console.log(err)
-            })
-            .pipe(fs.createWriteStream('./archivos11131.zip'))*/
-        /*aa.on('response', function (res) {
-            if(res.statusCode === 200){
-
-                aa.pipe(fs.createWriteStream('./archivos11131.zip')) //pipe to where you want it to go
-                //aa.bufer()
-                aa.destroy()
-            }else{  }
-        })*/
-
-
-        //aa.on();
-
-
-        /*aa.on('response', function (res) {
-           // res.pipe(fs.createWriteStream('./Archivo.zip')) ;
-
-            //res.resume()
-        });*/
-/*
-
-            .pipe(fs.createWriteStream(path))
-            .on('close', function () {
-                callback();
-            }).on('resume', function () {
-
-        });*/
-    //});
-
-//}
-/*a('', null)*/
