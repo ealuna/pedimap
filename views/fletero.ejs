@@ -13,7 +13,7 @@
 
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css"/>
-
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 </head>
 
 <body class="hold-transition skin sidebar-mini">
@@ -107,7 +107,8 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar" aria-hidden="true"></i>
                                 </span>
-                                    <input type="text" class="form-control" id="datepicker">
+                                    <input type="text" class="form-control" id="fechas"/>
+                                    <!--<input type="text" class="form-control" id="datepicker">-->
                                 </div>
                             </div>
                             <div class="form-group">
@@ -117,8 +118,7 @@
                                     <i class="fa fa-truck" aria-hidden="true"></i>
                                 </span>
                                     <input type="text" id="fleteros" class="form-control has-feedback"
-                                           style="width: 100%" placeholder="Codigo de transportista">
-                                    </input>
+                                           style="width: 100%" placeholder="Codigo de transportista" value="0"/>
                                 </div>
                             </div>
                             <!--
@@ -135,7 +135,7 @@
                             </div>
                             -->
                             <div class="pull-right">
-                                <button type="button" class="btn btn-block btn-primary" onclick="generarReporte()">
+                                <button type="button" class="btn btn-block btn-primary" onclick="cargarDatos()">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                     Generar
                                 </button>
@@ -157,30 +157,30 @@
                                 <tbody>
                                 <tr>
                                     <th>Estado</th>
+                                    <th>Nro. Clientes</th>
                                     <th>Importe Neto</th>
                                 </tr>
                                 <tr>
-                                    <td><span class="label" style="background-color: #4a4a4a">Pendiente</span></td>
-                                    <td id="pendientes"></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="label label-success">Entregado</span></td>
+                                    <td><span class="label label-success">Liquidado</span></td>
+                                    <td id="_entregados"></td>
                                     <td id="entregados"></td>
                                 </tr>
                                 <tr>
                                     <td><span class="label label-danger">Rechazado</span></td>
+                                    <td id="_rechazados"></td>
                                     <td id="rechazados"></td>
                                 </tr>
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-cube" aria-hidden="true"></i>
-                            <h3 class="box-title">Pedidos</h3>
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Historico de rechazo</h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                     <i class="fa fa-minus"></i>
@@ -188,21 +188,9 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <table id="pedidos" class="table table-bordered table-striped table-responsive"
-                                   cellspacing="0" style="font-size: xx-small; width: 100%">
-                                <thead style="width: 100%">
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>Domicilio</th>
-                                    <th>Estado</th>
-                                    <th>Importe Neto</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot></tfoot>
-                            </table>
+                            <div class="chart-container">
+                                <canvas id="reporte_line" class="line-chart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,8 +207,30 @@
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
 <script src="/assets/lib/select2/dist/js/select2.full.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<% include layouts/scripts/chart.ejs %>
 <script type="text/javascript">
+    var reporte_line = document.getElementById('reporte_line').getContext('2d');
+    var reporte;
+    var color_atendido = 'rgb(16, 209, 69)';
+    var color_rechazo = 'rgb(209, 41, 44)';
     var picker = $('#datepicker');
+    var init = moment().startOf('month').format('YYYY/MM/DD');
+    var to = moment().format('YYYY/MM/DD');
+
+    $('#fechas').daterangepicker({
+            startDate: moment().startOf('month'),
+            endDate: moment(),
+            format: 'YYYY/MM/DD',
+            locale: {
+                format: 'YYYY/MM/DD'
+            },
+        }, function (start, end) {
+            init = start.toJSON();
+            to = end.toJSON();
+        }
+    );
+
     picker.datepicker(
         {
             autoclose: true,
@@ -232,84 +242,176 @@
         }
     );
     picker.datepicker('setDate', new Date());
-    $.ajax({
-        type: 'POST',
-        url: '/terranorte/app/documentos/entregas',
-        contentType: "application/json",
-        data: JSON.stringify({fecha: moment(new Date()).format('YYYY/MM/DD')}),
-        success: function (result) {
 
-            document.getElementById('pendientes').innerHTML = 'S/.' + result[0].pendiente;
-            document.getElementById('entregados').innerHTML = 'S/.' + result[0].entregado;
-            document.getElementById('rechazados').innerHTML = 'S/.' + result[0].rechazado;
-        }
-    });
-
-    $('#pedidos').dataTable({
-        'destroy': true,
-        'language': {
-            "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-        },
-        dom: 'frtip',
-        'filter': true,
-        responsive: true,
-        'stateSave': false,
-        'ajax': {
-            url: "/terranorte/app/clientes/despacho",
-            "type": "POST",
-            dataType: "json",
-            data: {fecha: new Date().toJSON()},
-            dataSrc: ''
-        },
-        'columns': [
+    function cargarDatos() {
+        var fletero = document.getElementById('fleteros').value;
+        $.ajax(
             {
-                "orderable": true,
-                render: function (data, type, row) {//datatoggle es para abrir el modal
-                    return row.idcliente + ' - ' + row.nomcli;
-                }
-            }, {
-                'data': 'domicli'
-            }, {
-                'orderable': true,
-                render: function (data, type, row) {
-
-                    switch (row.estado) {
-                        case 0:
-                            return '<span class="label" style="background-color: #4a4a4a">Pendiente</span>';
-                            break;
-                        case 1:
-                            return '<span class="label label-success">Entregado</span>';
-                            break;
-                        case 2:
-                            return '<span class="label label-danger">Rechazado</span>';
-                            break;
-                        default:
-                            return '<span class="label">Desconocido</span>';
-                    }
-
-                }
-
-            }, {
-                'data': 'importe'
-            }, {
-                "orderable": true,
-                render: function (data, type, row) {//datatoggle es para abrir el modal
-                    return '<span class="pull-right">' +
-                        '<div class="dropdown">' +
-                        '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
-                        'Opciones ' +
-                        '<span class="caret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu pull-right" role="menu">' +
-                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
-                        '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
-                        //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
-                        //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
-                        '</ul></div></span>';
+                type: 'POST',
+                url: '/terranorte/app/reporte/despacho',
+                contentType: "application/json",
+                data: JSON.stringify({fechainicial: init, fechafinal: to, fletero: fletero}),
+                success: function (result) {
+                    crearTablaGeneral(result);
+                    //  crearTabla(result);
                 }
             }
-        ]
-    });
+        );
+        $.ajax(
+            {
+                type: 'POST',
+                url: '/terranorte/app/fleteros/reporte',
+                contentType: "application/json",
+                data: JSON.stringify({fecha_inicial: init, fecha_final: to, fletero: fletero}),
+                success: function (result) {
+                    console.log(result.data)
+                    var data = cargarLineDataset(result.data)
+                    crearGraficoLineas(data);
+                    //  crearTabla(result);
+                }
+            }
+        );
+    }
+
+    function crearTablaGeneral(data) {
+        var liquidado = 0;
+        var rechazado = 0;
+        var _liquidado = 0;
+        var _rechazado = 0;
+        console.log(data)
+        for (var i = 0; i < data.length; i++) {
+            liquidado += data[i].liquidado;
+            rechazado += data[i].rechazo;
+            if (data[i].rechazo > 0 && data[i].liquidado === 0) {
+                _rechazado++;
+            } else {
+                _liquidado++;
+            }
+        }
+        document.getElementById('entregados').innerHTML = 'S/. ' + liquidado.toFixed(2);
+        document.getElementById('rechazados').innerHTML = 'S/. ' + rechazado.toFixed(2);
+        document.getElementById('_entregados').innerHTML = _liquidado;
+        document.getElementById('_rechazados').innerHTML = _rechazado;
+    }
+    /*
+     $('#pedidos').dataTable({
+     'destroy': true,
+     'language': {
+     "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+     },
+     dom: 'frtip',
+     'filter': true,
+     responsive: true,
+     'stateSave': false,
+     'ajax': {
+     url: "/terranorte/app/clientes/despacho",
+     "type": "POST",
+     dataType: "json",
+     data: {fecha: new Date().toJSON()},
+     dataSrc: ''
+     },
+     'columns': [
+     {
+     "orderable": true,
+     render: function (data, type, row) {//datatoggle es para abrir el modal
+     return row.idcliente + ' - ' + row.nomcli;
+     }
+     }, {
+     'data': 'domicli'
+     }, {
+     'orderable': true,
+     render: function (data, type, row) {
+
+     switch (row.estado) {
+     case 0:
+     return '<span class="label" style="background-color: #4a4a4a">Pendiente</span>';
+     break;
+     case 1:
+     return '<span class="label label-success">Entregado</span>';
+     break;
+     case 2:
+     return '<span class="label label-danger">Rechazado</span>';
+     break;
+     default:
+     return '<span class="label">Desconocido</span>';
+     }
+
+     }
+
+     }, {
+     'data': 'importe'
+     }, {
+     "orderable": true,
+     render: function (data, type, row) {//datatoggle es para abrir el modal
+     return '<span class="pull-right">' +
+     '<div class="dropdown">' +
+     '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+     'Opciones ' +
+     '<span class="caret"></span>' +
+     '</button>' +
+     '<ul class="dropdown-menu pull-right" role="menu">' +
+     '<li><a href="#" onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
+     '<li><a href="#" onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
+     //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
+     //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
+     '</ul></div></span>';
+     }
+     }
+     ]
+     });
+     */
+
+    function crearGraficoLineas(data) {
+        if (reporte) reporte.destroy();
+
+        reporte = new Chart(reporte_line, {
+            type: 'line',
+            data: data,
+            options: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                responsive: true,
+                maintainAspectRatio: true,
+                pointDotRadius: 10,
+                bezierCurve: false,
+                scaleShowVerticalLines: false,
+                scaleGridLineColor: 'black'
+            }
+        });
+    }
+    function cargarLineDataset(data) {
+        var fechas = [];
+       // var atendidos = [];
+        var rechazos = [];
+
+        for (var i = 0; i < data.length; i++) {
+            fechas.push(data[i].fecha);
+            //atendidos.push(data[i].liquidado);
+            rechazos.push((data[i].rechazo/(data[i].rechazo + data[i].liquidado)).toFixed(2));
+        }
+
+
+        return {
+            labels: fechas,
+            datasets: [
+               /* {
+                    label: 'Liquidado',
+                    borderColor: color_atendido,
+                    backgroundColor: color_atendido,
+                    data: atendidos,
+                    fill: false
+                }, */{
+                    label: 'Rechazo',
+                    borderColor: color_rechazo,
+                    backgroundColor: color_rechazo,
+                    data: rechazos,
+                    fill: false
+                }
+            ]
+        };
+    }
 </script>
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 

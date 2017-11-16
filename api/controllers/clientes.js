@@ -33,7 +33,7 @@ module.exports = name => {
         },
         reporteDespacho: (req, res) => {
             const data = req.body;
-            clientes.reporteDespacho(data.fecha, data.fletero).then(result => {
+            clientes.reporteDespacho(data.fechainicial, data.fechafinal, data.fletero).then(result => {
                 res.status(200).json(result);
             }).catch(err => {
                 res.status(500).json({error: err});

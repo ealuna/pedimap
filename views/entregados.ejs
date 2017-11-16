@@ -232,7 +232,7 @@
         type: 'POST',
         url: '/terranorte/app/reporte/despacho',
         contentType: "application/json",
-        data: JSON.stringify({fecha: moment(new Date()).format('YYYY/MM/DD')}),
+        data: JSON.stringify({fechainicial: moment(new Date()).format('YYYY/MM/DD'), fechafinal: moment(new Date()).format('YYYY/MM/DD')}),
         success: function (result) {
             crearTablaGeneral(result);
             crearTabla(result);
@@ -320,7 +320,7 @@
             type: 'POST',
             url: '/terranorte/app/reporte/despacho',
             contentType: "application/json",
-            data: JSON.stringify({fecha: fecha, fletero: fletero}),
+            data: JSON.stringify({fechainicial: fecha, fechafinal: fecha, fletero: fletero}),
             success: function (result) {
                 crearTablaGeneral(result);
                 crearTabla(result);

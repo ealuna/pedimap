@@ -139,7 +139,36 @@ app.post("/documentos/entregas_horas", function (req, res) {
 });
 
 app.post("/secret", passport.authenticate('jwt', {session: false}), function (req, res) {
+    console.log(req.user)
     res.json({message: "Success! You can not see this without a token"});
+});
+
+app.post("/fleteros/reporte", function (req, res) {
+    controllers.fleteros('TERRANORTE').reporte(req, res);
+});
+
+app.post("/despacho/generico", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_generico(req, res);
+});
+
+app.post("/despacho/linea", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_linea(req, res);
+});
+
+app.post("/despacho/proveedor", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_proveedor(req, res);
+});
+
+app.post("/despacho/vendedor", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_vendedor(req, res);
+});
+
+app.post("/despacho/ruta", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_ruta(req, res);
+});
+
+app.post("/despacho/consolidado", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_consolidado(req, res);
 });
 
 router.use('/app', app);
@@ -172,6 +201,10 @@ router.get('/entregas', function (req, res) {
 
 router.get('/inicio', function (req, res) {
     res.render('informe');
+});
+
+router.get('/informe/detallado', function (req, res) {
+    res.render('detallado');
 });
 
 router.get('/login', function (req, res, next) {

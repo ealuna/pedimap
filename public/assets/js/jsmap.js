@@ -92,7 +92,7 @@ function cargarDespachos(fecha, fletero) {
         type: 'POST',
         url: '/terranorte/app/reporte/despacho',
         contentType: "application/json",
-        data: JSON.stringify({fecha: fecha, fletero: fletero}),
+        data: JSON.stringify({fechainicial: fecha, fechafinal: fecha, fletero: fletero}),
         success: function (result) {
             createMarkers(result);
             crearGrafico(result);

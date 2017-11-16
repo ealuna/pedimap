@@ -30,12 +30,12 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
         },
-        reporteDespacho: function (fecha, fletero = null) {
+        reporteDespacho: function (fechainicial, fechafinal, fletero = null) {
             return sequelize.query(
-                'EXEC [RP].[fleteros_clientes] @fecha_inicial = :fecha, @fecha_final = :fecha, @fletero = :fletero',
+                'EXEC [RP].[fleteros_clientes] @fecha_inicial = :fechainicial, @fecha_final = :fechafinal, @fletero = :fletero',
                 {
                     nest: true,
-                    replacements: {fecha: fecha, fletero: fletero},
+                    replacements: {fechainicial: fechainicial, fechafinal: fechafinal, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
         },

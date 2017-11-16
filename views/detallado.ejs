@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <title>Informe General | Pedimap</title>
+    <title>Informe Detallado | Pedimap</title>
 
     <% include layouts/meta.ejs %>
     <% include layouts/styles/default.ejs %>
@@ -63,14 +63,14 @@
             </div>
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">PANEL DE OPCIONES</li>
-                <%- include('layouts/aside/aside.ejs', {value: 'inicio'}) %>
+                <%- include('layouts/aside/aside.ejs', {value: 'detallado'}) %>
             </ul>
         </section>
     </aside>
     <div id="content-test" class="content-wrapper">
         <section id="content-header" class="content-header">
             <h1 class="hidden-xs">
-                Informe General
+                Informe Detallado
                 <small>Seguimiento</small>
             </h1>
             <ol class="breadcrumb">
@@ -84,8 +84,8 @@
                 <div class="col-md-6">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                            <h3 class="box-title">Estado de entregas</h3>
+                            <i class="fa fa-table   " aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Proveedores</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
@@ -98,8 +98,8 @@
                 <div class="col-md-6">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i>
-                            <h3 class="box-title">Estado de entregas</h3>
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Lineas</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
@@ -112,8 +112,8 @@
                 <div class="col-md-12">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                            <h3 class="box-title">Estado de flota</h3>
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Genericos</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">

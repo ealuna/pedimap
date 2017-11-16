@@ -55,6 +55,69 @@ module.exports = name => {
                     replacements: {fecha: fecha, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        reporte: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[fleteros_fechas] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_generico: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_generico] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_linea: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_linea] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_proveedor: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_proveedor] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_vendedor: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_vendedor] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_ruta: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_ruta] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        despacho_consolidado: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_consolidado] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
         }
 
     };
