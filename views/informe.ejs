@@ -81,7 +81,37 @@
         </section>
         <section id="section-map" class="content">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table   " aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Transportes</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <table id="consolidado" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Transporte</th>
+                                    <th>Vendedor</th>
+                                    <th>Ruta</th>
+                                    <th>Clientes</th>
+                                    <th>Documentos</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-pie-chart" aria-hidden="true"></i>
@@ -94,8 +124,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -104,12 +132,10 @@
                         </div>
                         <div class="box-body">
                             <div class="chart-container">
-                                <canvas id="reporte_line" class="line-chart" height="300px"></canvas>
+                                <canvas id="reporte_line" class="line-chart"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -117,10 +143,8 @@
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
-                            <div class="hidden-xs hidden-sm">
-                                <canvas id="reporte_bar"></canvas>
-                            </div>
-                            <div class="hidden-md hidden-lg">
+
+                            <div>
                                 <canvas id="reporte_bar_horizontal"></canvas>
                             </div>
                         </div>
@@ -143,6 +167,48 @@
 
 
 <script src="/assets/js/jsinforme.js"></script>
+<script>
+    var init = moment().format('YYYY/MM/DD')
+    var to = moment().format('YYYY/MM/DD')
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/despacho/consolidado/general',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'fletero'},
+                    {'data': 'vendedor'},
+                    {'data': 'ruta'},
+                    {'data': 'clientes'},
+                    {'data': 'documentos'},
+                    {'data': 'entregado'},
+                    {'data': 'rechazado'},
+                    {'data': 'pendiente'},
+                    {'data': 'total'}
+                ];
+                crearTabla(result.data, '#consolidado', columnas);
+            }
+        }
+    );
+    function crearTabla(data, tabla, columnas) {
+        $(tabla).dataTable({
+            'destroy': true,
+            "bPaginate": false,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'columns': columnas
+        });
+    }
 
+
+</script>
 </body>
 </html>

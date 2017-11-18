@@ -108,7 +108,7 @@ module.exports = name => {
         despacho_generico: (req, res) => {
             const data = req.body;
 
-            if (!data.fletero || !data.fecha_inicial || !data.fecha_final) {
+            if (!data.fecha_inicial || !data.fecha_final) {
                 return res.status(400).json({msg: 'Los campo fletero y fecha son requeridos'})
             }
 
@@ -121,7 +121,7 @@ module.exports = name => {
         despacho_linea: (req, res) => {
             const data = req.body;
 
-            if (!data.fletero || !data.fecha_inicial || !data.fecha_final) {
+            if (!data.fecha_inicial || !data.fecha_final) {
                 return res.status(400).json({msg: 'Los campo fletero y fecha son requeridos'})
             }
 
@@ -134,7 +134,7 @@ module.exports = name => {
         despacho_proveedor: (req, res) => {
             const data = req.body;
 
-            if (!data.fletero || !data.fecha_inicial || !data.fecha_final) {
+            if (!data.fecha_inicial || !data.fecha_final) {
                 return res.status(400).json({msg: 'Los campo fletero y fecha son requeridos'})
             }
 

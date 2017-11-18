@@ -71,7 +71,7 @@
         <section id="content-header" class="content-header">
             <h1 class="hidden-xs">
                 Informe Detallado
-                <small>Seguimiento</small>
+                <small>Proveedores</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
@@ -81,51 +81,121 @@
         </section>
         <section id="section-map" class="content">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Resumen de Proveedores</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <div>
+                                <canvas id="reporte_lineas" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <h3 class="box-title">Resumen de Proveedores</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <table id="resumen" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-table   " aria-hidden="true"></i>
-                            <h3 class="box-title">Informe de Proveedores</h3>
+                            <h3 class="box-title">Informe de Transportes</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
-                            <div class="chart-container">
-                                <canvas id="reporte_pie" class="pie-chart"></canvas>
-                            </div>
+                            <table id="fletero" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Transporte</th>
+                                    <th>Proveedor</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-table" aria-hidden="true"></i>
-                            <h3 class="box-title">Informe de Lineas</h3>
+                            <h3 class="box-title">Informe de Vendedores</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
-                            <div class="chart-container">
-                                <canvas id="reporte_line" class="line-chart" height="300px"></canvas>
-                            </div>
+                            <table id="vendedor" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Vendedor</th>
+                                    <th>Proveedor</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-table" aria-hidden="true"></i>
-                            <h3 class="box-title">Informe de Genericos</h3>
+                            <h3 class="box-title">Informe de Rutas</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
-                            <div class="hidden-xs hidden-sm">
-                                <canvas id="reporte_bar"></canvas>
-                            </div>
-                            <div class="hidden-md hidden-lg">
-                                <canvas id="reporte_bar_horizontal"></canvas>
-                            </div>
+                            <table id="ruta" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Ruta</th>
+                                    <th>Proveedor</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </div>
@@ -142,7 +212,163 @@
         src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 
 
-<script src="/assets/js/jsinforme.js"></script>
+<script type="text/javascript">
+    var init = moment().format('YYYY/MM/DD')
+    var to = moment().format('YYYY/MM/DD')
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/despacho/proveedor',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'fecha'},
+                    {'data': 'fletero'},
+                    {'data': 'proveedor'},
+                    {'data': 'entregado'},
+                    {'data': 'rechazado'},
+                    {'data': 'pendiente'}
+                ];
+                crearTabla(result.data, '#fletero', columnas);
+            }
+        }
+    );
+
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/vendedor/despacho/proveedor',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'fecha'},
+                    {'data': 'vendedor'},
+                    {'data': 'proveedor'},
+                    {'data': 'entregado'},
+                    {'data': 'rechazado'},
+                    {'data': 'pendiente'}
+                ];
+                crearTabla(result.data, '#vendedor', columnas);
+            }
+        }
+    );
+
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/ruta/despacho/proveedor',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'fecha'},
+                    {'data': 'ruta'},
+                    {'data': 'proveedor'},
+                    {'data': 'entregado'},
+                    {'data': 'rechazado'},
+                    {'data': 'pendiente'}
+                ];
+                crearTabla(result.data, '#ruta', columnas);
+            }
+        }
+    );
+
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/despacho/proveedor/general',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'proveedor'},
+                    {'data': 'entregado'},
+                    {'data': 'rechazado'},
+                    {'data': 'pendiente'}
+                ];
+                crearTabla(result.data, '#resumen', columnas);
+                crearGraficoBarras(result.data, 'reporte_lineas')
+            }
+        }
+    );
+
+    function cargarBarDataset(data) {
+
+        if (!data || !data.length) {
+            return;
+        }
+
+        var proveedor = [];
+        var pendiente = [];
+        var atendidos = [];
+        var rechazo = [];
+
+        for (var i = 0; i < data.length; i++) {
+            proveedor.push(data[i].proveedor);
+            pendiente.push(data[i].pendiente);
+            atendidos.push(data[i].entregado);
+            rechazo.push(data[i].rechazado);
+        }
+
+        return {
+            labels: proveedor,
+            datasets: [
+                {
+                    label: "Atendido",
+                    backgroundColor: 'rgb(16, 209, 69)',
+                    data: atendidos
+                }, {
+                    label: "Rechazado",
+                    backgroundColor: 'rgb(209, 41, 44)',
+                    data: rechazo
+                }, {
+                    label: "Pendiente",
+                    backgroundColor: 'rgb(132, 134, 137)',
+                    data: pendiente
+                }
+            ]
+        };
+
+    }
+    function crearGraficoBarras(data, chart) {
+
+        var _chart = document.getElementById(chart).getContext('2d');
+        var _data = cargarBarDataset(data);
+        new Chart(_chart, {
+            type: 'horizontalBar',
+            data: _data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Informe de Proveedores'
+                },
+                pointDotRadius: 10,
+                bezierCurve: false,
+                scaleShowVerticalLines: false,
+                scaleGridLineColor: 'black'
+            }
+        });
+    }
+
+    function crearTabla(data, tabla, columnas) {
+        $(tabla).dataTable({
+            'destroy': true,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'columns': columnas
+        });
+    }
+</script>
 
 </body>
 </html>

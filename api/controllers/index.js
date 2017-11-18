@@ -11,3 +11,4 @@ module.exports.rutas = require('./ruta');
 module.exports.usuarios = require('./usuario');
 module.exports.reporte = require('./reportes');
 module.exports.documentos = require('./documentos');
+module.exports.vendedor = require('./vendedor');

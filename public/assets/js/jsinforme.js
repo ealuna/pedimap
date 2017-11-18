@@ -5,7 +5,7 @@
 //var socket = io.connect('/terranorte', {'forceNew': true});
 var reporte_pie = document.getElementById('reporte_pie').getContext('2d');
 var reporte_line = document.getElementById('reporte_line').getContext('2d');
-var reporte_bar = document.getElementById('reporte_bar').getContext('2d');
+//var reporte_bar = document.getElementById('reporte_bar').getContext('2d');
 var reporte_bar_horizontal = document.getElementById('reporte_bar_horizontal').getContext('2d');
 var color_pendiente = 'rgb(132, 134, 137)';
 var color_atendido = 'rgb(16, 209, 69)';
@@ -117,7 +117,7 @@ function cargarLineDataset(data) {
         labels: horas,
         datasets: [
             {
-                label: 'Atendidos',
+                label: 'Entregado',
                 borderColor: color_atendido,
                 backgroundColor: color_atendido,
                 data: atendidos,
@@ -154,7 +154,19 @@ function crearGraficoLineas(data) {
             pointDotRadius: 10,
             bezierCurve: false,
             scaleShowVerticalLines: false,
-            scaleGridLineColor: 'black'
+            scaleGridLineColor: 'black',
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        fontSize: 10
+                    }
+                }]
+            }
         }
     });
 }
@@ -177,9 +189,9 @@ function cargarPieDataset(data) {
             ]
         }],
         labels: [
-            'Atendidos: S/.' + value.entregado,
-            'Rechazo: S/.' + value.rechazado,
-            'Pendientes: S/.' + value.pendiente,
+            'Entregado',
+            'Rechazo',
+            'Pendientes'
         ]
     };
 
@@ -207,7 +219,7 @@ function cargarBarDataset(data) {
         labels: fleteros,
         datasets: [
             {
-                label: "Atendido",
+                label: "Entregado",
                 backgroundColor: color_atendido,
                 data: atendidos
             }, {
@@ -245,7 +257,7 @@ function crearGraficoPie(data) {
 
 
 function crearGraficoBarras(data) {
-    new Chart(reporte_bar, {
+   /* new Chart(reporte_bar, {
         type: 'bar',
         data: data,
         options: {
@@ -260,7 +272,7 @@ function crearGraficoBarras(data) {
             scaleShowVerticalLines: false,
             scaleGridLineColor: 'black'
         }
-    });
+    });*/
     new Chart(reporte_bar_horizontal, {
         type: 'horizontalBar',
         data: data,
@@ -274,7 +286,19 @@ function crearGraficoBarras(data) {
             pointDotRadius: 10,
             bezierCurve: false,
             scaleShowVerticalLines: false,
-            scaleGridLineColor: 'black'
+            scaleGridLineColor: 'black',
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        fontSize: 10
+                    }
+                }]
+            }
         }
     });
 }

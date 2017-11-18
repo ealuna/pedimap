@@ -76,6 +76,26 @@ module.exports = name => {
                     type: sequelize.QueryTypes.SELECT
                 });
 
-        }
+        },
+        despacho_proveedor: (fecha_inicial = new Date(), fecha_final = new Date()) => {
+
+            return sequelize.query(
+                'EXEC [RP].[general_proveedor] @fecha_inicial= :fecha_inicial, @fecha_final = :fecha_final',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
+        consolidado_general: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+        return sequelize.query(
+            'EXEC [RP].[consolidado_general] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+            {
+                nest: true,
+                replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                type: sequelize.QueryTypes.SELECT
+            });
+    }
     };
 };

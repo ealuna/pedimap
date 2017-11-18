@@ -94,5 +94,31 @@ module.exports = name => {
                 res.status(500).json({error: err});
             });
         },
+        despacho_proveedor: (req, res) => {
+            const data = req.body;
+
+            if (!data.fecha_inicial || !data.fecha_final) {
+                return res.status(400).json({msg: 'Debe insertar un rango de fecha válido'})
+            }
+
+            reportes.despacho_proveedor(data.fecha_inicial, data.fecha_final).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        consolidado_general: (req, res) => {
+            const data = req.body;
+
+            if (!data.fecha_inicial || !data.fecha_final) {
+                return res.status(400).json({msg: 'Debe insertar un rango de fecha válido'})
+            }
+
+            reportes.consolidado_general(data.fecha_inicial, data.fecha_final).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        }
     };
 };

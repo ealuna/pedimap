@@ -159,8 +159,37 @@ app.post("/despacho/proveedor", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_proveedor(req, res);
 });
 
+
+app.post("/vendedor/despacho/generico", function (req, res) {
+    controllers.vendedor('TERRANORTE').despacho_generico(req, res);
+});
+
+app.post("/vendedor/despacho/linea", function (req, res) {
+    controllers.vendedor('TERRANORTE').despacho_linea(req, res);
+});
+
+app.post("/vendedor/despacho/proveedor", function (req, res) {
+    controllers.vendedor('TERRANORTE').despacho_proveedor(req, res);
+});
+
+app.post("/ruta/despacho/generico", function (req, res) {
+    controllers.rutas('TERRANORTE').despacho_generico(req, res);
+});
+
+app.post("/ruta/despacho/linea", function (req, res) {
+    controllers.rutas('TERRANORTE').despacho_linea(req, res);
+});
+
+app.post("/ruta/despacho/proveedor", function (req, res) {
+    controllers.rutas('TERRANORTE').despacho_proveedor(req, res);
+});
+
 app.post("/despacho/vendedor", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_vendedor(req, res);
+});
+
+app.post("/despacho/proveedor/general", function (req, res) {
+    controllers.reporte('TERRANORTE').despacho_proveedor(req, res);
 });
 
 app.post("/despacho/ruta", function (req, res) {
@@ -169,6 +198,10 @@ app.post("/despacho/ruta", function (req, res) {
 
 app.post("/despacho/consolidado", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_consolidado(req, res);
+});
+
+app.post("/despacho/consolidado/general", function (req, res) {
+    controllers.reporte('TERRANORTE').consolidado_general(req, res);
 });
 
 router.use('/app', app);
