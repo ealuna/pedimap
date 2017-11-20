@@ -178,15 +178,15 @@
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
                 var columnas = [
-                    {'data': 'fletero'},
-                    {'data': 'vendedor'},
-                    {'data': 'ruta'},
-                    {'data': 'clientes'},
-                    {'data': 'documentos'},
-                    {'data': 'entregado'},
-                    {'data': 'rechazado'},
-                    {'data': 'pendiente'},
-                    {'data': 'total'}
+                    {'data': 'fletero', orderable: true},
+                    {'data': 'vendedor', orderable: false},
+                    {'data': 'ruta', orderable: false},
+                    {'data': 'clientes', orderable: false},
+                    {'data': 'documentos', orderable: false},
+                    {'data': 'entregado', orderable: false},
+                    {'data': 'rechazado', orderable: false},
+                    {'data': 'pendiente', orderable: false},
+                    {'data': 'total', orderable: false}
                 ];
                 crearTabla(result.data, '#consolidado', columnas);
             }
@@ -204,7 +204,47 @@
             responsive: true,
             'stateSave': false,
             data: data,
-            'columns': columnas
+            'columns': columnas,
+            rowGroup: {
+                startRender: function (rows, group) {
+                    return 'Transporte ' + group;
+                },
+                endRender: function (rows, group) {
+                    var clientes = rows.data().pluck('clientes').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    var documentos = rows.data().pluck('documentos').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    var entregado = rows.data().pluck('entregado').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    var rechazado = rows.data().pluck('rechazado').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    var pendiente = rows.data().pluck('pendiente').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    var total = rows.data().pluck('total').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    return $('<tr/>')
+                        .append('<td  colspan="3">Resumen</td>')
+                        .append('<td>' + clientes + '</td>')
+                        .append('<td>' + documentos + '</td>')
+                        .append('<td>' + entregado.toFixed(2) + '</td>')
+                        .append('<td>' + rechazado.toFixed(2) + '</td>')
+                        .append('<td>' + pendiente.toFixed(2) + '</td>')
+                        .append('<td>' + total.toFixed(2) + '</td>');
+                },
+                dataSrc: 'fletero'
+            }
         });
     }
 

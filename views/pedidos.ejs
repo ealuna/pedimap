@@ -209,7 +209,39 @@
         </section>
     </div>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="modal-detalle" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Documentos del pedido</h4>
+            </div>
+            <div class="modal-body" id="detalle-body">
+                <table id="detalles_" class="table table-bordered table-striped table-responsive"
+                       cellspacing="0" style="font-size: xx-small; width: 100%">
+                    <thead style="width: 100%">
+                    <tr>
+                        <th>Linea</th>
+                        <th>Articulos</th>
+                        <th>Cajas</th>
+                        <th>Unidades</th>
+                        <th>Neto</th>
+                        <th>Impuesto</th>
+                        <th>Importe</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+               <!-- <button type="button" class="btn btn-primary">Save changes</button>-->
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <% include layouts/scripts/default.ejs %>
 <% include layouts/scripts/datatable.ejs %>
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -374,8 +406,8 @@
                             '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu pull-right" role="menu">' +
-                            '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
-                            '<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
+                            //'<li><a href="#" onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
+                            '<li><a href="#" onClick="verDocumentos(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: green" class="fa fa-file-text-o"></i>Ver Documentos</a></li>' +
                             //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
                             //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
                             '</ul></div></span>';
@@ -384,6 +416,11 @@
             ]
         });
     }
+
+    function verDocumentos(codprov, tipopla, seriepla, nropla, idcliente) {
+        $('#modal-detalle').modal('show');
+    }
+
     function actualizar() {
         var fletero = parseInt(document.getElementById('fletero').value);
         var fecha = moment(document.getElementById('datepicker').value, ['DD/MM/YYYY']).format('YYYY/MM/DD')
