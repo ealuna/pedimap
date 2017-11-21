@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 
 const config = require('../../config/crypto.json');
 const connection = require('../services/connection');
+const Promise = require('bluebird');
 
 //const secretOrKey = 'EvilSecret';
 
@@ -34,22 +35,22 @@ module.exports = name => {
 
         },
         /*massive: function (req, res) {
-            const data = req.body;
+         const data = req.body;
 
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].clave !== data[i].confirmar) {
-                    return res.status(401).json({err: 'Las contraseñas son distintas'});
-                }
+         for (let i = 0; i < data.length; i++) {
+         if (data[i].clave !== data[i].confirmar) {
+         return res.status(401).json({err: 'Las contraseñas son distintas'});
+         }
 
-                delete  data[i].confirmar;
+         delete  data[i].confirmar;
 
-                models.usuarios.create(data[i]).then(user => {
-                }).catch(err => {
-                    res.status(401).json({err: err});
-                });
-            }
-            res.json({message: 'Success !!!!'});
-        },*/
+         models.usuarios.create(data[i]).then(user => {
+         }).catch(err => {
+         res.status(401).json({err: err});
+         });
+         }
+         res.json({message: 'Success !!!!'});
+         },*/
         findAll: function (options) {
             return models.usuarios.findAll(options);
         },
@@ -83,31 +84,36 @@ module.exports = name => {
                 }
             });
         },
-        AuthenticateWeb: function (req, res) {
+        AuthenticateWeb: function (req, res, next) {
             const data = req.body;
 
             if (!data.usuario && !data.clave) {
-                res.render('login', {message: "Ingrese los datos correctamente."});
+                return res.redirect(400, '/terranorte/login');
             }
 
             models.usuarios.findAll({where: {usuario: data.usuario}}).then(usuario => {
                 if (usuario && usuario.length) {
                     usuario[0].comparePassword(data.clave).then(match => {
                         if (!match) {
-                            res.render('login', {message: "Contraseña incorrecta."});
-                        } else {
-                            const payload = usuario[0].toJSON();
-                            const token = jwt.sign(payload, secret);
-                            res.cookie('SESSIONID', token, {httpOnly: true});
-                            res.render('login', {message: "Contraseña incorrecta."});
+                            return new Promise.reject()
+                            //return res.redirect(200, '/terranorte/login');
                         }
+                        const payload = usuario[0].toJSON();
+                        const token = jwt.sign(payload, secret);
+                        res.cookie('SESSIONID', token, {httpOnly: true});
+
+                        //return next();
+                        //res.status(200).send();
+                        res.redirect(302, '/terranorte/login')
+
                     }).catch(err => {
-                        res.render('login', {message: "Ha ocurrido un error."});
+                        //res.redirect(500, '/terranorte/login');
                         console.log(err);
                     });
-                } else {
-                    res.render('login', {message: "El usuario ingresado no existe."});
+                    return;
                 }
+                return res.redirect(400, '/terranorte/login');
+
             });
         }
     }

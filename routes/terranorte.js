@@ -7,6 +7,7 @@
 const helmet = require('helmet');
 const express = require('express');
 const compression = require('compression');
+const bodyParser = require('body-parser');
 
 const controllers = require('../api/controllers');
 const SecretKey = require('../config/crypto.json').TERRANORTE.SECRET_KEY;
@@ -25,6 +26,10 @@ const JwtStrategy = passportJWT.Strategy;
 const JwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
     secretOrKey: SecretKey
+};
+
+const passoptions = {
+    failureRedirect: '/terranorte/login'
 };
 
 passport.use(new JwtStrategy(JwtOptions, (payload, next) => {
@@ -134,6 +139,10 @@ app.post("/documentos/entregas", function (req, res) {
     controllers.documentos('TERRANORTE').entregas(req, res);
 });
 
+app.post("/documentos/detalles", function (req, res) {
+    controllers.documentos('TERRANORTE').detalles(req, res);
+});
+
 app.post("/documentos/entregas_horas", function (req, res) {
     controllers.documentos('TERRANORTE').entregas_horas(req, res);
 });
@@ -207,15 +216,32 @@ app.post("/despacho/consolidado/general", function (req, res) {
 router.use('/app', app);
 router.use(compression());
 router.use(helmet({noCache: true}));
+router.use(bodyParser.urlencoded({extended: false}));
 
-router.get('/seguimiento', function (req, res) {
+router.use(function (req, res, next) {
+    if (req.cookies.SESSIONID && !req.headers.authorization) {
+        req.headers.authorization = `JWT ${req.cookies.SESSIONID}`;
+    }
+    next();
+});
+
+router.post('/autenticar', function (req, res, next) {
+    controllers.usuarios('TERRANORTE').AuthenticateWeb(req, res, function () {
+        res.redirect(302, '/terranorte/login')
+    });
+});
+
+router.get('/seguimiento', passport.authenticate('jwt', {
+    session: false,
+    failureRedirect: '/terranorte/login'
+}), function (req, res) {
     controllers.fleteros('TERRANORTE').render(req, res);
 });
 /*
-router.get('/transporte', function (req, res) {
-    res.render('fletero');
-});
-*/
+ router.get('/transporte', function (req, res) {
+ res.render('fletero');
+ });
+ */
 router.get('/entregas', function (req, res) {
     res.render('entregar');
 });
@@ -240,8 +266,24 @@ router.get('/informe/detallado', function (req, res) {
     res.render('detallado');
 });
 
+router.get("/logout", function (req, res) {
+    res.cookie('SESSIONID', '', {expires: new Date(0)});
+    res.redirect('/terranorte/login')
+});
+
 router.get('/login', function (req, res, next) {
-    res.render('login');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.render('login');
+        }
+        res.redirect('/terranorte/inicio')
+    })(req, res, next);
+
+
+    //if(!req.user) res.render('login');
 });
 
 router.get('/pedidos', function (req, res, next) {

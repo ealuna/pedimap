@@ -225,9 +225,7 @@
                         <th>Articulos</th>
                         <th>Cajas</th>
                         <th>Unidades</th>
-                        <th>Neto</th>
-                        <th>Impuesto</th>
-                        <th>Importe</th>
+                        <th>Imp. Neto</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -355,6 +353,50 @@
      }
      ]
      }); */
+
+    function crearTablaDetalle(data) {
+        $('#detalles_').dataTable({
+            'destroy': true,
+            "bPaginate": false,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'order': [[0, 'asc']],
+            'columns': [
+                {'data': 'documento'},
+                {
+                    "orderable": false,
+                    render: function (data, type, row) {//datatoggle es para abrir el modal
+                        return row.codart + ' - ' + row.descrip;
+                    }
+                },
+                {'data': 'cant', "orderable": false},
+                {'data': 'resto', "orderable": false},
+                {'data': 'neto', "orderable": false},
+            ],
+            rowGroup: {
+                startRender: function (rows, group) {
+                    return group;
+                },
+                endRender: function (rows, group) {
+                    var neto = rows.data().pluck('neto').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    return $('<tr/>')
+                        .append('<td  colspan="4">Total</td>')
+                        .append('<td>' + neto.toFixed(2) + '</td>');
+                },
+                dataSrc: 'documento'
+            }
+        });
+    }
+
     function crearTabla(data) {
         $('#pedidos').dataTable({
             'destroy': true,
@@ -418,7 +460,18 @@
     }
 
     function verDocumentos(codprov, tipopla, seriepla, nropla, idcliente) {
-        $('#modal-detalle').modal('show');
+        $.ajax({
+            type: 'POST',
+            url: '/terranorte/app/documentos/detalles',
+            contentType: "application/json",
+            data: JSON.stringify({cliente: idcliente, codprov: codprov, tipopla: tipopla, seriepla: seriepla, nropla: nropla}),
+            success: function (result) {
+console.log(result)
+                crearTablaDetalle(result);
+                $('#modal-detalle').modal('show');
+            }
+        });
+
     }
 
     function actualizar() {

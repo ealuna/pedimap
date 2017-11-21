@@ -36,6 +36,15 @@ module.exports = name => {
                     replacements: {fecha: fecha},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        detalles: (idcliente, codprov, tipopla, seriepla, nropla) => {
+            return sequelize.query(
+                'EXEC [SP].[detalle] @cliente = :idcliente, @proveedor = :codprov, @seriepla = :seriepla, @nropla = :nropla, @tipopla = :tipopla',
+                {
+                    nest: true,
+                    replacements: {idcliente: idcliente, codprov: codprov, tipopla: tipopla, seriepla: seriepla, nropla: nropla},
+                    type: sequelize.QueryTypes.SELECT
+                });
         }
     };
 };

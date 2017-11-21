@@ -51,6 +51,19 @@ module.exports = name => {
             }).catch(err => {
                 res.status(500).json({error: err});
             });
+        },
+        detalles: (req, res) => {
+            const data = req.body;
+
+            if (!data.cliente) {
+                return res.status(400).json({msg: 'El campo cliente es requerido'})
+            }
+
+            documentos.detalles(data.cliente, data.codprov, data.tipopla, data.seriepla, data.nropla).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
         }
     };
 };
