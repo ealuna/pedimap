@@ -67,5 +67,47 @@ module.exports = name => {
                 res.status(500).json({error: err});
             });
         },
+        pedidos: (req, res) => {
+
+            const data = req.body;
+
+            if(!data.cliente){
+                return res.status(400).json({err: 'El campo cliente es requerido'});
+            }
+
+            clientes.pedidos(data.cliente).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        pedidos_detalle: (req, res) => {
+
+            const data = req.body;
+
+            if(!data.pedido){
+                return res.status(400).json({err: 'El campo pedido es requerido'});
+            }
+
+            clientes.pedidos_detalle(data.pedido).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        documentos: (req, res) => {
+
+            const data = req.body;
+
+            if(!data.cliente){
+                return res.status(400).json({err: 'El campo cliente es requerido'});
+            }
+
+            clientes.documentos(data.cliente).then(result => {
+                res.status(200).json(result);
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        }
     };
 };

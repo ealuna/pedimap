@@ -63,6 +63,17 @@ app.post('/clientes/sinpedido', (req, res) => {
     controllers.clientes('TERRANORTE').sinpedido(req, res);
 });
 
+app.post('/cliente/pedidos', (req, res) => {
+    controllers.clientes('TERRANORTE').pedidos(req, res);
+});
+
+app.post('/cliente/documentos', (req, res) => {
+    controllers.clientes('TERRANORTE').documentos(req, res);
+});
+app.post('/cliente/detalle_pedido', (req, res) => {
+    controllers.clientes('TERRANORTE').pedidos_detalle(req, res);
+});
+
 app.post('/clientes/despacho', (req, res) => {
     controllers.clientes('TERRANORTE').despacho(req, res);
 });
@@ -226,44 +237,75 @@ router.use(function (req, res, next) {
 });
 
 router.post('/autenticar', function (req, res, next) {
-    controllers.usuarios('TERRANORTE').AuthenticateWeb(req, res, function () {
-        res.redirect(302, '/terranorte/login')
-    });
+    controllers.usuarios('TERRANORTE').AuthenticateWeb(req, res, next);
 });
 
-router.get('/seguimiento', passport.authenticate('jwt', {
-    session: false,
-    failureRedirect: '/terranorte/login'
-}), function (req, res) {
-    controllers.fleteros('TERRANORTE').render(req, res);
+router.get('/seguimiento', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        controllers.fleteros('TERRANORTE').render(req, res, user);
+    })(req, res, next);
 });
 /*
  router.get('/transporte', function (req, res) {
  res.render('fletero');
  });
  */
-router.get('/entregas', function (req, res) {
-    res.render('entregar');
+
+
+router.get('/reporte/cumplimiento', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('reporte1', {usuario: user});
+    })(req, res, next);
 });
 
-router.get('/reporte/cumplimiento', function (req, res) {
-    res.render('reporte1');
+router.get('/reporte/completos', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('reporte2', {usuario: user});
+    })(req, res, next);
 });
 
-router.get('/reporte/completos', function (req, res) {
-    res.render('reporte2');
+
+
+router.get('/inicio', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('informe', {usuario: user});
+    })(req, res, next);
 });
 
-router.get('/entregas', function (req, res) {
-    res.render('entregar');
-});
-
-router.get('/inicio', function (req, res) {
-    res.render('informe');
-});
-
-router.get('/informe/detallado', function (req, res) {
-    res.render('detallado');
+router.get('/informe/detallado', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('detallado', {usuario: user});
+    })(req, res, next);
 });
 
 router.get("/logout", function (req, res) {
@@ -279,7 +321,16 @@ router.get('/login', function (req, res, next) {
         if (!user) {
             return res.render('login');
         }
-        res.redirect('/terranorte/inicio')
+        console.log(user)
+        switch(user.tipousua){
+            case 1: res.redirect('/terranorte/inicio'); break;
+            case 2: res.redirect('/terranorte/inicio'); break;
+            case 4: res.redirect('/terranorte/inicio'); break;
+            case 5: res.redirect('/terranorte/entregas'); break;
+            case 6: res.redirect('/terranorte/clientes/pendientes'); break;
+            default: res.redirect('/terranorte/login'); break;
+        }
+        //res.redirect('/terranorte/inicio')
     })(req, res, next);
 
 
@@ -287,23 +338,100 @@ router.get('/login', function (req, res, next) {
 });
 
 router.get('/pedidos', function (req, res, next) {
-    res.render('pedido_v');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('pedido_v', {usuario: user});
+    })(req, res, next);
+
 });
 
 router.get('/seguimiento/reporte', function (req, res, next) {
-    res.render('reporte');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('reporte', {usuario: user});
+    })(req, res, next);
 });
 
 router.get('/transporte/pedidos', function (req, res, next) {
-    res.render('pedidos');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('pedidos', {usuario: user});
+    })(req, res, next);
 });
 
 router.get('/transporte/entregados', function (req, res, next) {
-    res.render('entregados');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('entregados', {usuario: user});
+    })(req, res, next);
 });
 
 router.get('/transporte/fleteros', function (req, res, next) {
-    res.render('fletero');
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 4) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('fletero', {usuario: user});
+    })(req, res, next);
+});
+
+router.get('/entregas', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 5) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('entregar', {usuario: user});
+    })(req, res, next);
+});
+
+router.get('/clientes/facturados', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 6) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('cli_pedidos', {usuario: user});
+    })(req, res, next);
+});
+
+router.get('/clientes/pendientes', function (req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user || user.tipousua !== 6) {
+            return res.redirect('/terranorte/login');
+        }
+        res.render('cli_pendientes', {usuario: user});
+    })(req, res, next);
 });
 
 module.exports = router;

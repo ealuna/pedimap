@@ -25,18 +25,18 @@ module.exports = name => {
                 res.status(500).json({error: err});
             });
         },
-        render: (req, res) => {
+        render: (req, res, user) => {
 
             fletero.find(null, new Date()).then(result => {
                 if (name === 'TERRANORTE')
-                    res.render('seguimiento', {fleteros: result});
+                    res.render('seguimiento', {fleteros: result, usuario: user});
                 else
-                    res.render('seguimiento_ori', {fleteros: result});
+                    res.render('seguimiento_ori', {fleteros: result, usuario: user});
             }).catch(err => {
                 if (name === 'TERRANORTE')
-                    res.render('seguimiento', {fleteros: []});
+                    res.render('seguimiento', {fleteros: [], usuario: user});
                 else
-                    res.render('seguimiento_ori', {fleteros: []});
+                    res.render('seguimiento_ori', {fleteros: [], usuario: user});
             });
 
         },

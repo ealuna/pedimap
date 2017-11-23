@@ -95,7 +95,7 @@ module.exports = name => {
                 if (usuario && usuario.length) {
                     usuario[0].comparePassword(data.clave).then(match => {
                         if (!match) {
-                            return new Promise.reject()
+                            return res.redirect(400, '/terranorte/login');
                             //return res.redirect(200, '/terranorte/login');
                         }
                         const payload = usuario[0].toJSON();

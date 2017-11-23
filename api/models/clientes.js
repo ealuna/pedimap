@@ -77,6 +77,39 @@ module.exports = name => {
                     replacements: {fecha: new Date()},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        pedidos: function (cliente) {
+
+            return sequelize.query(
+                `EXEC [PD].[pedido_pendiente] @cliente = :cliente`,
+                {
+                    nest: true,
+                    replacements: {cliente: cliente},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
+        pedidos_detalle: function (pedido) {
+
+            return sequelize.query(
+                `EXEC [PD].[detalle_pendiente] @pedido = :pedido`,
+                {
+                    nest: true,
+                    replacements: {pedido: pedido},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
+        },
+        documentos: function (cliente) {
+
+            return sequelize.query(
+                `EXEC [RP].[despacho] @cliente = :cliente`,
+                {
+                    nest: true,
+                    replacements: {cliente: cliente},
+                    type: sequelize.QueryTypes.SELECT
+                });
+
         }
     };
 };

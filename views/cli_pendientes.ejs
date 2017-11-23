@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Pedidos Pendientes | Pedimap</title>
+
+    <% include layouts/meta.ejs %>
+    <link rel="stylesheet" href="/assets/lib/select2/dist/css/select2.min.css">
+    <% include layouts/styles/default.ejs %>
+    <% include layouts/styles/datatable.ejs %>
+
+    <link rel="stylesheet" href="/assets/css/default.css">
+
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css"/>
+
+</head>
+
+<body class="hold-transition skin sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+
+        <% include layouts/logo.ejs %>
+
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/assets/img/default-user.png" class="user-image" alt="User Image">
+                            <span class="hidden-xs"><%= usuario.descrip %></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <img src="/assets/img/default-user.png" class="img-circle" alt="User Image">
+
+                                <p>
+                                    <%= usuario.descrip %>
+                                    <small>Miembro desde <%= usuario.fecalta.toLocaleString() %></small>
+                                </p>
+
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a href="/terranorte/logout" class="btn btn-default btn-flat">Salir</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-gears"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="/assets/img/logo-terranorte.svg"
+                         onerror="this.onerror=null; this.src='/assets/img/logo-terranorte.png'">
+                </div>
+                <div class="pull-left info">
+                    <p>Terranorte S.A.C.</p>
+                    <a href="#"><i class="fa fa-circle success-icon"></i> Conectado</a>
+                </div>
+            </div>
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">PANEL DE OPCIONES</li>
+                <li class="active">
+                    <a href="/terranorte/clientes/pendientes">
+                        <i class="fa fa-cube" aria-hidden="true"></i> <span>Pedidos Pendientes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/terranorte/clientes/facturados">
+                        <i class="fa fa-cube" aria-hidden="true"></i> <span>Pedidos Facturados</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <div id="content-test" class="content-wrapper">
+        <section id="content-header" class="content-header">
+            <h1 class="hidden-xs">
+                Pedidos Pendientes
+                <small>Nuevos</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
+                <li><a href="#">Cliente</a></li>
+                <li class="active">Documentos</li>
+            </ol>
+        </section>
+        <section id="section-map" class="content">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-cube" aria-hidden="true"></i>
+                            <h3 class="box-title">Pedidos</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="pedidos" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Vendedor</th>
+                                    <th>Tipo de Pago</th>
+                                    <th>Ruta</th>
+                                    <th>Fecha</th>
+                                    <th>Importe</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="modal fade" id="modal-detalle" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Documentos del pedido</h4>
+            </div>
+            <div class="modal-body" id="detalle-body">
+                <table id="detalles_" class="table table-bordered table-striped table-responsive"
+                       cellspacing="0" style="font-size: xx-small; width: 100%">
+                    <thead style="width: 100%">
+                    <tr>
+                        <th>Linea</th>
+                        <th>Articulos</th>
+                        <th>Cajas</th>
+                        <th>Unidades</th>
+                        <th>Imp. Neto</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button>-->
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<% include layouts/scripts/default.ejs %>
+<% include layouts/scripts/datatable.ejs %>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="/assets/lib/select2/dist/js/select2.full.min.js"></script>
+<script type="text/javascript">
+    var cliente = '<%= usuario.codigo %>';
+
+    var picker = $('#datepicker');
+    picker.datepicker(
+        {
+            autoclose: true,
+            weekStart: 0,
+            inline: true,
+            language: 'es-ES',
+            format: 'dd/mm/yyyy',
+            orientation: 'bottom'
+        }
+    );
+    picker.datepicker('setDate', new Date());
+    $.ajax({
+        type: 'POST',
+        url: '/terranorte/app/cliente/pedidos',
+        contentType: "application/json",
+        data: JSON.stringify({cliente: cliente}),
+        success: function (result) {
+            //crearTablaGeneral(result);
+            crearTabla(result);
+        }
+    });
+
+
+    function crearTabla(data) {
+        $('#pedidos').dataTable({
+                'destroy': true,
+                'language': {
+                    "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                dom: 'frtip',
+                'filter': true,
+                responsive: true,
+                'stateSave': false,
+                data: data,
+                'columns': [
+                    {
+                        'data': 'nroped'
+                    }, {
+                        'data': 'vendedor'
+                    }, {
+                        'data': 'tipopago'
+                    },{
+                        'data': 'ruta'
+                    },{
+                        'data': 'fecha'
+                    },{
+                        'data': 'importe'
+                    },
+                    {
+                        "orderable": true,
+                        render: function (data, type, row) {//datatoggle es para abrir el modal
+                            return '<span class="pull-right">' +
+                                '<div class="dropdown">' +
+                                '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+                                'Opciones ' +
+                                '<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                //'<li><a onClick="verDocumentos(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\')"><i style="color: blue" class="fa fa-user-o"></i>Información Cliente</a></li>' +
+                                '<li><a href="#" onClick="verDetalle(\'' + row.nroped + '\')"><i style="color: green" class="fa fa-cubes"></i>Ver Articulos</a></li>' +
+                                //'<li><a onClick="EnviarResultado(\'' + row.codprov + '\',\'' + row.tipopla + '\',\'' + row.seriepla + '\',\'' + row.nropla + '\',\'' + row.idcliente + '\', 2)"><i style="color: red" class="glyphicon glyphicon-remove-circle"></i></a></li>' +
+                                //'<li><a onclick="datos_marker(' + row.YCoord + ',' + row.XCoord + ',' + row.idcliente + ')"><i style="color: blue" class="glyphicon glyphicon-map-marker"></i>Ubicar cliente</a></li>' +
+                                '</ul></div></span>';
+                        }
+                    }
+                ]
+            }
+        )
+        ;
+    }
+
+    function crearTablaDetalle(data) {
+        $('#detalles_').dataTable({
+            'destroy': true,
+            "bPaginate": false,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'order': [[0, 'asc']],
+            'columns': [
+                {'data': 'pedido'},
+                {
+                    "orderable": false,
+                    'data': 'articulo'
+                },
+                {'data': 'cant', "orderable": false},
+                {'data': 'resto', "orderable": false},
+                {'data': 'neto', "orderable": false},
+            ],
+            rowGroup: {
+                startRender: null,
+                endRender: function (rows, group) {
+                    var neto = rows.data().pluck('importe').reduce(function (a, b) {
+                        return a + b * 1;
+                    }, 0);
+
+                    return $('<tr/>')
+                        .append('<td  colspan="4">Total</td>')
+                        .append('<td>' + neto.toFixed(2) + '</td>');
+                },
+                dataSrc: 'pedido'
+            }
+        });
+    }
+
+    function verDetalle(pedido) {
+        $.ajax({
+            type: 'POST',
+            url: '/terranorte/app/cliente/detalle_pedido',
+            contentType: "application/json",
+            data: JSON.stringify({
+                pedido: pedido
+            }),
+            success: function (result) {
+                console.log(result)
+                crearTablaDetalle(result);
+                $('#modal-detalle').modal('show');
+            }
+        });
+
+    }
+
+
+
+</script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+</body>
+</html>
