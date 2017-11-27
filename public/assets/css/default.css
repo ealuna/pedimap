@@ -285,7 +285,7 @@
 #reporte_bar_horizontal {
     min-height: 400px !important;
     height: 100% !important;
-    max-width: 600px;
+    /*max-width: 600px;*/
     width: 100% !important;
     display: block;
     margin: 0 auto;
@@ -299,6 +299,15 @@
 }
 
 
+@media (max-width: 767px) {
+    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+        bottom: 3px !important;
+        right: 3px !important;
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        padding: 3px;
+    }
+}
 
 
 th { font-size: 13px; }

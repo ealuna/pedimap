@@ -36,6 +36,7 @@ function setFormat(dataset) {
 
 function validation(res) {
     if (res.body === 'LOGOUT\n' || !res) {
+        //console.log(res.body)
         return Promise.reject({status: 401, msg: 'No se puede acceder al servicio.'});
     }
     return utils.parseXML(res.body).then(setFormat);
@@ -46,8 +47,10 @@ module.exports = name => {
         getGroup: (group) => {
             const source = request(name);
             return source.fleet(group).then(validation).catch(err => {
+                //console.log(err)
                 if (err.status && err.status === 401) {
                     return source.authenticate(name).then((res) => {
+                        //console.log(res.body)
                         return source.fleet(group).then(validation);
                     });
                 }

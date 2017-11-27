@@ -95,7 +95,6 @@ io.of('/terranorte').on('connection', (socket) => {
         console.log(data);
             controllers.clientes('TERRANORTE').entrega(data,
                 (err, result) => {
-                    console.log(err)
                     if (!err) socket.broadcast.emit('entregado', data);
                 }
             );

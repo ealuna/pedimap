@@ -433,7 +433,9 @@ function createPDF() {
     var element = document.getElementById('mapa');
     html2canvas(element, {
         useCORS: true,
+
         onrendered: function (canvas) {
+
             var img = canvas.toDataURL('/terranorte/assets/img');
             var pdf = new jsPDF();
             pdf.text(50, 20, 'REPORTE DE SEGUIMIENTO');

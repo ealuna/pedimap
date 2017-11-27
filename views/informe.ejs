@@ -88,7 +88,7 @@
                             <h3 class="box-title">Informe de Transportes</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="overflow-x:auto;">
                             <table id="consolidado" class="table table-bordered table-striped table-responsive"
                                    cellspacing="0" style="font-size: xx-small; width: 100%">
                                 <thead style="width: 100%">
@@ -201,7 +201,7 @@
             },
             dom: 'frtip',
             'filter': true,
-            responsive: true,
+            //responsive: true,
             'stateSave': false,
             data: data,
             'columns': columnas,
@@ -246,6 +246,7 @@
                 dataSrc: 'fletero'
             }
         });
+
     }
 
 
