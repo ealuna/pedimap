@@ -80,7 +80,7 @@ module.exports = name => {
         despacho_proveedor: (fecha_inicial = new Date(), fecha_final = new Date()) => {
 
             return sequelize.query(
-                'EXEC [RP].[general_proveedor] @fecha_inicial= :fecha_inicial, @fecha_final = :fecha_final',
+                'EXEC [RP].[despacho_proveedor] @fecha_inicial= :fecha_inicial, @fecha_final = :fecha_final',
                 {
                     nest: true,
                     replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final},

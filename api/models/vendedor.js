@@ -11,7 +11,15 @@ module.exports = name => {
     const sequelize = connection[name];
 
     return {
-
+        despacho: (fecha_inicial = new Date(), fecha_final = new Date(),vendedor = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_vendedor] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @vendedor = :vendedor',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, vendedor: vendedor},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
         despacho_generico: (fecha_inicial = new Date(), fecha_final = new Date(),vendedor = null) => {
             return sequelize.query(
                 'EXEC [RV].[despacho_generico] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @vendedor = :vendedor',

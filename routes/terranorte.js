@@ -175,6 +175,10 @@ app.post("/despacho/linea", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_linea(req, res);
 });
 
+app.post("/despacho/fletero", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho(req, res);
+});
+
 app.post("/despacho/proveedor", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_proveedor(req, res);
 });
@@ -188,8 +192,8 @@ app.post("/vendedor/despacho/linea", function (req, res) {
     controllers.vendedor('TERRANORTE').despacho_linea(req, res);
 });
 
-app.post("/vendedor/despacho/proveedor", function (req, res) {
-    controllers.vendedor('TERRANORTE').despacho_proveedor(req, res);
+app.post("/vendedor/despacho", function (req, res) {
+    controllers.vendedor('TERRANORTE').despacho(req, res);
 });
 
 app.post("/ruta/despacho/generico", function (req, res) {

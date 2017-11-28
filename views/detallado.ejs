@@ -134,6 +134,7 @@
                                     <th><span class="label label-success">Entregado</span></th>
                                     <th><span class="label label-danger">Rechazado</span></th>
                                     <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                    <th>Total</th>
                                     <th>Opciones</th>
                                 </tr>
                                 </thead>
@@ -179,12 +180,11 @@
                                    cellspacing="0" style="font-size: xx-small; width: 100%">
                                 <thead style="width: 100%">
                                 <tr>
-                                    <th>Fecha</th>
                                     <th>Vendedor</th>
-                                    <th>Proveedor</th>
                                     <th><span class="label label-success">Entregado</span></th>
                                     <th><span class="label label-danger">Rechazado</span></th>
                                     <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                    <th>Total</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -247,12 +247,11 @@
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
                 var columnas = [
-                    {'data': 'fecha'},
-                    {'data': 'fletero'},
-                    {'data': 'proveedor'},
-                    {'data': 'entregado'},
-                    {'data': 'rechazado'},
-                    {'data': 'pendiente'}
+                    {'data': 'nomcli'},
+                    {'data': 'entregado', orderable: false},
+                    {'data': 'rechazado', orderable: false},
+                    {'data': 'pendiente', orderable: false},
+                    {'data': 'pendiente', orderable: false}
                 ];
                 crearTabla(result.data, '#fletero', columnas);
             }
@@ -262,17 +261,21 @@
     $.ajax(
         {
             type: 'POST',
-            url: '/terranorte/app/vendedor/despacho/proveedor',
+            url: '/terranorte/app/vendedor/despacho',
             contentType: "application/json",
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
+                console.log(result)
                 var columnas = [
-                    {'data': 'fecha'},
-                    {'data': 'vendedor'},
-                    {'data': 'proveedor'},
-                    {'data': 'entregado'},
-                    {'data': 'rechazado'},
-                    {'data': 'pendiente'}
+                    //{'data': 'fecha'},
+                    {orderable: true, render: function (data, type, row) {
+                        return row.vendedor + ' - ' + row.d_perso;
+                    }},
+                    //{'data': 'proveedor'},
+                    {'data': 'entregado', orderable: false},
+                    {'data': 'rechazado', orderable: false},
+                    {'data': 'pendiente', orderable: false},
+                    {'data': 'total', orderable: false}
                 ];
                 crearTabla(result.data, '#vendedor', columnas);
             }
@@ -312,6 +315,7 @@
                     {'data': 'entregado', orderable: false},
                     {'data': 'rechazado', orderable: false},
                     {'data': 'pendiente', orderable: false},
+                    {'data': 'total', orderable: false},
                     {
                         render: function (data, type, row) {
                             return '<span class="pull-right">' +
