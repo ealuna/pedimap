@@ -356,11 +356,13 @@ function SavePolygons(ruta) {
         fillOpacity: 0
     });
 
-    var content = '<div id="content"><div id="bodyContent">';
-    content += '<b>RUTA:</b> ' + ruta.ruta;
-    content += '<br><b>VENDEDOR:</b> ' + ruta.vendedor;
-    content += '<br><b>SUPERVISOR:</b> ' + ruta.supervisor;
-    content += '</div></div>';
+    var content = '<div id="content"><div id="bodyContent">'
+     + '<table class="table table-striped"><tbody>'
+     + '<tr><th colspan="2">RUTA ' + ruta.ruta + '</th></tr>'
+     + '<tr><td>Vendedor</td> <td>' + ruta.vendedor + ' - ' + ruta.desc_ven + '</td></tr>'
+     + '<tr><td>Supervisor</td> <td>' + ruta.supervisor + ' - ' + ruta.desc_sup + '</td></tr>'
+     + '</tbody></table> '
+     + '</div></div>';
 
     google.maps.event.addListener(polygon, 'click', function(event) {
         infowindow.setContent(content);
