@@ -97,15 +97,16 @@ function viewClientInMap(data) {
     data.icon = data.estado === 0 ? '/assets/img/customer_default.png' : data.estado === 1 ? '/assets/img/customer_success.png' : '/assets/img/customer_reject.png';
     var cliente = new google.maps.Marker(data);
 
-    var content = '<div id="content"><div id="bodyContent">';
-    content += '<b>CLIENTE:</b> ' + data.idcliente + ' - ' + data.nomcli;
-    content += '<br><b>VENDEDOR:</b> ' + data.vendedor;
-    content += '<br><b>SUPERVISOR:</b> ' + data.supervisor;
-    content += '<br><b>RUTA:</b> ' + data.ruta;
-    content += '<br><b>TIPO NEGOCIO:</b> ' + data.tiponego;
-    content += '<br><b>DIRECCIÓN:</b> ' + data.domicli;
-//content += '<input type="button" value ="prueba" />';
-    content += '</div></div>';
+    var content = '<div id="content"><div id="bodyContent">'
+    + '<table class="table table-striped"><tbody>'
+    + '<tr><th colspan="2">' + data.idcliente + ' - ' + data.nomcli + '</th></tr>'
+    + '<tr><td>Vendedor</td> <td>' + data.vendedor + ' - ' + data.desc_ven + '</td></tr>'
+    + '<tr><td>Supervisor</td> <td>' + data.supervisor + ' - ' + data.desc_sup + '</td></tr>'
+    + '<tr><td>Ruta</td> <td> ' + data.ruta + '</td></tr>'
+    + '<tr><td>Tipo Negocio</td> <td>' + data.tiponego + '</td></tr>'
+    + '<tr><td>Dirección</td> <td>' + data.domicli + '</td></tr>'
+    + '<tr><td>Importe</td> <td>S/. ' + data.importe + '</td></tr>'
+    + '</tbody></table> ';
 
     cliente.addListener('click', function () {
         infowindow.setContent(content);
@@ -124,14 +125,16 @@ function SaveNoSalesMarkers(data) {
     //data.icon = {path: 'M -2,0 0,-2 2,0 0,2 z', strokeColor: '#F00', fillColor: '#F00', fillOpacity: 1};
     var sinpedido = new google.maps.Marker(data);
 
-    var content = '<div id="content"><div id="bodyContent">';
-    content += '<b>CLIENTE:</b> ' + data.idcliente + ' - ' + data.nomcli;
-    content += '<br><b>VENDEDOR:</b> ' + data.vendedor;
-    content += '<br><b>SUPERVISOR:</b> ' + data.supervisor;
-    content += '<br><b>RUTA:</b> ' + data.ruta;
-    content += '<br><b>TIPO NEGOCIO:</b> ' + data.tiponego;
-    content += '<br><b>DIRECCIÓN:</b> ' + data.domicli;
-    content += '</div></div>';
+    var content = '<div id="content"><div id="bodyContent">'
+    + '<table class="table table-striped"><tbody>'
+    + '<tr><th colspan="2">' + data.idcliente + ' - ' + data.nomcli + '</th></tr>'
+    + '<tr><td>Vendedor</td> <td>' + data.vendedor + ' - ' + data.desc_ven + '</td></tr>'
+    + '<tr><td>Supervisor</td> <td>' + data.supervisor + ' - ' + data.desc_sup + '</td></tr>'
+    + '<tr><td>Ruta</td> <td> ' + data.ruta + '</td></tr>'
+    + '<tr><td>Tipo Negocio</td> <td>' + data.tiponego + '</td></tr>'
+    + '<tr><td>Dirección</td> <td>' + data.domicli + '</td></tr>'
+    + '</tbody></table> '
+    + '</div></div>';
 
     sinpedido.addListener('click', function () {
         infowindow.setContent(content);
@@ -360,7 +363,9 @@ function SavePolygons(ruta) {
      + '<table class="table table-striped"><tbody>'
      + '<tr><th colspan="2">RUTA ' + ruta.ruta + '</th></tr>'
      + '<tr><td>Vendedor</td> <td>' + ruta.vendedor + ' - ' + ruta.desc_ven + '</td></tr>'
-     + '<tr><td>Supervisor</td> <td>' + ruta.supervisor + ' - ' + ruta.desc_sup + '</td></tr>'
+        + '<tr><td>Supervisor</td> <td>' + ruta.supervisor + ' - ' + ruta.desc_sup + '</td></tr>'
+        + '<tr><td>Clientes</td> <td> ' + ruta.clientes + '</td></tr>'
+        + '<tr><td>Importe</td> <td> S/.' + ruta.total + '</td></tr>'
      + '</tbody></table> '
      + '</div></div>';
 
