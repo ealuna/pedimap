@@ -160,7 +160,7 @@ module.exports = name => {
         despacho_ruta: (req, res) => {
             const data = req.body;
 
-            if (!data.fletero || !data.fecha_inicial || !data.fecha_final) {
+            if (!data.fecha_inicial || !data.fecha_final) {
                 return res.status(400).json({msg: 'Los campo fletero y fecha son requeridos'})
             }
 
@@ -178,6 +178,19 @@ module.exports = name => {
             }
 
             fletero.despacho_consolidado(data.fecha_inicial, data.fecha_final, data.fletero).then(result => {
+                res.status(200).json({data: result});
+            }).catch(err => {
+                res.status(500).json({error: err});
+            });
+        },
+        despacho: (req, res) => {
+            const data = req.body;
+
+            if (!data.fecha_inicial || !data.fecha_final) {
+                return res.status(400).json({msg: 'Los campo fletero y fecha son requeridos'})
+            }
+
+            fletero.despacho(data.fecha_inicial, data.fecha_final, data.fletero).then(result => {
                 res.status(200).json({data: result});
             }).catch(err => {
                 res.status(500).json({error: err});

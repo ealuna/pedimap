@@ -118,7 +118,17 @@ module.exports = name => {
                     replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
                     type: sequelize.QueryTypes.SELECT
                 });
+        },
+        despacho: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[despacho_fleteros] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
         }
+
 
     };
 };

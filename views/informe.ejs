@@ -207,7 +207,7 @@
             'columns': columnas,
             rowGroup: {
                 startRender: function (rows, group) {
-                    return 'Transporte ' + group;
+                    return group;
                 },
                 endRender: function (rows, group) {
                     var clientes = rows.data().pluck('clientes').reduce(function (a, b) {
@@ -243,7 +243,7 @@
                         .append('<td>' + pendiente.toFixed(2) + '</td>')
                         .append('<td>' + total.toFixed(2) + '</td>');
                 },
-                dataSrc: 'fletero'
+                dataSrc: 'nomcli'
             }
         });
 

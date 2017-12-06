@@ -86,7 +86,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                             <h3 class="box-title">Resumen de Proveedores</h3>
-                            <% //include layouts/collapse.ejs    %>
+                            <% //include layouts/collapse.ejs     %>
                         </div>
                         <div class="box-body">
                             <div>
@@ -98,7 +98,7 @@
                         <div class="box-header with-border">
                             <i class="fa fa-table" aria-hidden="true"></i>
                             <h3 class="box-title">Resumen de Proveedores</h3>
-                            <% //include layouts/collapse.ejs    %>
+                            <% //include layouts/collapse.ejs     %>
                         </div>
                         <div class="box-body">
                             <table id="resumen" class="table table-bordered table-striped table-responsive"
@@ -118,12 +118,39 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-table" aria-hidden="true"></i>
-                            <h3 class="box-title">Resumen de Proveedores</h3>
-                            <% include layouts/collapse.ejs    %>
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Vendedores</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <table id="vendedor" class="table table-bordered table-striped table-responsive"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Vendedor</th>
+                                    <th><span class="label label-success">Entregado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                    <th>Total</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-industry" aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Proveedores</h3>
+                            <% include layouts/collapse.ejs %>
                         </div>
                         <div class="box-body">
                             <table id="resumen" class="table table-bordered table-striped table-responsive"
@@ -146,7 +173,7 @@
                     </div>
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-table   " aria-hidden="true"></i>
+                            <i class="fa fa-truck" aria-hidden="true"></i>
                             <h3 class="box-title">Informe de Transportes</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
@@ -155,36 +182,12 @@
                                    cellspacing="0" style="font-size: xx-small; width: 100%">
                                 <thead style="width: 100%">
                                 <tr>
-                                    <th>Fecha</th>
                                     <th>Transporte</th>
-                                    <th>Proveedor</th>
-                                    <th><span class="label label-success">Entregado</span></th>
-                                    <th><span class="label label-danger">Rechazado</span></th>
-                                    <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot></tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="box box-solid box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-table" aria-hidden="true"></i>
-                            <h3 class="box-title">Informe de Vendedores</h3>
-                            <% include layouts/collapse.ejs %>
-                        </div>
-                        <div class="box-body">
-                            <table id="vendedor" class="table table-bordered table-striped table-responsive"
-                                   cellspacing="0" style="font-size: xx-small; width: 100%">
-                                <thead style="width: 100%">
-                                <tr>
-                                    <th>Vendedor</th>
                                     <th><span class="label label-success">Entregado</span></th>
                                     <th><span class="label label-danger">Rechazado</span></th>
                                     <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
                                     <th>Total</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -193,9 +196,10 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
-                            <i class="fa fa-table" aria-hidden="true"></i>
+                            <i class="fa fa-road" aria-hidden="true"></i>
                             <h3 class="box-title">Informe de Rutas</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
@@ -204,12 +208,12 @@
                                    cellspacing="0" style="font-size: xx-small; width: 100%">
                                 <thead style="width: 100%">
                                 <tr>
-                                    <th>Fecha</th>
                                     <th>Ruta</th>
-                                    <th>Proveedor</th>
                                     <th><span class="label label-success">Entregado</span></th>
                                     <th><span class="label label-danger">Rechazado</span></th>
                                     <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
+                                    <th>Total</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -242,7 +246,7 @@
     $.ajax(
         {
             type: 'POST',
-            url: '/terranorte/app/despacho/proveedor',
+            url: '/terranorte/app/despacho/fletero',
             contentType: "application/json",
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
@@ -251,7 +255,24 @@
                     {'data': 'entregado', orderable: false},
                     {'data': 'rechazado', orderable: false},
                     {'data': 'pendiente', orderable: false},
-                    {'data': 'pendiente', orderable: false}
+                    {'data': 'total', orderable: false},
+                    {
+                        render: function (data, type, row) {
+                            return '<span class="pull-right">' +
+                                '<div class="dropdown">' +
+                                '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+                                'Detallar por ' +
+                                '<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                '<li><a href="#" onClick="VerDetalleVendedor(\'' + row.fletero + '\')"><i style="color: darkgreen" class="fa fa-user"></i>Vendedor</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleRuta(\'' + row.fletero + '\')"><i style="color: darkgray" class="fa fa-road"></i>Rutas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleProveedor(\'' + row.fletero + '\')"><i style="color: darkred" class="fa fa-industry"></i>Proveedor</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleLineas(\'' + row.fletero + '\')"><i style="color: darkblue" class="fa fa-cubes"></i>Lineas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleGenericos(\'' + row.fletero + '\')"><i style="color: darkgoldenrod" class="fa fa-cube"></i>Genericos</a></li>' +
+                                '</ul></div></span>';
+                        }, orderable: false
+                    }
                 ];
                 crearTabla(result.data, '#fletero', columnas);
             }
@@ -266,18 +287,68 @@
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
                 console.log(result)
+                var group = {
+                    startRender: function (rows, group) {
+                        return group;
+                    },
+                    endRender: function (rows, group) {
+
+                        var entregado = rows.data().pluck('entregado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var rechazado = rows.data().pluck('rechazado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var pendiente = rows.data().pluck('pendiente').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var total = rows.data().pluck('total').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        return $('<tr/>')
+                            .append('<td></td>')
+                            .append('<td>' + entregado.toFixed(2) + '</td>')
+                            .append('<td>' + rechazado.toFixed(2) + '</td>')
+                            .append('<td>' + pendiente.toFixed(2) + '</td>')
+                            .append('<td>' + total.toFixed(2) + '</td>')
+                            .append('<td></td>');
+                    },
+                    dataSrc: 'd_super'
+                };
                 var columnas = [
-                    //{'data': 'fecha'},
-                    {orderable: true, render: function (data, type, row) {
-                        return row.vendedor + ' - ' + row.d_perso;
-                    }},
-                    //{'data': 'proveedor'},
+                    {
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return row.vendedor + ' - ' + row.d_perso;
+                        }
+                    },
                     {'data': 'entregado', orderable: false},
                     {'data': 'rechazado', orderable: false},
                     {'data': 'pendiente', orderable: false},
-                    {'data': 'total', orderable: false}
+                    {'data': 'total', orderable: false},
+                    {
+                        render: function (data, type, row) {
+                            return '<span class="pull-right">' +
+                                '<div class="dropdown">' +
+                                '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+                                'Detallar por ' +
+                                '<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                '<li><a href="#" onClick="VerDetalleTransportes(\'' + row.vendedor + '\')"><i style="color: black" class="fa fa-truck"></i>Transportes</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleRuta(\'' + row.vendedor + '\')"><i style="color: darkgray" class="fa fa-road"></i>Rutas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleProveedor(\'' + row.vendedor + '\')"><i style="color: darkred" class="fa fa-industry"></i>Proveedor</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleLineas(\'' + row.vendedor + '\')"><i style="color: darkblue" class="fa fa-cubes"></i>Lineas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleGenericos(\'' + row.vendedor + '\')"><i style="color: darkgoldenrod" class="fa fa-cube"></i>Genericos</a></li>' +
+                                '</ul></div></span>';
+                        }, orderable: false
+                    }
                 ];
-                crearTabla(result.data, '#vendedor', columnas);
+                crearTablaAgrupada(result.data, '#vendedor', columnas, group);
             }
         }
     );
@@ -285,17 +356,33 @@
     $.ajax(
         {
             type: 'POST',
-            url: '/terranorte/app/ruta/despacho/proveedor',
+            url: '/terranorte/app/despacho/ruta',
             contentType: "application/json",
             data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
             success: function (result) {
                 var columnas = [
-                    {'data': 'fecha'},
                     {'data': 'ruta'},
-                    {'data': 'proveedor'},
-                    {'data': 'entregado'},
-                    {'data': 'rechazado'},
-                    {'data': 'pendiente'}
+                    {'data': 'entregado', orderable: false},
+                    {'data': 'rechazado', orderable: false},
+                    {'data': 'pendiente', orderable: false},
+                    {'data': 'total', orderable: false},
+                    {
+                        render: function (data, type, row) {
+                            return '<span class="pull-right">' +
+                                '<div class="dropdown">' +
+                                '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">' +
+                                'Detallar por ' +
+                                '<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                '<li><a href="#" onClick="VerDetalleTransportes(\'' + row.ruta + '\')"><i style="color: black" class="fa fa-truck"></i>Transportes</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleVendedores(\'' + row.ruta + '\')"><i style="color: darkgreen" class="fa fa-user"></i>Vendedores</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleProveedor(\'' + row.ruta + '\')"><i style="color: darkred" class="fa fa-industry"></i>Proveedor</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleLineas(\'' + row.ruta + '\')"><i style="color: darkblue" class="fa fa-cubes"></i>Lineas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleGenericos(\'' + row.ruta + '\')"><i style="color: darkgoldenrod" class="fa fa-cube"></i>Genericos</a></li>' +
+                                '</ul></div></span>';
+                        }, orderable: false
+                    }
                 ];
                 crearTabla(result.data, '#ruta', columnas);
             }
@@ -327,12 +414,12 @@
                                 '<ul class="dropdown-menu pull-right" role="menu">' +
                                 '<li><a href="#" onClick="VerDetalleTransportes(\'' + row.codmarca + '\')"><i style="color: black" class="fa fa-truck"></i>Transportes</a></li>' +
                                 '<li><a href="#" onClick="VerDetalleVendedores(\'' + row.codmarca + '\')"><i style="color: darkgreen" class="fa fa-user"></i>Vendedores</a></li>' +
-                                '<li><a href="#" onClick="VerDetalleRutas(\'' + row.codmarca + '\')"><i style="color: darkred" class="fa fa-road"></i>Rutas</a></li>' +
+                                '<li><a href="#" onClick="VerDetalleRutas(\'' + row.codmarca + '\')"><i style="color: darkgray" class="fa fa-road"></i>Rutas</a></li>' +
                                 '<li><a href="#" onClick="VerDetalleLineas(\'' + row.codmarca + '\')"><i style="color: darkblue" class="fa fa-cubes"></i>Lineas</a></li>' +
                                 '<li><a href="#" onClick="VerDetalleGenericos(\'' + row.codmarca + '\')"><i style="color: darkgoldenrod" class="fa fa-cube"></i>Genericos</a></li>' +
                                 '</ul></div></span>';
                         }, orderable: false
-                    },
+                    }
                 ];
                 crearTabla(result.data, '#resumen', columnas);
                 crearGraficoBarras(result.data, 'reporte_lineas')
@@ -409,9 +496,27 @@
             dom: 'frtip',
             'filter': true,
             responsive: true,
+            "bPaginate": false,
             'stateSave': false,
             data: data,
             'columns': columnas
+        });
+    }
+    function crearTablaAgrupada(data, tabla, columnas, group) {
+        $(tabla).dataTable({
+            'destroy': true,
+            'language': {
+                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+            },
+            "order": [],
+            dom: 'frtip',
+            'filter': true,
+            responsive: true,
+            'stateSave': false,
+            data: data,
+            'columns': columnas,
+            rowGroup: group,
+            "bPaginate": false
         });
     }
 </script>

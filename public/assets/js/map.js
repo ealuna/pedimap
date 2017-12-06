@@ -47,6 +47,7 @@ SOCKET.on('device', function (data) {
 $($.ajax({
     type: 'POST',
     url: '/terranorte/app/clientes/today',
+    contentType: "application/json",
     success: function (result) {
         //console.log(result);
         for (var j = 0; j < result.length; j++) {
@@ -60,6 +61,7 @@ $($.ajax({
 $($.ajax({
     type: 'POST',
     url: '/terranorte/app/rutas/today',
+    contentType: "application/json",
     success: function (result) {
         //console.log(result);
         for (var j = 0; j < result.length; j++) {
@@ -74,6 +76,7 @@ $($.ajax({
 $($.ajax({
     type: 'POST',
     url: '/terranorte/app/clientes/sinpedido',
+    contentType: "application/json",
     success: function (result) {
         console.log(result);
         for (var j = 0; j < result.length; j++) {
@@ -151,11 +154,15 @@ function prepareMarker(data) {
 
     var vehiculo = new google.maps.Marker(data);
 
-    var content = '<div id="content"><div id="bodyContent"><b>TRANSPORTE:</b> ';
-    content += TRUCKS.hasOwnProperty(data.id) ? TRUCKS[data.id].nombre : data.id + ' - TRANSPORTE NO ASIGNADO';
-    content += '<br><b>DIRECCIÓN:</b> ' + data.location;
-    content += '<br><b>HORA:</b> ' + data.datetime;
-    content += '</div></div>';
+    var content = '<div id="content"><div id="bodyContent">'
+    + '<table class="table table-striped"><tbody>'
+    + '<tr><th colspan="2">' + (TRUCKS.hasOwnProperty(data.id) ? TRUCKS[data.id].nombre : data.id) + '</th></tr>'
+    + '<tr><td>Dirección</td> <td>' + data.location + '</td></tr>'
+    + '<tr><td>Dispositivo</td> <td>' + data.device + '</td></tr>'
+    + '<tr><td>Estado</td> <td> ' + data.status + '</td></tr>'
+    + '<tr><td>Placa</td> <td>' + data.vehicle + '</td></tr>'
+    + '<tr><td>Velocidad</td> <td>' + data.kmh + ' kmh' + '</td></tr>'
+    + '</tbody></table> ';
 
     vehiculo.addListener('click', function () {
         infowindow.setContent(content);

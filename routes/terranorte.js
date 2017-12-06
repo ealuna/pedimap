@@ -182,7 +182,11 @@ app.post("/despacho/fletero", function (req, res) {
 app.post("/despacho/proveedor", function (req, res) {
     controllers.fleteros('TERRANORTE').despacho_proveedor(req, res);
 });
-
+/*
+app.post("/despacho/vendedor", function (req, res) {
+    controllers.fleteros('TERRANORTE').despacho_proveedor(req, res);
+});
+*/
 
 app.post("/vendedor/despacho/generico", function (req, res) {
     controllers.vendedor('TERRANORTE').despacho_generico(req, res);
