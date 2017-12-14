@@ -81,15 +81,16 @@
         </section>
         <section id="section-map" class="content">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-table   " aria-hidden="true"></i>
                             <h3 class="box-title">Informe de Transportes</h3>
                             <% include layouts/collapse.ejs %>
                         </div>
-                        <div class="box-body" style="overflow-x:auto;">
-                            <table id="consolidado" class="table table-bordered table-striped table-responsive"
+                        <div class="box-body">
+                            <table id="consolidado"
+                                   class="table table-striped table-responsive display nowrap"
                                    cellspacing="0" style="font-size: xx-small; width: 100%">
                                 <thead style="width: 100%">
                                 <tr>
@@ -98,6 +99,7 @@
                                     <th>Ruta</th>
                                     <th>Clientes</th>
                                     <th>Documentos</th>
+
                                     <th><span class="label label-success">Entregado</span></th>
                                     <th><span class="label label-danger">Rechazado</span></th>
                                     <th><span class="label" style="background-color: #4a4a4a">Pendiente</span></th>
@@ -111,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="box box-solid box-primary">
                         <div class="box-header with-border">
                             <i class="fa fa-pie-chart" aria-hidden="true"></i>
@@ -179,7 +181,7 @@
             success: function (result) {
                 var columnas = [
                     {'data': 'fletero', orderable: true},
-                    {'data': 'vendedor', orderable: false},
+                    {'data': 'd_perso', orderable: false},
                     {'data': 'ruta', orderable: false},
                     {'data': 'clientes', orderable: false},
                     {'data': 'documentos', orderable: false},
@@ -193,62 +195,85 @@
         }
     );
     function crearTabla(data, tabla, columnas) {
-        $(tabla).dataTable({
-            'destroy': true,
-            "bPaginate": false,
-            'language': {
-                "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-            },
-            dom: 'frtip',
-            'filter': true,
-            //responsive: true,
-            'stateSave': false,
-            data: data,
-            'columns': columnas,
-            rowGroup: {
-                startRender: function (rows, group) {
-                    return group;
+        var fleteros = $(tabla).dataTable({
+                'destroy': true,
+                "bPaginate": false,
+                'language': {
+                    "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
                 },
-                endRender: function (rows, group) {
-                    var clientes = rows.data().pluck('clientes').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                dom: 'frtip',
+                'filter': true,
+                responsive: true,
+                //'stateSave': false,
+                data: data,
+                "autoWidth": true,
+                'columns': columnas,
+                "columnDefs": [
+                    {"visible": false, "targets": 0}
+                ],
+                rowGroup: {
+                    startRender: function (rows, group) {
+                        return group;
+                    },
+                    endRender: function (rows, group) {
+                        var clientes = rows.data().pluck('clientes').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    var documentos = rows.data().pluck('documentos').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                        var documentos = rows.data().pluck('documentos').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    var entregado = rows.data().pluck('entregado').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                        var entregado = rows.data().pluck('entregado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    var rechazado = rows.data().pluck('rechazado').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                        var rechazado = rows.data().pluck('rechazado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    var pendiente = rows.data().pluck('pendiente').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                        var pendiente = rows.data().pluck('pendiente').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    var total = rows.data().pluck('total').reduce(function (a, b) {
-                        return a + b * 1;
-                    }, 0);
+                        var total = rows.data().pluck('total').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
 
-                    return $('<tr/>')
-                        .append('<td  colspan="3">Resumen</td>')
-                        .append('<td>' + clientes + '</td>')
-                        .append('<td>' + documentos + '</td>')
-                        .append('<td>' + entregado.toFixed(2) + '</td>')
-                        .append('<td>' + rechazado.toFixed(2) + '</td>')
-                        .append('<td>' + pendiente.toFixed(2) + '</td>')
-                        .append('<td>' + total.toFixed(2) + '</td>');
-                },
-                dataSrc: 'nomcli'
-            }
-        });
+                        /*rows.row.add({
+                         "fletero": rows.data().pluck('nomcli'),
+                         "vendedor":"",
+                         "ruta":"",
+                         "clientes": clientes,
+                         "documentos": documentos,
+                         "entregado": entregado,
+                         "rechazado": rechazado,
+                         "pendiente": pendiente,
+                         "total": total
+                         }).draw();*/
 
+                        /*return $('<td  colspan="2"></td><td>' + clientes
+                         + '</td><td>' + documentos + '</td><td>' + entregado.toFixed(2)
+                         + '</td><td>' + rechazado.toFixed(2) + '</td><td>' + pendiente.toFixed(2)
+                         + '</td><td>' + total.toFixed(2) + '</td>');*/
+
+                        return $('<tr class="removible"/>')
+                            .append('<td colspan="2"></td>')
+                            .append('<td>' + clientes + '</td>')
+                            .append('<td>' + documentos + '</td>')
+                            .append('<td>' + entregado.toFixed(2) + '</td>')
+                            .append('<td>' + rechazado.toFixed(2) + '</td>')
+                            .append('<td>' + pendiente.toFixed(2) + '</td>')
+                            .append('<td>' + total.toFixed(2) + '</td>');
+                    },
+
+                    dataSrc: 'nomcli'
+                }
+            })
+        ;
+
+        //new $.fn.dataTable.FixedHeader(fleteros);
     }
-
 
 </script>
 </body>
