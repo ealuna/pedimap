@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <title>my first pdfmake example</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+</head>
+<body>
+<script>
+
+    var pdf = new jsPDF();
+
+    pdf.setFontSize(10);
+    pdf.setFont("verdana");
+
+    pdf.page = 1;
+
+    function footer() {
+        pdf.text(5, 292, 'Informe generado por Pedimap');
+        pdf.text(192, 292, 'Página ' + pdf.page);
+        pdf.page++;
+    }
+    footer();
+    pdf.save('reporte_seguimiento.pdf');
+</script>
+</body>
+</html>
