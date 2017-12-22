@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Informe Final General | Pedimap</title>
+
+    <% include layouts/meta.ejs %>
+    <% include layouts/styles/default.ejs %>
+    <% include layouts/styles/datatable.ejs %>
+
+    <link rel="stylesheet" href="/assets/css/default.css">
+
+</head>
+
+<body class="hold-transition skin sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+        <% include layouts/logo.ejs %>
+        <nav class="navbar navbar-static-top">
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/assets/img/default-user.png" class="user-image" alt="User Image">
+                            <span class="hidden-xs"><%= usuario.descrip %></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="user-header">
+                                <img src="/assets/img/default-user.png" class="img-circle" alt="User Image">
+
+                                <p>
+                                    <%= usuario.descrip %>
+                                    <small>Miembro desde <%= usuario.fecalta.toLocaleString() %></small>
+                                </p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a href="/terranorte/logout" class="btn btn-default btn-flat">Salir</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-gears"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="/assets/img/logo-terranorte.svg"
+                         onerror="this.onerror=null; this.src='/assets/img/logo-terranorte.png'">
+                </div>
+                <div class="pull-left info">
+                    <p>Terranorte S.A.C.</p>
+                    <a href="#"><i class="fa fa-circle success-icon"></i> Conectado</a>
+                </div>
+            </div>
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">PANEL DE OPCIONES</li>
+                <%- include('layouts/aside/aside.ejs', {value: 'inicio'}) %>
+            </ul>
+        </section>
+    </aside>
+    <div id="content-test" class="content-wrapper">
+        <section id="content-header" class="content-header">
+            <h1 class="hidden-xs">
+                Informe General
+                <small>Seguimiento</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-home"></i> Inicio</a></li>
+                <li><a href="#">Seguimiento</a></li>
+                <li class="active">Reporte</li>
+            </ol>
+        </section>
+        <section id="section-map" class="content">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-table   " aria-hidden="true"></i>
+                            <h3 class="box-title">Informe de Transportes</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <table id="consolidado"
+                                   class="table table-striped table-responsive display nowrap"
+                                   cellspacing="0" style="font-size: xx-small; width: 100%">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th>Transporte</th>
+                                    <th>Vendedor</th>
+                                    <th>Ruta</th>
+                                    <th>Clientes</th>
+                                    <th>Documentos</th>
+                                    <th><span class="label label-success">Liquidado</span></th>
+                                    <th><span class="label label-danger">Rechazado</span></th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de entregas</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart-container">
+                                <canvas id="reporte_pie" class="pie-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de entregas</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart-container">
+                                <canvas id="reporte_line" class="line-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                            <h3 class="box-title">Estado de flota</h3>
+                            <% include layouts/collapse.ejs %>
+                        </div>
+                        <div class="box-body">
+
+                            <div>
+                                <canvas id="reporte_bar_horizontal"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<% include layouts/scripts/default.ejs %>
+<% include layouts/scripts/chart.ejs %>
+<% include layouts/scripts/jspdf.ejs %>
+<% include layouts/scripts/datatable.ejs %>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript"
+        src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+
+<script src="/assets/js/jsinforme.js"></script>
+<script>
+    var init = moment().format('YYYY/MM/DD')
+    var to = moment().format('YYYY/MM/DD')
+    $.ajax(
+        {
+            type: 'POST',
+            url: '/terranorte/app/despacho/consolidado/final',
+            contentType: "application/json",
+            data: JSON.stringify({fecha_inicial: init, fecha_final: to}),
+            success: function (result) {
+                var columnas = [
+                    {'data': 'fletero', orderable: true},
+                    {'data': 'd_perso', orderable: false},
+                    {'data': 'ruta', orderable: false},
+                    {'data': 'clientes', orderable: false},
+                    {'data': 'documentos', orderable: false},
+                    {'data': 'liquidado', orderable: false},
+                    {'data': 'rechazo', orderable: false}
+                ];
+                crearTabla(result.data, '#consolidado', columnas);
+            }
+        }
+    );
+    function crearTabla(data, tabla, columnas) {
+        var fleteros = $(tabla).dataTable({
+                'destroy': true,
+                "bPaginate": false,
+                'language': {
+                    "url": "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                dom: 'frtip',
+                'filter': true,
+                responsive: true,
+                //'stateSave': false,
+                data: data,
+                "autoWidth": true,
+                'columns': columnas,
+                "columnDefs": [
+                    {"visible": false, "targets": 0}
+                ],
+                rowGroup: {
+                    startRender: function (rows, group) {
+                        return group;
+                    },
+                    endRender: function (rows, group) {
+                        var clientes = rows.data().pluck('clientes').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var documentos = rows.data().pluck('documentos').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var entregado = rows.data().pluck('entregado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var rechazado = rows.data().pluck('rechazado').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var pendiente = rows.data().pluck('pendiente').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        var total = rows.data().pluck('total').reduce(function (a, b) {
+                            return a + b * 1;
+                        }, 0);
+
+                        /*rows.row.add({
+                         "fletero": rows.data().pluck('nomcli'),
+                         "vendedor":"",
+                         "ruta":"",
+                         "clientes": clientes,
+                         "documentos": documentos,
+                         "entregado": entregado,
+                         "rechazado": rechazado,
+                         "pendiente": pendiente,
+                         "total": total
+                         }).draw();*/
+
+                        /*return $('<td  colspan="2"></td><td>' + clientes
+                         + '</td><td>' + documentos + '</td><td>' + entregado.toFixed(2)
+                         + '</td><td>' + rechazado.toFixed(2) + '</td><td>' + pendiente.toFixed(2)
+                         + '</td><td>' + total.toFixed(2) + '</td>');*/
+
+                        return $('<tr class="removible"/>')
+                            .append('<td colspan="2"></td>')
+                            .append('<td>' + clientes + '</td>')
+                            .append('<td>' + documentos + '</td>')
+                            .append('<td>' + entregado.toFixed(2) + '</td>')
+                            .append('<td>' + rechazado.toFixed(2) + '</td>')
+                            .append('<td>' + pendiente.toFixed(2) + '</td>')
+                            .append('<td>' + total.toFixed(2) + '</td>');
+                    },
+
+                    dataSrc: 'nomcli'
+                }
+            })
+        ;
+
+        //new $.fn.dataTable.FixedHeader(fleteros);
+    }
+
+</script>
+</body>
+</html>

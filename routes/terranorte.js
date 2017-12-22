@@ -232,6 +232,10 @@ app.post("/despacho/consolidado/general", function (req, res) {
     controllers.reporte('TERRANORTE').consolidado_general(req, res);
 });
 
+app.post("/despacho/consolidado/final", function (req, res) {
+    controllers.reporte('TERRANORTE').consolidado_final(req, res);
+});
+
 router.use('/app', app);
 router.use(compression());
 router.use(helmet({noCache: true}));

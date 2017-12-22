@@ -88,14 +88,23 @@ module.exports = name => {
                 });
 
         },
-        consolidado_general: (fecha_inicial = new Date(), fecha_final = new Date(),fletero = null) => {
-        return sequelize.query(
-            'EXEC [RP].[consolidado_general] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
-            {
-                nest: true,
-                replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
-                type: sequelize.QueryTypes.SELECT
-            });
-    }
+        consolidado_general: (fecha_inicial = new Date(), fecha_final = new Date(), fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[consolidado_general] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        },
+        consolidado_final: (fecha_inicial = new Date(), fecha_final = new Date(), fletero = null) => {
+            return sequelize.query(
+                'EXEC [RP].[consolidado_final] @fecha_inicial = :fecha_inicial, @fecha_final = :fecha_final, @fletero = :fletero',
+                {
+                    nest: true,
+                    replacements: {fecha_inicial: fecha_inicial, fecha_final: fecha_final, fletero: fletero},
+                    type: sequelize.QueryTypes.SELECT
+                });
+        }
     };
 };
